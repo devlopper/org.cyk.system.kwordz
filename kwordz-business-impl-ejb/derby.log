@@ -1,10 +1,10 @@
 ----------------------------------------------------------------
-Sun Jul 20 23:06:49 UTC 2014:
-Amorçage de Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872) : instance a816c00e-0147-5607-1089-00001b3f6c08 
-dans le répertoire de base de données H:\Workspaces\Eclipse\org\cyk\system\kwordz\kwordz-business-impl-ejb\target\databases\derby  avec le chargeur de classe sun.misc.Launcher$AppClassLoader@5e8e918a
+Wed Jul 23 18:03:47 UTC 2014:
+Amorçage de Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872) : instance a816c00e-0147-6464-b30b-00001694a680 
+dans le répertoire de base de données H:\Repositories\source code\git\org\cyk\system\kwordz\kwordz-business-impl-ejb\target\databases\derby  avec le chargeur de classe sun.misc.Launcher$AppClassLoader@5e8e918a
 
 java.vendor=Oracle Corporation
 java.runtime.version=1.7.0_15-b03
-user.dir=H:\Workspaces\Eclipse\org\cyk\system\kwordz\kwordz-business-impl-ejb
+user.dir=H:\Repositories\source code\git\org\cyk\system\kwordz\kwordz-business-impl-ejb
 derby.system.home=null
 Chargeur de classe de la base de données démarré - derby.database.classpath=''

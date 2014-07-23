@@ -4,20 +4,17 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 
-import org.cyk.system.root.model.AbstractIdentifiable;
-
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter @Entity @EqualsAndHashCode(of={"name","alteration"},callSuper=false) @NoArgsConstructor
+import org.cyk.system.root.model.AbstractIdentifiable;
+
+@Getter @Setter @Entity @NoArgsConstructor
 public class Note extends AbstractIdentifiable implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
-	public static final String NAME_ALTERATION_SEPARATOR = " ";
-	
 	private NoteName name;
 	private NoteAlteration alteration;
 	
@@ -40,7 +37,7 @@ public class Note extends AbstractIdentifiable implements Serializable{
 		if(name==null)
 			return "";
 		if(alteration!=null && !alteration.toString().isEmpty())
-			return name+NAME_ALTERATION_SEPARATOR+alteration;
+			return name+NoteFormatOptions.NAME_ALTERATION_SEPARATOR+alteration;
 		return name.toString();
 	}
 }

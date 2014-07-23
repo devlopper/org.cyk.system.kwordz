@@ -6,6 +6,7 @@ import java.util.Locale;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.kwordz.model.music.NoteAlteration;
+import org.cyk.system.kwordz.model.music.NoteFormatOptions;
 import org.cyk.system.kwordz.model.music.NoteName;
 import org.cyk.system.root.model.EnumHelper;
 import org.cyk.utility.common.test.AbstractUnitTest;
@@ -16,7 +17,7 @@ public class MusicUT extends AbstractUnitTest implements Serializable {
 	private static final long serialVersionUID = 4424660747159697509L;
 
 	@Test
-	public void notenameFrench(){
+	public void notenameI18n(){
 		EnumHelper.getInstance().setDefaultLocale(Locale.FRENCH);
 		assertEqualsNoteName("la",NoteName.A);
 		assertEqualsNoteName("si",NoteName.B);
@@ -25,6 +26,23 @@ public class MusicUT extends AbstractUnitTest implements Serializable {
 		assertEqualsNoteName("mi",NoteName.E);
 		assertEqualsNoteName("fa",NoteName.F);
 		assertEqualsNoteName("sol",NoteName.G);
+		
+		assertEqualsNoteName(NoteName.C ,EnumHelper.getInstance().getValueOf(NoteName.class, Locale.FRENCH, "do"));
+		assertEqualsNoteName(NoteName.D ,EnumHelper.getInstance().getValueOf(NoteName.class, Locale.FRENCH, "re"));
+		assertEqualsNoteName(NoteName.E ,EnumHelper.getInstance().getValueOf(NoteName.class, Locale.FRENCH, "mi"));
+		assertEqualsNoteName(NoteName.F ,EnumHelper.getInstance().getValueOf(NoteName.class, Locale.FRENCH, "fa"));
+		assertEqualsNoteName(NoteName.G ,EnumHelper.getInstance().getValueOf(NoteName.class, Locale.FRENCH, "sol"));
+		assertEqualsNoteName(NoteName.A ,EnumHelper.getInstance().getValueOf(NoteName.class, Locale.FRENCH, "la"));
+		assertEqualsNoteName(NoteName.B ,EnumHelper.getInstance().getValueOf(NoteName.class, Locale.FRENCH, "si"));
+		
+		assertEqualsNoteName(NoteName.C ,EnumHelper.getInstance().getValueOf(NoteName.class, Locale.ENGLISH, "C"));
+		assertEqualsNoteName(NoteName.D ,EnumHelper.getInstance().getValueOf(NoteName.class, Locale.ENGLISH, "D"));
+		assertEqualsNoteName(NoteName.E ,EnumHelper.getInstance().getValueOf(NoteName.class, Locale.ENGLISH, "E"));
+		assertEqualsNoteName(NoteName.F ,EnumHelper.getInstance().getValueOf(NoteName.class, Locale.ENGLISH, "F"));
+		assertEqualsNoteName(NoteName.G ,EnumHelper.getInstance().getValueOf(NoteName.class, Locale.ENGLISH, "G"));
+		assertEqualsNoteName(NoteName.A ,EnumHelper.getInstance().getValueOf(NoteName.class, Locale.ENGLISH, "A"));
+		assertEqualsNoteName(NoteName.B ,EnumHelper.getInstance().getValueOf(NoteName.class, Locale.ENGLISH, "B"));
+		
 	}
 	
 	@Test
@@ -65,6 +83,10 @@ public class MusicUT extends AbstractUnitTest implements Serializable {
 		assertEquals(expected,actual.toString());
 	}
 	
+	protected void assertEqualsNoteName(NoteName expected,NoteName actual){
+		assertEquals(expected.name(),actual.name());
+	}
+	
 	protected void assertEqualsNote(String expected,Note actual){
 		assertEquals(expected,actual.toString());
 	}
@@ -76,7 +98,7 @@ public class MusicUT extends AbstractUnitTest implements Serializable {
 	}
 	
 	protected String toString(String name,String alteration){
-		return name+(StringUtils.isEmpty(alteration)?"":Note.NAME_ALTERATION_SEPARATOR+alteration);
+		return name+(StringUtils.isEmpty(alteration)?"":NoteFormatOptions.NAME_ALTERATION_SEPARATOR+alteration);
 	}
 	protected String toString(String name){
 		return toString(name);

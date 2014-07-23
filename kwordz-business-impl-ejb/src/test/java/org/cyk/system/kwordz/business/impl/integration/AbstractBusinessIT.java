@@ -3,6 +3,8 @@ package org.cyk.system.kwordz.business.impl.integration;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import org.cyk.system.kwordz.business.impl.KwordzBusinessLayer;
+import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.impl.BusinessIntegrationTestHelper;
 import org.cyk.system.root.business.impl.validation.AbstractValidator;
@@ -22,6 +24,7 @@ public abstract class AbstractBusinessIT extends AbstractIntegrationTestJpaBased
 	@Inject protected DefaultValidator defaultValidator;
 	@Inject private GenericDaoImpl g;
 	@Inject protected GenericBusiness genericBusiness;
+	@Inject protected KwordzBusinessLayer kwordzBusinessLayer;
 	
 	@Inject protected ValidatorMap validatorMap;// = ValidatorMap.getInstance();
     
@@ -44,11 +47,6 @@ public abstract class AbstractBusinessIT extends AbstractIntegrationTestJpaBased
 	protected abstract void finds();
 	
 	protected abstract void businesses();
-	/*
-	@SuppressWarnings("unchecked")
-    protected <T extends AbstractIdentifiable> T create(T anObject){
-        return (T) genericBusiness.create(anObject);
-    }*/
 	
 	/* Shortcut */
     
@@ -78,6 +76,10 @@ public abstract class AbstractBusinessIT extends AbstractIntegrationTestJpaBased
             System.out.println(validator.getMessagesAsString());
         
     }
+    
+    protected void assertEqualsNoteString(Note expected,Note actual){
+		assertEquals(expected.toString(),actual.toString());
+	}
     
     public static Archive<?> createRootDeployment() {
         return  

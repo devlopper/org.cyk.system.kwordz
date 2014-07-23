@@ -2,17 +2,17 @@ package org.cyk.system.kwordz.persistence.impl.music;
 
 import java.io.Serializable;
 
-import org.cyk.system.kwordz.model.music.Note;
-import org.cyk.system.kwordz.persistence.api.music.NoteDao;
-import org.cyk.system.root.persistence.impl.AbstractTypedDao;
+import org.cyk.system.kwordz.model.music.Chord;
+import org.cyk.system.kwordz.model.music.ChordStructure;
+import org.cyk.system.kwordz.persistence.api.music.ChordDao;
 
-public class NoteDaoImpl extends AbstractTypedDao<Note> implements NoteDao,Serializable {
+public class ChordDaoImpl extends AbstractNoteCollectionDaoImpl<ChordStructure,Chord> implements ChordDao,Serializable {
 
 	private static final long serialVersionUID = 6306356272165070761L;
 	/* 
    private String readWhereFromDateGreaterThanByDate,countWhereFromDateGreaterThanByDate,
     readWhereFromDateBetweenByStartDateByEndDate,countWhereFromDateBetweenByStartDateByEndDate;
-     
+       
     @Override
     protected void namedQueriesInitialisation() {
         super.namedQueriesInitialisation();

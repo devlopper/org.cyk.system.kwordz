@@ -12,13 +12,18 @@ import static org.cyk.system.kwordz.model.music.NoteName.F;
 import static org.cyk.system.kwordz.model.music.NoteName.G;
 
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.kwordz.business.api.music.NoteBusiness;
 import org.cyk.system.kwordz.business.impl.music.NoteBusinessImpl;
 import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.kwordz.model.music.NoteAlteration;
+import org.cyk.system.kwordz.model.music.NoteFormatOptions;
 import org.cyk.system.kwordz.model.music.NoteName;
 import org.cyk.system.root.model.EnumHelper;
 import org.cyk.utility.common.test.AbstractUnitTest;
@@ -140,6 +145,26 @@ public class MusicBusinessServicesUT extends AbstractUnitTest {
 		assertDegree(11,SHARP, "7");
 		assertDegree(12,SHARP, "1");
 	}
+
+	@Test
+	public void noteParsing(){
+		Set<String> n = new LinkedHashSet<>(Arrays.asList("do","re"));
+		Set<String> a = new LinkedHashSet<>(Arrays.asList("#","b"));
+		parseNote(n, a, "do");
+		parseNote(n, a, "do#");
+		parseNote(n, a, "dob");
+		
+		parseNote(n, a, "re");
+		parseNote(n, a, "re#");
+		parseNote(n, a, "reb");
+		
+		n = new LinkedHashSet<>(Arrays.asList("A","B","C","D","E","F","G"));
+		a = new LinkedHashSet<>(Arrays.asList("#","b"));
+		
+		parseNote(n, a, "G");
+		parseNote(n, a, "G#");
+		parseNote(n, a, "Gb");
+	}
 	
 	/**/
 	
@@ -183,9 +208,17 @@ public class MusicBusinessServicesUT extends AbstractUnitTest {
 	}
 	
 	protected String toString(String name,String alteration){
-		return name+(StringUtils.isEmpty(alteration)?"":Note.NAME_ALTERATION_SEPARATOR+alteration);
+		return name+(StringUtils.isEmpty(alteration)?"":NoteFormatOptions.NAME_ALTERATION_SEPARATOR+alteration);
 	}
 	protected String toString(String name){
 		return toString(name);
 	}
+
+	private void parseNote(Set<String> names,Set<String> alterations,String note){
+		Pattern pattern = Pattern.compile("("+StringUtils.join(names,"|")+")("+StringUtils.join(alterations,"|")+")*");
+		Matcher matcher = pattern.matcher(note);
+		matcher.find();
+		System.out.println("Name : "+ matcher.group(1)+" , Alteration : "+ matcher.group(2));
+	}
+	
 }

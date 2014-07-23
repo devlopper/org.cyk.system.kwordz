@@ -23,6 +23,11 @@ public enum LocaleConfig {
 		this.locale = locale;
 	}
 	
-	
+	public static LocaleConfig valueOfLocale(Locale locale){
+		for(LocaleConfig localeConfig : values())
+			if(localeConfig.locale.equals(locale))
+				return localeConfig;
+		return null;
+	}
 	
 }

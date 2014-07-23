@@ -1,12 +1,6 @@
-package com.kwordz.text.parser;
+package org.cyk.system.kwordz.business.impl.lyrics.parser;
 
-import java.text.ParseException;
-
-import org.apache.commons.lang.StringUtils;
-
-import com.kwordz.model.lyrics.Fragment;
-import com.kwordz.model.lyrics.Line;
-
+/*
 public class LineParser extends AbstractParser<Line>{
 	
 	private static final long serialVersionUID = 1L;
@@ -28,7 +22,7 @@ public class LineParser extends AbstractParser<Line>{
 		while(!lyricsLine.isEmpty()){
 			chord = null;
 			text = null;
-			/*get the chord*/
+			get the chord
 			if(lyricsLine.startsWith(CHORD_START)){
 				chordEndIndex = lyricsLine.indexOf(CHORD_END);
 				if(chordEndIndex<0)
@@ -36,7 +30,7 @@ public class LineParser extends AbstractParser<Line>{
 				chord = lyricsLine.substring(1,chordEndIndex);
 				lyricsLine = lyricsLine.substring(chordEndIndex+1);
 			}
-			/*get the text*/
+			get the text
 			chordStartIndex = lyricsLine.indexOf(CHORD_START);
 			if(chordStartIndex<0){
 				text = lyricsLine;
@@ -54,3 +48,4 @@ public class LineParser extends AbstractParser<Line>{
 	}
 	
 }
+*/

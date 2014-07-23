@@ -52,12 +52,14 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
 	protected void initialisation() {
 		INSTANCE = this;
 		super.initialisation();
+		//buildPatterns();
 	}
 	
     @Override
     public void createInitialData() {
         createChordStructures(chordStructureBusiness);
         createScaleStructures(scaleStructureBusiness);
+        buildPatterns();
     }
     
     public void createChordStructures(ChordStructureBusiness structureBusiness){
@@ -68,19 +70,19 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
     	createChordStructure(structureBusiness,"6sus4",5,2,2);
     	createChordStructure(structureBusiness,"7sus4", 5,2,3);
     	createChordStructure(structureBusiness,"9sus4", 5,2,3,4);
-    	createChordStructure(structureBusiness,"majDom7", 4,3);
-    	createChordStructure(structureBusiness,"majDom9", 4,3,3,4);
-    	createChordStructure(structureBusiness,"majDom11", 4,3,3,4,3);
-    	createChordStructure(structureBusiness,"majDom13", 4,3,3,4,3,4);
+    	createChordStructure(structureBusiness,"majDom7","7", 4,3);
+    	createChordStructure(structureBusiness,"majDom9","9", 4,3,3,4);
+    	createChordStructure(structureBusiness,"majDom11","11", 4,3,3,4,3);
+    	createChordStructure(structureBusiness,"majDom13","13", 4,3,3,4,3,4);
     	createChordStructure(structureBusiness,"maj7", 4,3,4);
     	createChordStructure(structureBusiness,"maj9", 4,3,4,3);
     	createChordStructure(structureBusiness,"maj11", 4,3,4,3,3);
     	createChordStructure(structureBusiness,"maj13", 4,3,4,3,3,4);
-    	createChordStructure(structureBusiness,"min", 3,4);
-    	createChordStructure(structureBusiness,"min6", 3,4,2);
-    	createChordStructure(structureBusiness,"min9", 3,4,3,4);
-    	createChordStructure(structureBusiness,"min11", 3,4,3,4,3);
-    	createChordStructure(structureBusiness,"min13", 3,4,3,4,3,4);
+    	createChordStructure(structureBusiness,"min","m", 3,4);
+    	createChordStructure(structureBusiness,"min6","m6", 3,4,2);
+    	createChordStructure(structureBusiness,"min9","m9", 3,4,3,4);
+    	createChordStructure(structureBusiness,"min11","m11", 3,4,3,4,3);
+    	createChordStructure(structureBusiness,"min13","m13", 3,4,3,4,3,4);
     	createChordStructure(structureBusiness,"dim", 3,3);
     	createChordStructure(structureBusiness,"dim7", 3,3,3);
     }
@@ -100,15 +102,27 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
     	names = new LinkedHashSet<>();
     	alterations = new LinkedHashSet<>();
     	for(LocaleConfig localeConfig : LocaleConfig.values()){
+    		names.clear();
+    		alterations.clear();
     		for(NoteName name : NoteName.values())
         		names.add(languageBusiness.findText(localeConfig.getLocale(),name));
     		for(NoteAlteration alteration : NoteAlteration.values())
-        		alterations.add(languageBusiness.findText(localeConfig.getLocale(),alteration));
+    			addString(alterations,languageBusiness.findText(localeConfig.getLocale(),alteration));
     		localeConfig.setNotePattern(patternNote(names, alterations));
     		for(ChordStructure structure : chordStructureBusiness.find().all())
-    			symbols.addAll(structure.getSymbols());
+    			for(String symbol : structure.getSymbols())
+    				addString(symbols,symbol);
     		localeConfig.setChordPattern(patternChord(names, alterations, symbols));
+    		//debug(localeConfig);
     	}
+    }
+    
+    private void addString(Set<String> set,String string){
+    	if(string==null)
+    		return;
+    	if(string.isEmpty())
+    		return;//"\\s";
+    	set.add(string);
     }
     
     private Pattern patternNote(Set<String> names,Set<String> alterations){
@@ -116,7 +130,9 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
     }
     
     private Pattern patternChord(Set<String> names,Set<String> alterations,Set<String> symbols){
-    	return Pattern.compile("("+StringUtils.join(names,"|")+")("+StringUtils.join(alterations,"|")+")*\\s*("+StringUtils.join(symbols,"|")+"){0,1}");
+    	return Pattern.compile("("+StringUtils.join(names,"|")+")("+StringUtils.join(alterations,"|")+")*\\s*("+StringUtils.join(symbols,"|")+"){0,1}"
+    			//+ "\\s*[\\]\\s*"+StringUtils.join(names,"|")
+    			);
     }
     
     /**/

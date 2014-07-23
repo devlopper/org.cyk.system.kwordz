@@ -146,7 +146,7 @@ public class MusicBusinessServicesUT extends AbstractUnitTest {
 		assertDegree(12,SHARP, "1");
 	}
 
-	@Test
+	//@Test
 	public void noteParsing(){
 		Set<String> n = new LinkedHashSet<>(Arrays.asList("do","re"));
 		Set<String> a = new LinkedHashSet<>(Arrays.asList("#","b"));
@@ -165,6 +165,18 @@ public class MusicBusinessServicesUT extends AbstractUnitTest {
 		parseNote(n, a, "G#");
 		parseNote(n, a, "Gb");
 	}
+	
+	@Test
+	public void chordParsing(){
+		Pattern p = Pattern.compile("(A|B|C|D|E|F|G)(#|b)*\\s*(maj|sus2|sus4|6|6sus4|7sus4|9sus4|majDom7|majDom9|majDom11|majDom13|maj7|maj9|maj11|maj13|min|min6|min9|min11|min13|dim|dim7){0,1}");
+		Matcher m = p.matcher("Cma");
+		m.find();
+		System.out.println(m.group(1));
+		System.out.println(m.group(2));
+		System.out.println(m.group(3));
+	}
+	
+	
 	
 	/**/
 	
@@ -220,5 +232,7 @@ public class MusicBusinessServicesUT extends AbstractUnitTest {
 		matcher.find();
 		System.out.println("Name : "+ matcher.group(1)+" , Alteration : "+ matcher.group(2));
 	}
+	
+	
 	
 }

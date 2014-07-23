@@ -1,9 +1,6 @@
-package com.kwordz.text.formatter;
+package org.cyk.system.kwordz.business.impl.lyrics.formatter;
 
-import java.io.Serializable;
-
-import com.kwordz.model.KwordZModelLayer;
-
+/*
 public abstract class AbstractFormatterLayout<T> extends AbstractFormatter<T>  implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -71,3 +68,4 @@ public abstract class AbstractFormatterLayout<T> extends AbstractFormatter<T>  i
 		return layout;
 	}
 }
+*/

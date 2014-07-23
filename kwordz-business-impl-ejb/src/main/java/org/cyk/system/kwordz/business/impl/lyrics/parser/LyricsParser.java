@@ -1,18 +1,6 @@
-package com.kwordz.text.parser;
+package org.cyk.system.kwordz.business.impl.lyrics.parser;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.StringReader;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.logging.Level;
-
-import com.kwordz.model.chord.Chord;
-import com.kwordz.model.lyrics.Lyrics;
-import com.kwordz.text.formatter.ChordFormatter;
-
+/*
 public class LyricsParser extends AbstractParser<Lyrics> implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -91,7 +79,7 @@ public class LyricsParser extends AbstractParser<Lyrics> implements Serializable
 			while(!chordLine.isEmpty()){
 				builtChord = "";
 				if(Character.isLetter(chordLine.charAt(0))){
-					/*read chord*/
+					read chord
 					englishChord = "";
 					i=0;
 					while(i<chordLine.length() && chordLine.charAt(i)!=' ')
@@ -99,7 +87,7 @@ public class LyricsParser extends AbstractParser<Lyrics> implements Serializable
 				}else if(!CHORD_SEPARATORS.contains(chordLine.charAt(0)))
 					return null;
 				if(!englishChord.isEmpty()){
-					/*is it a valid chord*/
+					is it a valid chord
 					try {
 						Chord c = chordParser.parse(englishChord, Locale.ENGLISH);
 						builtChord = chordFormatter.contract(c);
@@ -122,7 +110,7 @@ public class LyricsParser extends AbstractParser<Lyrics> implements Serializable
 			while(!chordLine.isEmpty()){
 				builtChord = "";
 				if(Character.isLetter(chordLine.charAt(0))){
-					/*read chord*/
+					read chord
 					englishChord = "";
 					lyric = null;
 					i=0;
@@ -131,7 +119,7 @@ public class LyricsParser extends AbstractParser<Lyrics> implements Serializable
 				}else if(!CHORD_SEPARATORS.contains(chordLine.charAt(0)))
 					return null;
 				if(!englishChord.isEmpty()){
-					/*is it a valid chord*/
+					is it a valid chord
 					try {
 						Chord c = chordParser.parse(englishChord, Locale.ENGLISH);
 						builtChord = chordFormatter.contract(c);
@@ -147,7 +135,7 @@ public class LyricsParser extends AbstractParser<Lyrics> implements Serializable
 					continue;
 				}
 				
-				/*read lyric*/
+				read lyric
 				while(i<chordLine.length() && CHORD_SEPARATORS.contains(chordLine.charAt(i)))
 					i++;
 				chordLine = chordLine.substring(i);
@@ -221,3 +209,4 @@ public class LyricsParser extends AbstractParser<Lyrics> implements Serializable
 	}
 	
 }
+*/

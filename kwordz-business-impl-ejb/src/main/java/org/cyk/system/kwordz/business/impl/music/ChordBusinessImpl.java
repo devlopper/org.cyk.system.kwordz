@@ -2,11 +2,14 @@ package org.cyk.system.kwordz.business.impl.music;
 
 import java.io.Serializable;
 import java.util.Locale;
+import java.util.regex.Matcher;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.kwordz.business.api.music.ChordBusiness;
 import org.cyk.system.kwordz.business.api.music.ChordStructureBusiness;
+import org.cyk.system.kwordz.business.impl.LocaleConfig;
 import org.cyk.system.kwordz.model.music.Chord;
 import org.cyk.system.kwordz.model.music.ChordFormatOptions;
 import org.cyk.system.kwordz.model.music.ChordStructure;
@@ -17,7 +20,7 @@ public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordS
 
 	private static final long serialVersionUID = -3799482462496328200L;
 	
-	private static final String CHORD_BASS_NOTE_SEPARATOR = "/";
+	//private static final String CHORD_BASS_NOTE_SEPARATOR = "/";
 	
 	@Inject
 	public ChordBusinessImpl(ChordDao dao,ChordStructureBusiness chordStructureBusiness) { 
@@ -57,27 +60,29 @@ public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordS
 	@Override
 	public Chord parse(Locale locale, String text) {
 		/*Letter[#b]ChordType - left hand = bass note = single note only*/
-		String[] hands=  text.split(CHORD_BASS_NOTE_SEPARATOR);
-		exceptionUtils().exception(hands.length>2,"kwordz.exception.parsing.numberofhands",new Object[]{text});
+		LocaleConfig localeConfig = LocaleConfig.valueOfLocale(locale);
+		exceptionUtils().exception(localeConfig==null,"kwordz.exception.parsing.chord.localenotsupported",new Object[]{locale});
+		text = clean(text);
+		exceptionUtils().exception(StringUtils.isEmpty(text),"kwordz.exception.parsing.chord.notfound");
+		Matcher matcher = localeConfig.getChordPattern().matcher(text);
+		exceptionUtils().exception(!matcher.find(),"kwordz.exception.parsing.chord.notfound",new Object[]{text});
 		Chord chord = new Chord();
-		if(hands.length==2) 
-			chord.setBass(noteBusiness.parse(locale,hands[1].trim()));
-		String rightHand = hands[0].trim();
-		exceptionUtils().exception(rightHand.isEmpty(),"kwordz.exception.parsing.chord.format",new Object[]{text});
-		if(rightHand.length()==1){
-			//chord.setBass(noteBusiness.parse(locale,rightHand));
+		String noteString = matcher.group(1)+(matcher.group(2)==null?"":matcher.group(2));
+		Note base = noteBusiness.parse(locale, noteString);
+		text = StringUtils.substringAfter(text, noteString).trim();
+		if(StringUtils.isNotBlank(text)){
+			exceptionUtils().exception(matcher.group(3)==null,"kwordz.exception.parsing.chord.structure.unknown",new Object[]{text});
+			chord.setStructure(structureBusiness.findBySymbol(matcher.group(3)));
+			exceptionUtils().exception(chord.getStructure()==null,"kwordz.exception.parsing.chord.structure.unknown",new Object[]{text});
+		}else
 			chord.setStructure(structureBusiness.findBySymbol("maj"));
-		}else{ 
-			int rootNoteLength;
-			if(rightHand.charAt(1)=='#' || rightHand.charAt(1)=='b')
-				rootNoteLength = 2;
-			else
-				rootNoteLength = 1;
-			//chord.setRoot(noteBusiness.parse(locale,rightHand.substring(0, rootNoteLength)));
-			chord.setStructure(structureBusiness.findBySymbol(rightHand.substring(rootNoteLength)));
-		}		
-		exceptionUtils().exception(chord.getStructure()==null,"kwordz.exception.parsing.chord.format",new Object[]{text});
+		generateNotes(chord, chord.getStructure(), base);
 		return chord;
 	}
 	
+	private String clean(String text){
+		text = StringUtils.trim(text);
+		text = StringUtils.replace(text, "  ", " ");
+		return text;
+	}
 }

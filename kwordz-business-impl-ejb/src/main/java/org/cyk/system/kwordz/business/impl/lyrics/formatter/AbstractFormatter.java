@@ -1,9 +1,6 @@
-package com.kwordz.text.formatter;
+package org.cyk.system.kwordz.business.impl.lyrics.formatter;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
+/*
 public abstract class AbstractFormatter<T> implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -43,3 +40,4 @@ public abstract class AbstractFormatter<T> implements Serializable{
 	}
 
 }
+*/

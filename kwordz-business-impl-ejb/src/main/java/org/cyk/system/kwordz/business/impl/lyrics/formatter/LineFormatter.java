@@ -1,11 +1,6 @@
-package com.kwordz.text.formatter;
+package org.cyk.system.kwordz.business.impl.lyrics.formatter;
 
-import java.io.Serializable;
-
-import com.kwordz.model.lyrics.Fragment;
-import com.kwordz.model.lyrics.Line;
-import com.kwordz.text.parser.AbstractParser;
-
+/*
 public class LineFormatter extends AbstractFormatterLayout<Line> implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -75,3 +70,4 @@ public class LineFormatter extends AbstractFormatterLayout<Line> implements Seri
 	}
 
 }
+*/

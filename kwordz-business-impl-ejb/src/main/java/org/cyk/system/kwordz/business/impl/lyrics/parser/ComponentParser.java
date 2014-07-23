@@ -1,15 +1,6 @@
-package com.kwordz.text.parser;
+package org.cyk.system.kwordz.business.impl.lyrics.parser;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.StringReader;
-import java.util.logging.Level;
-
-import com.kwordz.model.lyrics.Component;
-import com.kwordz.model.lyrics.Component.Type;
-import com.kwordz.model.lyrics.Line;
-
+/*
 public class ComponentParser extends AbstractParser<Component> implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -49,3 +40,4 @@ public class ComponentParser extends AbstractParser<Component> implements Serial
 	}
 
 }
+*/

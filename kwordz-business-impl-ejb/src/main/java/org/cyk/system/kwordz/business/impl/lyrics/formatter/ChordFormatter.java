@@ -1,11 +1,6 @@
-package com.kwordz.text.formatter;
+package org.cyk.system.kwordz.business.impl.lyrics.formatter;
 
-import java.io.Serializable;
-
-import com.kwordz.model.chord.Chord;
-import com.kwordz.model.note.Note;
-import com.kwordz.text.parser.AbstractParser;
-
+/*
 public class ChordFormatter extends AbstractFormatter<Chord> implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -138,3 +133,4 @@ public class ChordFormatter extends AbstractFormatter<Chord> implements Serializ
 	}
 	
 }
+*/

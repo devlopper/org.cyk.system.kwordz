@@ -9,7 +9,8 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.kwordz.business.api.music.ChordBusiness;
 import org.cyk.system.kwordz.business.api.music.ChordStructureBusiness;
-import org.cyk.system.kwordz.business.impl.LocaleConfig;
+import org.cyk.system.kwordz.business.impl.ParserHelper;
+import org.cyk.system.kwordz.business.impl.PatternMatcherType;
 import org.cyk.system.kwordz.model.music.Chord;
 import org.cyk.system.kwordz.model.music.ChordFormatOptions;
 import org.cyk.system.kwordz.model.music.ChordStructure;
@@ -20,7 +21,7 @@ public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordS
 
 	private static final long serialVersionUID = -3799482462496328200L;
 	
-	//private static final String CHORD_BASS_NOTE_SEPARATOR = "/";
+	@Inject private ParserHelper parserHelper;
 	
 	@Inject
 	public ChordBusinessImpl(ChordDao dao,ChordStructureBusiness chordStructureBusiness) { 
@@ -60,29 +61,39 @@ public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordS
 	@Override
 	public Chord parse(Locale locale, String text) {
 		/*Letter[#b]ChordType - left hand = bass note = single note only*/
+		/*
 		LocaleConfig localeConfig = LocaleConfig.valueOfLocale(locale);
-		exceptionUtils().exception(localeConfig==null,"kwordz.exception.parsing.chord.localenotsupported",new Object[]{locale});
+		exceptionUtils().exception(localeConfig==null,"kwordz.exception.parsing.localenotsupported",new Object[]{locale});
 		text = clean(text);
 		exceptionUtils().exception(StringUtils.isEmpty(text),"kwordz.exception.parsing.chord.notfound");
 		Matcher matcher = localeConfig.getChordPattern().matcher(text);
 		exceptionUtils().exception(!matcher.find(),"kwordz.exception.parsing.chord.notfound",new Object[]{text});
+		*/
+		
+		Matcher matcher = parserHelper.matcher(locale, PatternMatcherType.CHORD, text);
 		Chord chord = new Chord();
-		String noteString = matcher.group(1)+(matcher.group(2)==null?"":matcher.group(2));
+		
+		if(StringUtils.isNotEmpty(matcher.group(1))){
+			text = parserHelper.stringAfter(text, matcher.group(1));
+			chord.setBass(noteBusiness.parse(locale, parserHelper.getNoteString(matcher, 2)));
+		}
+		
+		String noteString = parserHelper.getNoteString(matcher, 4);
 		Note base = noteBusiness.parse(locale, noteString);
-		text = StringUtils.substringAfter(text, noteString).trim();
-		if(StringUtils.isNotBlank(text)){
-			exceptionUtils().exception(matcher.group(3)==null,"kwordz.exception.parsing.chord.structure.unknown",new Object[]{text});
-			chord.setStructure(structureBusiness.findBySymbol(matcher.group(3)));
-			exceptionUtils().exception(chord.getStructure()==null,"kwordz.exception.parsing.chord.structure.unknown",new Object[]{text});
-		}else
-			chord.setStructure(structureBusiness.findBySymbol("maj"));
+		
+		if(chord.getBass()!=null && noteBusiness.equals(base, chord.getBass(), Boolean.FALSE))
+			chord.setBass(null);
+		
+		text = parserHelper.stringAfter(text, noteString);
+		if(StringUtils.isBlank(text)){
+			text = "maj";
+		}else{
+			exceptionUtils().exception(matcher.group(6)==null,"kwordz.exception.parsing.chord.structure.unknown",new Object[]{text});
+			text = matcher.group(6);
+		}
+		chord.setStructure(structureBusiness.findBySymbol(text));
 		generateNotes(chord, chord.getStructure(), base);
 		return chord;
 	}
 	
-	private String clean(String text){
-		text = StringUtils.trim(text);
-		text = StringUtils.replace(text, "  ", " ");
-		return text;
-	}
 }

@@ -19,6 +19,7 @@ import org.cyk.system.kwordz.business.api.music.ChordBusiness;
 import org.cyk.system.kwordz.business.api.music.ChordStructureBusiness;
 import org.cyk.system.kwordz.business.api.music.NoteBusiness;
 import org.cyk.system.kwordz.business.api.music.ScaleStructureBusiness;
+import org.cyk.system.kwordz.business.impl.ParserHelper;
 import org.cyk.system.kwordz.model.music.Chord;
 import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.kwordz.model.music.NoteAlteration;
@@ -36,6 +37,7 @@ public class ParsingIT extends AbstractBusinessIT {
     @Inject private ChordStructureBusiness chordStructureBusiness;
     @Inject private ScaleStructureBusiness scaleStructureBusiness;
     @Inject private ChordBusiness chordBusiness;
+    @Inject private ParserHelper parserHelper;
     
     @Deployment
     public static Archive<?> createDeployment() {
@@ -46,7 +48,7 @@ public class ParsingIT extends AbstractBusinessIT {
     protected void populate() {
     	kwordzBusinessLayer.createChordStructures(chordStructureBusiness);
     	kwordzBusinessLayer.createScaleStructures(scaleStructureBusiness);
-    	kwordzBusinessLayer.buildPatterns();
+    	parserHelper.prepare(chordStructureBusiness);
     }
     
     @Override
@@ -92,12 +94,6 @@ public class ParsingIT extends AbstractBusinessIT {
     	assertEqualsNoteString(new Note(C,FLAT),noteBusiness.parse(Locale.ENGLISH, ""));
     }
     
-    /*
-    @Test(expected=BusinessException.class)
-	public void parsingNoteFormatLength(){
-    	assertEqualsNoteString(new Note(C,FLAT),noteBusiness.parse(Locale.ENGLISH, "Cbk"));
-    }*/
-    
     @Test(expected=BusinessException.class)
 	public void parsingNoteNameUnknown(){
     	assertEqualsNoteString(new Note(C,FLAT),noteBusiness.parse(Locale.ENGLISH, "Z"));
@@ -129,12 +125,40 @@ public class ParsingIT extends AbstractBusinessIT {
     	assertParsingChord("maj", E, NONE, Locale.ENGLISH, "Emaj");
     	assertParsingChord("maj", E, FLAT, Locale.ENGLISH, "Eb");
     	
-    	assertParsingChord("maj", F, NONE, Locale.ENGLISH, "F");
-    	assertParsingChord("maj", F, SHARP, Locale.ENGLISH, "F#");
+    	assertParsingChord("maj", F, NONE, Locale.ENGLISH, "G/F");
+    	assertParsingChord("maj", F, SHARP, Locale.ENGLISH, "Bb/F#m");
     	
-    	assertParsingChord("maj", G, NONE, Locale.ENGLISH, "G");
+    	assertParsingChord("maj", G, NONE, Locale.ENGLISH, "G/G");
+    	assertParsingChord("maj", G, NONE, Locale.ENGLISH, "G/G#");
+    	assertParsingChord("maj", G, NONE, Locale.ENGLISH, "G#/G");
+    	assertParsingChord("maj", G, NONE, Locale.ENGLISH, "G#/G#");
     	assertParsingChord("maj", A, NONE, Locale.ENGLISH, "A");
     	assertParsingChord("maj", B, NONE, Locale.ENGLISH, "B");
+    }
+    
+    @Test(expected=BusinessException.class)
+	public void parsingChordUnsupportedLocale(){
+    	assertParsingChord("maj", B, NONE, Locale.CHINESE, "B");
+    }
+    
+    @Test(expected=BusinessException.class)
+	public void parsingChordNotFound(){
+    	assertParsingChord("maj", B, NONE, Locale.ENGLISH, "");
+    }
+    
+    @Test(expected=BusinessException.class)
+	public void parsingChordNoteNameUnknown(){
+    	assertParsingChord("maj", B, NONE, Locale.ENGLISH, "V");
+    }
+    
+    @Test(expected=BusinessException.class)
+	public void parsingChordNoteAlterationUnknown(){
+    	assertParsingChord("maj", B, NONE, Locale.ENGLISH, "Bx");
+    }
+    
+    @Test(expected=BusinessException.class)
+	public void parsingChordStrucutreUnknown(){
+    	assertParsingChord("maj", B, NONE, Locale.ENGLISH, "Bp");
     }
     
     /**/

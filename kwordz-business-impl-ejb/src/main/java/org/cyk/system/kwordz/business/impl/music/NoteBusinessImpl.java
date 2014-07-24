@@ -13,7 +13,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.kwordz.business.api.music.NoteBusiness;
 import org.cyk.system.kwordz.business.impl.KwordzBusinessLayer;
-import org.cyk.system.kwordz.business.impl.LocaleConfig;
+import org.cyk.system.kwordz.business.impl.ParserHelper;
+import org.cyk.system.kwordz.business.impl.PatternMatcherType;
 import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.kwordz.model.music.NoteAlteration;
 import org.cyk.system.kwordz.model.music.NoteFormatOptions;
@@ -28,11 +29,11 @@ public class NoteBusinessImpl extends AbstractTypedBusinessService<Note, NoteDao
 	private static final long serialVersionUID = -3799482462496328200L;
 	
 	private static final String NAME_ALTERATION_SEPARATOR = " ";
-	//private static final Locale[] PARSING_SUPPORTED_LOCALE = {Locale.ENGLISH,Locale.FRENCH};
 	private static final NoteName[] SENSIBLE_SHARP = {NoteName.E,NoteName.B};
 	private static final NoteName[] SENSIBLE_FLAT = {NoteName.C,NoteName.F};
 	
 	@Inject private LanguageBusiness languageBusiness;
+	@Inject private ParserHelper parserHelper;
 	
 	@Inject
 	public NoteBusinessImpl(NoteDao dao) { 
@@ -181,14 +182,18 @@ public class NoteBusinessImpl extends AbstractTypedBusinessService<Note, NoteDao
 	
 	@Override
 	public Note parse(Locale locale, String text) {
+		/*
 		LocaleConfig localeConfig = LocaleConfig.valueOfLocale(locale);
 		exceptionUtils().exception(localeConfig==null,"kwordz.exception.parsing.localenotsupported",new Object[]{locale});
 		text = clean(text);
 		exceptionUtils().exception(StringUtils.isEmpty(text),"kwordz.exception.parsing.note.notfound");
-		
 		Matcher matcher = localeConfig.getNotePattern().matcher(text);
-
+	
 		exceptionUtils().exception(!matcher.find(),"kwordz.exception.parsing.note.notfound",new Object[]{text});
+		*/
+		
+		Matcher matcher = parserHelper.matcher(locale, PatternMatcherType.NOTE, text);
+		
 		exceptionUtils().exception(matcher.group(1)==null,"kwordz.exception.parsing.note.name.unknown",new Object[]{text});
 		Note note = new Note();
 		note.setName(EnumHelper.getInstance().getValueOf(NoteName.class, locale, matcher.group(1)));
@@ -273,11 +278,12 @@ public class NoteBusinessImpl extends AbstractTypedBusinessService<Note, NoteDao
 			}
 	}
 	
+	/*
 	private String clean(String text){
 		text = StringUtils.trim(text);
 		text = StringUtils.replace(text, "  ", " ");
 		return text;
-	}
+	}*/
 	/*
 	private Boolean formatException(Locale locale, String text){
 		if(Locale.FRENCH.equals(locale))

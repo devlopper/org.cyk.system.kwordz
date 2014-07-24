@@ -1,29 +1,22 @@
 package org.cyk.system.kwordz.business.impl;
 
 import java.io.Serializable;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import lombok.Getter;
 
-import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.kwordz.business.api.music.AbstractStructureBusiness;
 import org.cyk.system.kwordz.business.api.music.ChordStructureBusiness;
 import org.cyk.system.kwordz.business.api.music.ScaleStructureBusiness;
 import org.cyk.system.kwordz.model.music.ChordFormatOptions;
 import org.cyk.system.kwordz.model.music.ChordStructure;
-import org.cyk.system.kwordz.model.music.NoteAlteration;
 import org.cyk.system.kwordz.model.music.NoteFormatOptions;
-import org.cyk.system.kwordz.model.music.NoteName;
 import org.cyk.system.kwordz.model.music.ScaleStructure;
 import org.cyk.system.kwordz.model.music.Structure;
 import org.cyk.system.root.business.api.TypedBusiness;
-import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.impl.AbstractBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.utility.common.annotation.Deployment;
@@ -34,32 +27,28 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
  
 	private static final long serialVersionUID = 1L;
 	private static final String I18N_PREFIX = "kwordz.";
-	private static KwordzBusinessLayer INSTANCE;
 	
-	@Getter private Pattern patternNoteFrench;
-	@Getter private Pattern patternChordFrench;
-	@Getter private Pattern patternNoteEnglish;
-	@Getter private Pattern patternChordEnglish;
+	private static KwordzBusinessLayer INSTANCE;
 	
 	@Getter private final ChordFormatOptions defaultChordFormatOptions = new ChordFormatOptions();
 	@Getter private final NoteFormatOptions defaultNoteFormatOptions = new NoteFormatOptions();
 	
 	@Inject private ChordStructureBusiness chordStructureBusiness;
 	@Inject private ScaleStructureBusiness scaleStructureBusiness;
-	@Inject private LanguageBusiness languageBusiness;
+	@Inject private ParserHelper parserHelper;
 	
 	@Override
 	protected void initialisation() {
 		INSTANCE = this;
 		super.initialisation();
-		//buildPatterns();
+		parserHelper.prepare(chordStructureBusiness);
 	}
 	
     @Override
     public void createInitialData() {
         createChordStructures(chordStructureBusiness);
         createScaleStructures(scaleStructureBusiness);
-        buildPatterns();
+        parserHelper.prepare(chordStructureBusiness);
     }
     
     public void createChordStructures(ChordStructureBusiness structureBusiness){
@@ -97,43 +86,7 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
         //beansMap.put((Class)Event.class, (TypedBusiness)eventBusiness);
     }
     
-    public void buildPatterns(){
-    	Set<String> names,alterations,symbols=new LinkedHashSet<>();
-    	names = new LinkedHashSet<>();
-    	alterations = new LinkedHashSet<>();
-    	for(LocaleConfig localeConfig : LocaleConfig.values()){
-    		names.clear();
-    		alterations.clear();
-    		for(NoteName name : NoteName.values())
-        		names.add(languageBusiness.findText(localeConfig.getLocale(),name));
-    		for(NoteAlteration alteration : NoteAlteration.values())
-    			addString(alterations,languageBusiness.findText(localeConfig.getLocale(),alteration));
-    		localeConfig.setNotePattern(patternNote(names, alterations));
-    		for(ChordStructure structure : chordStructureBusiness.find().all())
-    			for(String symbol : structure.getSymbols())
-    				addString(symbols,symbol);
-    		localeConfig.setChordPattern(patternChord(names, alterations, symbols));
-    		//debug(localeConfig);
-    	}
-    }
-    
-    private void addString(Set<String> set,String string){
-    	if(string==null)
-    		return;
-    	if(string.isEmpty())
-    		return;//"\\s";
-    	set.add(string);
-    }
-    
-    private Pattern patternNote(Set<String> names,Set<String> alterations){
-    	return Pattern.compile("("+StringUtils.join(names,"|")+")("+StringUtils.join(alterations,"|")+")*");
-    }
-    
-    private Pattern patternChord(Set<String> names,Set<String> alterations,Set<String> symbols){
-    	return Pattern.compile("("+StringUtils.join(names,"|")+")("+StringUtils.join(alterations,"|")+")*\\s*("+StringUtils.join(symbols,"|")+"){0,1}"
-    			//+ "\\s*[\\]\\s*"+StringUtils.join(names,"|")
-    			);
-    }
+
     
     /**/
     

@@ -168,12 +168,12 @@ public class MusicBusinessServicesUT extends AbstractUnitTest {
 	
 	@Test
 	public void chordParsing(){
-		Pattern p = Pattern.compile("(A|B|C|D|E|F|G)(#|b)*\\s*(maj|sus2|sus4|6|6sus4|7sus4|9sus4|majDom7|majDom9|majDom11|majDom13|maj7|maj9|maj11|maj13|min|min6|min9|min11|min13|dim|dim7){0,1}");
-		Matcher m = p.matcher("Cma");
+		Pattern p = Pattern.compile("((A|B|C|D|E|F|G)(#|b)*]?\\s*[/]?\\s*)?(A|B|C|D|E|F|G)(#|b)*\\s*(maj|sus2)?");
+		Matcher m = p.matcher("D# / Cbsus2");
 		m.find();
-		System.out.println(m.group(1));
-		System.out.println(m.group(2));
-		System.out.println(m.group(3));
+		System.out.println(m.groupCount()+" groups");
+		for(int i=1;i<=m.groupCount();i++)
+			System.out.println("Groupe "+i+" : "+m.group(i));
 	}
 	
 	

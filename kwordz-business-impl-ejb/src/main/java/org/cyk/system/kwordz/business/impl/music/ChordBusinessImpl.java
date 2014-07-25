@@ -17,7 +17,7 @@ import org.cyk.system.kwordz.model.music.ChordStructure;
 import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.kwordz.persistence.api.music.ChordDao;
 
-public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordStructure,Chord, ChordDao,ChordStructureBusiness> implements ChordBusiness,Serializable {
+public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordStructure,Chord, ChordDao,ChordStructureBusiness,ChordFormatOptions> implements ChordBusiness,Serializable {
 
 	private static final long serialVersionUID = -3799482462496328200L;
 	
@@ -61,36 +61,26 @@ public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordS
 	@Override
 	public Chord parse(Locale locale, String text) {
 		/*Letter[#b]ChordType - left hand = bass note = single note only*/
-		/*
-		LocaleConfig localeConfig = LocaleConfig.valueOfLocale(locale);
-		exceptionUtils().exception(localeConfig==null,"kwordz.exception.parsing.localenotsupported",new Object[]{locale});
-		text = clean(text);
-		exceptionUtils().exception(StringUtils.isEmpty(text),"kwordz.exception.parsing.chord.notfound");
-		Matcher matcher = localeConfig.getChordPattern().matcher(text);
-		exceptionUtils().exception(!matcher.find(),"kwordz.exception.parsing.chord.notfound",new Object[]{text});
-		*/
-		
+		System.out.println("ChordBusinessImpl.parse() : "+text);
 		Matcher matcher = parserHelper.matcher(locale, PatternMatcherType.CHORD, text);
+		debug(matcher);
 		Chord chord = new Chord();
-		
 		if(StringUtils.isNotEmpty(matcher.group(1))){
 			text = parserHelper.stringAfter(text, matcher.group(1));
 			chord.setBass(noteBusiness.parse(locale, parserHelper.getNoteString(matcher, 2)));
 		}
-		
 		String noteString = parserHelper.getNoteString(matcher, 4);
 		Note base = noteBusiness.parse(locale, noteString);
-		
 		if(chord.getBass()!=null && noteBusiness.equals(base, chord.getBass(), Boolean.FALSE))
 			chord.setBass(null);
-		
 		text = parserHelper.stringAfter(text, noteString);
 		if(StringUtils.isBlank(text)){
 			text = "maj";
 		}else{
-			exceptionUtils().exception(matcher.group(6)==null,"kwordz.exception.parsing.chord.structure.unknown",new Object[]{text});
+			exceptionUtils().exception(StringUtils.isEmpty(matcher.group(6)),"kwordz.exception.parsing.chord.structure.unknown",new Object[]{text});
 			text = matcher.group(6);
 		}
+		System.out.println(text);
 		chord.setStructure(structureBusiness.findBySymbol(text));
 		generateNotes(chord, chord.getStructure(), base);
 		return chord;

@@ -23,7 +23,6 @@ import org.cyk.system.kwordz.business.api.music.NoteBusiness;
 import org.cyk.system.kwordz.business.impl.music.NoteBusinessImpl;
 import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.kwordz.model.music.NoteAlteration;
-import org.cyk.system.kwordz.model.music.NoteFormatOptions;
 import org.cyk.system.kwordz.model.music.NoteName;
 import org.cyk.system.root.model.EnumHelper;
 import org.cyk.utility.common.test.AbstractUnitTest;
@@ -168,12 +167,15 @@ public class MusicBusinessServicesUT extends AbstractUnitTest {
 	
 	@Test
 	public void chordParsing(){
-		Pattern p = Pattern.compile("((A|B|C|D|E|F|G)(#|b)*]?\\s*[/]?\\s*)?(A|B|C|D|E|F|G)(#|b)*\\s*(maj|sus2)?");
-		Matcher m = p.matcher("D# / Cbsus2");
+		Pattern p = Pattern.compile("((((?i)A|B|C|D|E|F|G)(#|b)*)?\\s*[/]?\\s*)((?i)A|B|C|D|E|F|G)(#|b)*\\s*(maj|dim|dim7)?");
+		Matcher m = p.matcher("C # dim");
 		m.find();
+		//debug(m);
+		
 		System.out.println(m.groupCount()+" groups");
 		for(int i=1;i<=m.groupCount();i++)
 			System.out.println("Groupe "+i+" : "+m.group(i));
+			
 	}
 	
 	
@@ -220,7 +222,7 @@ public class MusicBusinessServicesUT extends AbstractUnitTest {
 	}
 	
 	protected String toString(String name,String alteration){
-		return name+(StringUtils.isEmpty(alteration)?"":NoteFormatOptions.NAME_ALTERATION_SEPARATOR+alteration);
+		return name+(StringUtils.isEmpty(alteration)?"":" "+alteration);
 	}
 	protected String toString(String name){
 		return toString(name);

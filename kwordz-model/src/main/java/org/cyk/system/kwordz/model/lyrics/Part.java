@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.cyk.system.root.model.AbstractIdentifiable;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor
-public class Component implements Serializable{
+public class Part extends AbstractIdentifiable implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -21,15 +23,7 @@ public class Component implements Serializable{
 	private List<Line> lines = new LinkedList<Line>();
 	private String repeatTimes;
 
-	public Component(String text) {
-		super();
-		this.lines.add(new Line(text));
-	}
-	public Component(Type type, List<Line> lines) {
-		super();
-		this.type = type;
-		this.lines = lines;
-	}
+	//TODO All following must be moved to business 
 
 	@Override
 	public String toString() {

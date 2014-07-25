@@ -37,7 +37,7 @@ public class Note extends AbstractIdentifiable implements Serializable{
 		if(name==null)
 			return "";
 		if(alteration!=null && !alteration.toString().isEmpty())
-			return name+NoteFormatOptions.NAME_ALTERATION_SEPARATOR+alteration;
+			return name+" "+alteration;
 		return name.toString();
 	}
 }

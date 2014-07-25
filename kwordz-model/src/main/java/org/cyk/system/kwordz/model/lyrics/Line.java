@@ -4,27 +4,21 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.cyk.system.root.model.AbstractIdentifiable;
+
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
-public class Line implements Serializable{
+@Getter @Setter @NoArgsConstructor
+public class Line extends AbstractIdentifiable implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
 	private List<Fragment> fragments = new LinkedList<Fragment>();
-	private boolean merged = true;
+	private Boolean merged = Boolean.TRUE;//TODO what is the use of this property ?
 	
-	public Line() {}
-	
-	public Line(List<Fragment> fragments, boolean merged) {
-		super();
-		this.fragments = fragments;
-		this.merged = merged;
-	}
-	public Line(String text) {
-		fragments.add(new Fragment(text));
-	}
+	//TODO All following must be moved to business 
 	
 	@Override
 	public String toString() {

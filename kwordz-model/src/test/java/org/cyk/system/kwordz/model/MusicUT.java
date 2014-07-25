@@ -6,7 +6,6 @@ import java.util.Locale;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.kwordz.model.music.NoteAlteration;
-import org.cyk.system.kwordz.model.music.NoteFormatOptions;
 import org.cyk.system.kwordz.model.music.NoteName;
 import org.cyk.system.root.model.EnumHelper;
 import org.cyk.utility.common.test.AbstractUnitTest;
@@ -98,7 +97,7 @@ public class MusicUT extends AbstractUnitTest implements Serializable {
 	}
 	
 	protected String toString(String name,String alteration){
-		return name+(StringUtils.isEmpty(alteration)?"":NoteFormatOptions.NAME_ALTERATION_SEPARATOR+alteration);
+		return name+(StringUtils.isEmpty(alteration)?"":" "+alteration);
 	}
 	protected String toString(String name){
 		return toString(name);

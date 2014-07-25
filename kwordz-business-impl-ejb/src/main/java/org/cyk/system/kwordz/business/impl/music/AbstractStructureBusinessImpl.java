@@ -19,7 +19,6 @@ public abstract class AbstractStructureBusinessImpl<STRUCTURE extends Structure,
 	
 	@Inject private NoteBusiness noteBusiness;
 	 
-	@Inject 
 	public AbstractStructureBusinessImpl(DAO dao) {  
 		super(dao);   
 	}  

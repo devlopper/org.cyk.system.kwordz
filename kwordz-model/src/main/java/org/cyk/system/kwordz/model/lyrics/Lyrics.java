@@ -4,18 +4,20 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.cyk.system.root.model.AbstractIdentifiable;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor
-public class Lyrics implements Serializable{
+public class Lyrics extends AbstractIdentifiable implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	private List<Component> components = new LinkedList<Component>();
+	private List<Part> parts = new LinkedList<Part>();
 	
-	private transient List<Fragment> fragments;
+	//TODO All following must be moved to business 
 	
 	/**/
 	/*
@@ -26,17 +28,8 @@ public class Lyrics implements Serializable{
 	*/
 	/**/
 	
-	public Lyrics(String text) {
-		super();
-		this.components.add(new Component(text));
-	}
-	public Lyrics(List<Component> components) {
-		super();
-		this.components = components;
-	}
 	
-	
-	public List<Fragment> getFragments(){
+	//public List<Fragment> getFragments(){
 		/*
 		if(fragments==null){
 			fragments = new LinkedList<Fragment>();
@@ -45,14 +38,14 @@ public class Lyrics implements Serializable{
 					fragments.addAll(line.getFragments());
 		}
 		*/
-		return fragments;
-	}
+		//return null;//fragments;
+	//}
 	
 	@Override
 	public String toString() {
 		StringBuilder s = new StringBuilder();
-		for(Component component : components)
-			s.append(component);
+		for(Part part : parts)
+			s.append(part);
 		return s.toString().trim();
 	}
 	

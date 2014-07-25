@@ -5,15 +5,18 @@ import java.io.Serializable;
 import javax.inject.Inject;
 
 import org.cyk.system.kwordz.business.api.music.AbstractNoteCollectionBusiness;
-import org.cyk.system.kwordz.business.api.music.NoteBusiness;
 import org.cyk.system.kwordz.business.api.music.AbstractStructureBusiness;
+import org.cyk.system.kwordz.business.api.music.NoteBusiness;
+import org.cyk.system.kwordz.business.impl.AbstractMusicBusinessImpl;
+import org.cyk.system.kwordz.model.AbstractFormatOptions;
 import org.cyk.system.kwordz.model.music.AbstractNoteCollection;
 import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.kwordz.model.music.Structure;
 import org.cyk.system.kwordz.persistence.api.music.AbstractNoteCollectionDao;
-import org.cyk.system.root.business.impl.AbstractTypedBusinessService;
 
-public abstract class AbstractNoteCollectionBusinessImpl<STRUCTURE extends Structure ,COLLECTION extends AbstractNoteCollection<STRUCTURE>,DAO extends AbstractNoteCollectionDao<STRUCTURE,COLLECTION>,STRUCTURE_BUSINESS extends AbstractStructureBusiness<STRUCTURE>> extends AbstractTypedBusinessService<COLLECTION, DAO> implements AbstractNoteCollectionBusiness<STRUCTURE,COLLECTION>,Serializable {
+public abstract class AbstractNoteCollectionBusinessImpl<STRUCTURE extends Structure ,COLLECTION extends AbstractNoteCollection<STRUCTURE>,DAO extends AbstractNoteCollectionDao<STRUCTURE,COLLECTION>,
+	STRUCTURE_BUSINESS extends AbstractStructureBusiness<STRUCTURE>,OPTIONS extends AbstractFormatOptions> 
+	extends AbstractMusicBusinessImpl<COLLECTION, DAO,OPTIONS> implements AbstractNoteCollectionBusiness<STRUCTURE,COLLECTION,OPTIONS>,Serializable {
 
 	private static final long serialVersionUID = -3799482462496328200L;
 	

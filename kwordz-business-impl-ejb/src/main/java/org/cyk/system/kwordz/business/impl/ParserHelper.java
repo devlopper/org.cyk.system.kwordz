@@ -27,6 +27,7 @@ public class ParserHelper extends AbstractBean implements Serializable {
 	private static final long serialVersionUID = 6518187499895981817L;
 
 	private static final String[] LEFT_HAND_AND_RIGHT_HAND_SEPERATORS = {"/"};
+	private static final String[] NOTENAME_AND_NOTEALTERATION_SEPERATORS = {" "};
 	
 	private static ParserHelper INSTANCE;
 	
@@ -54,7 +55,7 @@ public class ParserHelper extends AbstractBean implements Serializable {
     			for(String symbol : structure.getSymbols())
     				addString(symbols,symbol);
     		localeConfig.setChordPattern(patternChord(names, alterations, symbols));
-    		//debug(localeConfig);
+    		debug(localeConfig);
     	}
     }
     
@@ -67,7 +68,9 @@ public class ParserHelper extends AbstractBean implements Serializable {
     }
     
     private Pattern patternNote(Set<String> names,Set<String> alterations){
-    	return Pattern.compile(notePatternAsString(names, alterations));
+    	return Pattern.compile(notePatternAsString(names, alterations)
+    			//,Pattern.CASE_INSENSITIVE
+    			);
     }
     
     private Pattern patternChord(Set<String> names,Set<String> alterations,Set<String> symbols){
@@ -76,11 +79,13 @@ public class ParserHelper extends AbstractBean implements Serializable {
     			"("+notePatternAsString(names, alterations)+")?\\s*["+StringUtils.join(LEFT_HAND_AND_RIGHT_HAND_SEPERATORS,"|")+"]?\\s*"
     			+ notePatternAsString(names, alterations)
     			+ "\\s*("+StringUtils.join(symbols,"|")+")?"
+    			//,Pattern.CASE_INSENSITIVE
     			);
     }
     
     private String notePatternAsString(Set<String> names,Set<String> alterations){
-    	return "("+StringUtils.join(names,"|")+")("+StringUtils.join(alterations,"|")+")*";
+    	return "((?i)"+StringUtils.join(names,"|")+")"
+    			+ "("+StringUtils.join(alterations,"|")+")*";
     }
     
     public Matcher matcher(Locale locale,PatternMatcherType type,String text){
@@ -99,7 +104,7 @@ public class ParserHelper extends AbstractBean implements Serializable {
 		}
 		if(matcher==null)
 			return null;
-		ExceptionUtils.getInstance().exception(!matcher.find(),"kwordz.exception.parsing."+type+".notfound",new Object[]{text});
+		ExceptionUtils.getInstance().exception(!matcher.find(),"kwordz.exception.parsing."+type.name().toLowerCase()+".notfound",new Object[]{text});
 		return matcher;
     }
     
@@ -109,6 +114,14 @@ public class ParserHelper extends AbstractBean implements Serializable {
     
     public String getNoteString(Matcher matcher,Integer nameGroupIndex){
     	return matcher.group(nameGroupIndex)+StringUtils.defaultString(matcher.group(nameGroupIndex+1));
+    }
+    
+    public String getLeftAndRightHandSeperator(){
+    	return LEFT_HAND_AND_RIGHT_HAND_SEPERATORS[0];
+    }
+    
+    public String getNoteNameAndNoteAlterationSeperator(){
+    	return NOTENAME_AND_NOTEALTERATION_SEPERATORS[0];
     }
     
     public static ParserHelper getInstance() {

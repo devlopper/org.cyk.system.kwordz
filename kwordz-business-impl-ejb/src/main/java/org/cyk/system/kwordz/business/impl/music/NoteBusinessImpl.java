@@ -28,7 +28,6 @@ public class NoteBusinessImpl extends AbstractTypedBusinessService<Note, NoteDao
 
 	private static final long serialVersionUID = -3799482462496328200L;
 	
-	private static final String NAME_ALTERATION_SEPARATOR = " ";
 	private static final NoteName[] SENSIBLE_SHARP = {NoteName.E,NoteName.B};
 	private static final NoteName[] SENSIBLE_FLAT = {NoteName.C,NoteName.F};
 	
@@ -170,8 +169,8 @@ public class NoteBusinessImpl extends AbstractTypedBusinessService<Note, NoteDao
 			options = KwordzBusinessLayer.getInstance().getDefaultNoteFormatOptions();
 		if(note.getAlteration()!=null && !NoteAlteration.NONE.equals(note.getAlteration()))
 			return languageBusiness.findText(locale, note.getName())+
-					(Boolean.TRUE.equals(options.getSeperateNameAlterartion())?NAME_ALTERATION_SEPARATOR:"")+
-					languageBusiness.findText(locale, note.getAlteration());
+					StringUtils.defaultString(options.getSeperatorNameAndAlteration())+
+					languageBusiness.findText(locale, note.getAlteration());				
 		return languageBusiness.findText(locale, note.getName());
 	}
 	
@@ -182,21 +181,10 @@ public class NoteBusinessImpl extends AbstractTypedBusinessService<Note, NoteDao
 	
 	@Override
 	public Note parse(Locale locale, String text) {
-		/*
-		LocaleConfig localeConfig = LocaleConfig.valueOfLocale(locale);
-		exceptionUtils().exception(localeConfig==null,"kwordz.exception.parsing.localenotsupported",new Object[]{locale});
-		text = clean(text);
-		exceptionUtils().exception(StringUtils.isEmpty(text),"kwordz.exception.parsing.note.notfound");
-		Matcher matcher = localeConfig.getNotePattern().matcher(text);
-	
-		exceptionUtils().exception(!matcher.find(),"kwordz.exception.parsing.note.notfound",new Object[]{text});
-		*/
-		
 		Matcher matcher = parserHelper.matcher(locale, PatternMatcherType.NOTE, text);
-		
 		exceptionUtils().exception(matcher.group(1)==null,"kwordz.exception.parsing.note.name.unknown",new Object[]{text});
 		Note note = new Note();
-		note.setName(EnumHelper.getInstance().getValueOf(NoteName.class, locale, matcher.group(1)));
+		note.setName(EnumHelper.getInstance().getValueOf(NoteName.class, locale, matcher.group(1),Boolean.FALSE));
 		exceptionUtils().exception(note.getName()==null,"kwordz.exception.parsing.note.name.unknown",new Object[]{text});
 		text = StringUtils.substringAfter(text, matcher.group(1));
 		if(StringUtils.isNotBlank(text)){
@@ -206,24 +194,6 @@ public class NoteBusinessImpl extends AbstractTypedBusinessService<Note, NoteDao
 		}else
 			note.setAlteration(NoteAlteration.NONE);
 		return note;
-		
-		/*exceptionUtils().exception(!ArrayUtils.contains(PARSING_SUPPORTED_LOCALE, locale),"kwordz.exception.parsing.localenotsupported",new Object[]{locale});
-		text = clean(text);
-		exceptionUtils().exception(StringUtils.isEmpty(text),"kwordz.exception.parsing.notenotfound");
-		Note note = null;
-		exceptionUtils().exception( Boolean.TRUE.equals(formatException(locale,text)),"kwordz.exception.parsing.noteformat",new Object[]{text});
-		note = new Note();
-		String noteNameSubString = noteNameSubString(locale, text);
-		String noteAlterationSubString = StringUtils.substringAfter(text, noteNameSubString);
-		note.setName(EnumHelper.getInstance().getValueOf(NoteName.class, locale, noteNameSubString));
-		exceptionUtils().exception(note.getName()==null,"kwordz.exception.parsing.notename.unknown",new Object[]{noteNameSubString});
-		if(StringUtils.isNotEmpty(noteAlterationSubString)){
-			note.setAlteration(EnumHelper.getInstance().getValueOf(NoteAlteration.class, locale, noteAlterationSubString));
-			exceptionUtils().exception(note.getAlteration()==null,"kwordz.exception.parsing.notealteration.unknown",new Object[]{noteAlterationSubString});
-		}
-		exceptionUtils().exception(note==null,"kwordz.exception.parsing.notenotfound");
-		return note;
-		*/
 	}
 	
 	/**/
@@ -277,32 +247,5 @@ public class NoteBusinessImpl extends AbstractTypedBusinessService<Note, NoteDao
 				break;
 			}
 	}
-	
-	/*
-	private String clean(String text){
-		text = StringUtils.trim(text);
-		text = StringUtils.replace(text, "  ", " ");
-		return text;
-	}*/
-	/*
-	private Boolean formatException(Locale locale, String text){
-		if(Locale.FRENCH.equals(locale))
-			return (isFrenchNoteSol(text) && text.length()>4) || text.length()>3;
-		else if(Locale.ENGLISH.equals(locale))
-			return text.length()>2;
-		return Boolean.TRUE;
-	}
-	
-	private String noteNameSubString(Locale locale, String text){
-		if(Locale.FRENCH.equals(locale))
-			return text.substring(0, 2+(isFrenchNoteSol(text)?1:0));
-		else if(Locale.ENGLISH.equals(locale))
-			return text.substring(0, 1);
-		return null;
-	}
-	
-	private Boolean isFrenchNoteSol(String text){
-		return text.equals("sol");
-	}
-	*/
+
 }

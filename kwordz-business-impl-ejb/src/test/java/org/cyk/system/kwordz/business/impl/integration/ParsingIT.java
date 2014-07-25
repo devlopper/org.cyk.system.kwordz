@@ -76,12 +76,21 @@ public class ParsingIT extends AbstractBusinessIT {
     @Test
 	public void parsingNote(){	
     	assertParsingNote(C, NONE, Locale.ENGLISH, "C");
-    	assertParsingNote(C, SHARP, Locale.ENGLISH, "C#");
+    	assertParsingNote(C, SHARP, Locale.ENGLISH, "c#");
     	assertParsingNote(C, FLAT, Locale.ENGLISH, "Cb");
     	
     	assertParsingNote(C, NONE, Locale.FRENCH, "do");
     	assertParsingNote(C, SHARP, Locale.FRENCH, "do#");
     	assertParsingNote(C, FLAT, Locale.FRENCH, "dob");
+    	
+    	assertParsingNote(G, NONE, Locale.FRENCH, "sol");
+    	assertParsingNote(G, NONE, Locale.FRENCH, "soL");
+    	assertParsingNote(G, NONE, Locale.FRENCH, "sOl");
+    	assertParsingNote(G, NONE, Locale.FRENCH, "sOL");
+    	assertParsingNote(G, NONE, Locale.FRENCH, "Sol");
+    	assertParsingNote(G, NONE, Locale.FRENCH, "SoL");
+    	assertParsingNote(G, NONE, Locale.FRENCH, "SOl");
+    	assertParsingNote(G, NONE, Locale.FRENCH, "SOL");
 	}
     
     @Test(expected=BusinessException.class)
@@ -104,11 +113,16 @@ public class ParsingIT extends AbstractBusinessIT {
     	assertEqualsNoteString(new Note(C,FLAT),noteBusiness.parse(Locale.ENGLISH, "Cl"));
     }
     
+    @Test(expected=BusinessException.class)
+	public void parsingNoteUnsupportedCaseEnglishFlat(){
+    	assertEqualsNoteString(new Note(B,FLAT),noteBusiness.parse(Locale.ENGLISH, "bB"));
+    }
+    
     /* Chord */
     
     @Test
 	public void parsingChord(){	
-    	assertParsingChord("maj", C, NONE, Locale.ENGLISH, "C");
+    	assertParsingChord("maj", C, NONE, Locale.ENGLISH, "c");
     	assertParsingChord("maj", C, SHARP, Locale.ENGLISH, "C#");
     	assertParsingChord("min", C, NONE, Locale.ENGLISH, "Cm");
     	assertParsingChord("maj7", C, NONE, Locale.ENGLISH, "Cmaj7");
@@ -134,6 +148,13 @@ public class ParsingIT extends AbstractBusinessIT {
     	assertParsingChord("maj", G, NONE, Locale.ENGLISH, "G#/G#");
     	assertParsingChord("maj", A, NONE, Locale.ENGLISH, "A");
     	assertParsingChord("maj", B, NONE, Locale.ENGLISH, "B");
+    	
+    	/***/
+    	
+    	assertParsingChord("maj", C, NONE, Locale.FRENCH, "do");
+    	assertParsingChord("maj", C, SHARP, Locale.FRENCH, "Do#");
+    	assertParsingChord("min", C, NONE, Locale.FRENCH, "dOm");
+    	assertParsingChord("maj7", C, NONE, Locale.FRENCH, "domaj7");
     }
     
     @Test(expected=BusinessException.class)

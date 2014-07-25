@@ -3,39 +3,6 @@ package org.cyk.system.kwordz.business.impl.lyrics.formatter;
 /*
 public class ChordFormatter extends AbstractFormatter<Chord> implements Serializable{
 
-	private static final long serialVersionUID = 1L;
-	private NoteFormatter noteFormatter;
-	private String noteSeparator = " ";
-	
-	//private String chordText = "kyc";// I don't know why it is there
-	private boolean showTypeSeparator;
-	private boolean showName = true;
-	private boolean expanded;
-	private boolean applyFormat=true;
-	private Note root;
-	
-	public ChordFormatter() {
-		noteFormatter = new NoteFormatter();
-	}
-	
-	public ChordFormatter(NoteFormatter noteFormatter) {
-		super();
-		this.noteFormatter = noteFormatter;
-	}
-	
-	public ChordFormatter(NoteFormatter noteFormatter, String noteSeparator,
-			boolean showTypeSeparator, boolean showName, boolean expanded,
-			boolean applyFormat, Note root) {
-		super();
-		this.noteFormatter = noteFormatter;
-		this.noteSeparator = noteSeparator;
-		this.showTypeSeparator = showTypeSeparator;
-		this.showName = showName;
-		this.expanded = expanded;
-		this.applyFormat = applyFormat;
-		this.root = root;
-	}
-
 	@Override
 	public String format(Chord chord,Object...parameters) {
 		if(chord==null)

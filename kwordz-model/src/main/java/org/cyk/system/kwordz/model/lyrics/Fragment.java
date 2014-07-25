@@ -2,18 +2,23 @@ package org.cyk.system.kwordz.model.lyrics;
 
 import java.io.Serializable;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.cyk.system.kwordz.model.music.Chord;
+import org.cyk.system.root.model.AbstractIdentifiable;
 
-@Getter @Setter
-public class Fragment implements Serializable{
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class Fragment extends AbstractIdentifiable implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
 	private String text;
 	private Chord chord;
+	
+	//TODO All following must be moved to business 
 	
 	/*
 	public void transpose(float interval){
@@ -32,22 +37,7 @@ public class Fragment implements Serializable{
 	public String getTextAsHtml(){
 		return HTMLEncoder.encode(text,true,true);
 	}*/
-		
-	public Fragment() {}
 	
-	public Fragment(String text, Chord chord) {
-		super();
-		this.text = text;
-		this.chord = chord;
-	}
-	
-	public Fragment(String text) {
-		this(text,null);
-	}
-	
-	public Fragment(Chord chord) {
-		this(null,chord);
-	}
 	
 	@Override
 	public String toString() {

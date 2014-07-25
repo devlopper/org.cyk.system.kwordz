@@ -86,7 +86,7 @@ public class FormattingIT extends AbstractBusinessIT {
     	assertEqualsNote("do #",Locale.FRENCH,C, SHARP);
     	
     	NoteFormatOptions options = new NoteFormatOptions();
-    	options.setSeperateNameAlterartion(Boolean.FALSE);
+    	options.setSeperatorNameAndAlteration(null);
     	
     	assertEqualsNote("C#",Locale.ENGLISH,C, SHARP,options);
     	assertEqualsNote("do#",Locale.FRENCH,C, SHARP,options);
@@ -95,6 +95,11 @@ public class FormattingIT extends AbstractBusinessIT {
     @Test
 	public void formatChord(){	
     	assertEqualsChordAllLocale("maj", C, NONE, "C maj","do maj");
+    	assertEqualsChordAllLocale("dim", C, SHARP, "C # dim","do # dim");
+    	assertEqualsChordAllLocale("maj", D, FLAT, "D b maj","Re b maj");
+    	assertEqualsChordAllLocale("dim", C, NONE, "C dim","do dim");
+    	assertEqualsChordAllLocale("majDom7", C, NONE, "C 7","do 7");
+    	assertEqualsChordAllLocale("majDom7", G, SHARP, "G # 7","sol # 7");
     }
     
     /**/
@@ -113,7 +118,7 @@ public class FormattingIT extends AbstractBusinessIT {
     private void assertEqualsChord(String expected,Locale locale,String structureCode,NoteName noteName,NoteAlteration noteAlteration,ChordFormatOptions options){
     	Chord chord = new Chord();
     	chordBusiness.generateNotes(chord, chordStructureBusiness.find(structureCode), new Note(noteName,noteAlteration));
-    	assertEquals(expected,chordBusiness.format(locale, chord,options));
+    	assertEquals(expected.toLowerCase(),chordBusiness.format(locale, chord,options).toLowerCase());
     }
     private void assertEqualsChord(String expected,Locale locale,String structureCode,NoteName noteName,NoteAlteration noteAlteration){
     	assertEqualsChord(expected, locale,structureCode, noteName, noteAlteration, kwordzBusinessLayer.getDefaultChordFormatOptions());
@@ -122,5 +127,5 @@ public class FormattingIT extends AbstractBusinessIT {
     	assertEqualsChord(expected[0], Locale.ENGLISH,structureCode, noteName, noteAlteration);
     	assertEqualsChord(expected[1], Locale.FRENCH,structureCode, noteName, noteAlteration);
     }
-    
+     
 }

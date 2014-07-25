@@ -5,13 +5,18 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.cyk.system.kwordz.model.AbstractFormatOptions;
+
 @Getter @Setter
-public class ChordFormatOptions implements Serializable {
+public class ChordFormatOptions extends AbstractFormatOptions implements Serializable {
 
 	private static final long serialVersionUID = 5281169944501545966L;
 
-	public static final String NOTE_BASS_SEPARATOR = "/";
+	private NoteFormatOptions noteFormatOptions = new NoteFormatOptions();
 	
-	private Boolean seperateNoteBass = Boolean.TRUE;
+	private String separatorLeftAndRightHand,separatorNoteAndStructure;
+	private Boolean showNoteName = Boolean.TRUE;
+	private Boolean expand=Boolean.FALSE;
+	private Boolean applyFormat=Boolean.FALSE;
 	
 }

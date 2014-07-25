@@ -11,6 +11,8 @@ import lombok.Getter;
 import org.cyk.system.kwordz.business.api.music.AbstractStructureBusiness;
 import org.cyk.system.kwordz.business.api.music.ChordStructureBusiness;
 import org.cyk.system.kwordz.business.api.music.ScaleStructureBusiness;
+import org.cyk.system.kwordz.model.lyrics.FragmentFormatOptions;
+import org.cyk.system.kwordz.model.lyrics.LyricsFormatOptions;
 import org.cyk.system.kwordz.model.music.ChordFormatOptions;
 import org.cyk.system.kwordz.model.music.ChordStructure;
 import org.cyk.system.kwordz.model.music.NoteFormatOptions;
@@ -32,6 +34,8 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
 	
 	@Getter private final ChordFormatOptions defaultChordFormatOptions = new ChordFormatOptions();
 	@Getter private final NoteFormatOptions defaultNoteFormatOptions = new NoteFormatOptions();
+	@Getter private final FragmentFormatOptions defaultFragmentFormatOptions = new FragmentFormatOptions();
+	@Getter private final LyricsFormatOptions defaultLyricsFormatOptions = new LyricsFormatOptions();
 	
 	@Inject private ChordStructureBusiness chordStructureBusiness;
 	@Inject private ScaleStructureBusiness scaleStructureBusiness;
@@ -41,6 +45,9 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
 	protected void initialisation() {
 		INSTANCE = this;
 		super.initialisation();
+		configFormatOptions(defaultNoteFormatOptions);
+		configFormatOptions(defaultChordFormatOptions);
+		configFormatOptions(defaultFragmentFormatOptions);
 		parserHelper.prepare(chordStructureBusiness);
 	}
 	
@@ -119,6 +126,18 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
     	for(Integer interval : intervals)
     		structure.getIntervals().add(interval);
     	structureBusiness.create(structure);
+    }
+    
+    private void configFormatOptions(NoteFormatOptions noteFormatOptions){
+    	noteFormatOptions.setSeperatorNameAndAlteration(parserHelper.getNoteNameAndNoteAlterationSeperator());
+    }
+    
+    private void configFormatOptions(ChordFormatOptions chordFormatOptions){
+    	configFormatOptions(chordFormatOptions.getNoteFormatOptions());
+    }
+    
+    private void configFormatOptions(FragmentFormatOptions fragmentFormatOptions){
+    	configFormatOptions(fragmentFormatOptions.getChordFormatOptions());
     }
     
     public static KwordzBusinessLayer getInstance() {

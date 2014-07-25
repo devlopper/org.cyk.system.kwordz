@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Thu Jul 24 11:38:44 UTC 2014:
-Amorçage de Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872) : instance a816c00e-0147-682a-89e3-000015593270 
-dans le répertoire de base de données H:\Repositories\source code\git\org\cyk\system\kwordz\kwordz-business-impl-ejb\target\databases\derby  avec le chargeur de classe sun.misc.Launcher$AppClassLoader@5e8e918a
+Fri Jul 25 10:16:43 UTC 2014:
+Amorçage de Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872) : instance a816c00e-0147-6d05-d1b3-000016ad8410 
+dans le répertoire de base de données H:\Repositories\source code\git\org\cyk\system\kwordz\kwordz-business-impl-ejb\target\databases\derby  avec le chargeur de classe sun.misc.Launcher$AppClassLoader@61f52b85
 
 java.vendor=Oracle Corporation
 java.runtime.version=1.7.0_15-b03

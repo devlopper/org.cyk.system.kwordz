@@ -78,6 +78,7 @@ public class ParsingIT extends AbstractBusinessIT {
     	assertParsingNote(C, NONE, Locale.ENGLISH, "C");
     	assertParsingNote(C, SHARP, Locale.ENGLISH, "c#");
     	assertParsingNote(C, FLAT, Locale.ENGLISH, "Cb");
+    	assertParsingNote(C, SHARP, Locale.ENGLISH, "c #");
     	
     	assertParsingNote(C, NONE, Locale.FRENCH, "do");
     	assertParsingNote(C, SHARP, Locale.FRENCH, "do#");

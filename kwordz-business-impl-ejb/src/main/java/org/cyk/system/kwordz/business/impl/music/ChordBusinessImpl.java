@@ -1,6 +1,8 @@
 package org.cyk.system.kwordz.business.impl.music;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.regex.Matcher;
 
@@ -53,17 +55,37 @@ public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordS
 		return ok;
 	}
 	
-	@Override
+	@Override 
 	public String format(Locale locale, Chord chord, ChordFormatOptions options) {
-		return noteBusiness.format(locale, findRoot(chord))+" "+chord.getStructure().getSymbols().iterator().next();
+		StringBuilder builder = new StringBuilder();
+		if(Boolean.TRUE.equals(options.getShowMarker()))
+			builder.append(options.getMarkerStart());
+		String structureSymbol = chord.getStructure().getSymbols().iterator().next();
+		if(StringUtils.isNotEmpty(structureSymbol))
+			structureSymbol = options.getSeparatorNoteAndStructure()+structureSymbol;
+		switch(options.getLayout()){
+		case EXPAND:
+			Collection<String> notes = new ArrayList<>();
+			for(Note note : chord.getNotes())
+				notes.add(noteBusiness.format(locale, note));
+			builder.append(StringUtils.join(notes.iterator(),options.getSeparatorNoteAndNote())+structureSymbol);
+			break;
+		case CONTRACT:
+			builder.append(noteBusiness.format(locale, findRoot(chord))+structureSymbol);
+			break;
+		}
+		
+		if(Boolean.TRUE.equals(options.getShowMarker()))
+			builder.append(options.getMarkerEnd());
+		return builder.toString();
 	}
 	
 	@Override
 	public Chord parse(Locale locale, String text) {
 		/*Letter[#b]ChordType - left hand = bass note = single note only*/
-		System.out.println("ChordBusinessImpl.parse() : "+text);
+		//System.out.println("ChordBusinessImpl.parse() : "+text);
 		Matcher matcher = parserHelper.matcher(locale, PatternMatcherType.CHORD, text);
-		debug(matcher);
+		
 		Chord chord = new Chord();
 		if(StringUtils.isNotEmpty(matcher.group(1))){
 			text = parserHelper.stringAfter(text, matcher.group(1));
@@ -80,7 +102,7 @@ public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordS
 			exceptionUtils().exception(StringUtils.isEmpty(matcher.group(6)),"kwordz.exception.parsing.chord.structure.unknown",new Object[]{text});
 			text = matcher.group(6);
 		}
-		System.out.println(text);
+		//System.out.println(text);
 		chord.setStructure(structureBusiness.findBySymbol(text));
 		generateNotes(chord, chord.getStructure(), base);
 		return chord;

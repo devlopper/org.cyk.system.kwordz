@@ -1,34 +1,13 @@
 package org.cyk.system.kwordz.business.impl.integration;
 
-import static org.cyk.system.kwordz.model.music.NoteAlteration.FLAT;
-import static org.cyk.system.kwordz.model.music.NoteAlteration.NONE;
-import static org.cyk.system.kwordz.model.music.NoteAlteration.SHARP;
-import static org.cyk.system.kwordz.model.music.NoteName.A;
-import static org.cyk.system.kwordz.model.music.NoteName.B;
-import static org.cyk.system.kwordz.model.music.NoteName.C;
-import static org.cyk.system.kwordz.model.music.NoteName.D;
-import static org.cyk.system.kwordz.model.music.NoteName.E;
-import static org.cyk.system.kwordz.model.music.NoteName.F;
-import static org.cyk.system.kwordz.model.music.NoteName.G;
-
 import java.util.Locale;
 
 import javax.inject.Inject;
 
 import org.cyk.system.kwordz.business.api.lyrics.FragmentBusiness;
 import org.cyk.system.kwordz.business.api.music.ChordBusiness;
-import org.cyk.system.kwordz.business.api.music.ChordStructureBusiness;
-import org.cyk.system.kwordz.business.api.music.NoteBusiness;
-import org.cyk.system.kwordz.business.api.music.ScaleStructureBusiness;
-import org.cyk.system.kwordz.business.impl.ParserHelper;
 import org.cyk.system.kwordz.model.lyrics.Fragment;
 import org.cyk.system.kwordz.model.lyrics.FragmentFormatOptions;
-import org.cyk.system.kwordz.model.music.Chord;
-import org.cyk.system.kwordz.model.music.ChordFormatOptions;
-import org.cyk.system.kwordz.model.music.Note;
-import org.cyk.system.kwordz.model.music.NoteAlteration;
-import org.cyk.system.kwordz.model.music.NoteFormatOptions;
-import org.cyk.system.kwordz.model.music.NoteName;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
@@ -37,8 +16,6 @@ public class LyricsFormattingIT extends AbstractBusinessIT {
 
     private static final long serialVersionUID = -6691092648665798471L;
 
-    @Inject private ChordStructureBusiness chordStructureBusiness;
-    @Inject private ScaleStructureBusiness scaleStructureBusiness;
     @Inject private ChordBusiness chordBusiness;
     @Inject private FragmentBusiness fragmentBusiness;
     
@@ -49,9 +26,6 @@ public class LyricsFormattingIT extends AbstractBusinessIT {
     
     @Override
     protected void populate() {
-    	//kwordzBusinessLayer.createChordStructures(chordStructureBusiness);
-    	//kwordzBusinessLayer.createScaleStructures(scaleStructureBusiness);
-    	//ParserHelper.getInstance().prepare(chordStructureBusiness);
     	kwordzBusinessLayer.createInitialData();
     }
     
@@ -77,17 +51,33 @@ public class LyricsFormattingIT extends AbstractBusinessIT {
           
     @Test
 	public void formatFragment(){	
-    	assertEqualsFragment(Locale.ENGLISH, "Jesus is good", "C", kwordzBusinessLayer.getDefaultFragmentFormatOptions(), "C maj        ","Jesus is good");
-    	assertEqualsFragment(Locale.ENGLISH, "he", "C dim", kwordzBusinessLayer.getDefaultFragmentFormatOptions(),  "C dim","he   ");
+    	assertEqualsFragment(Locale.ENGLISH, "Jesus is good", "C","[C maj]Jesus is good","Jesus is good[C maj]","[C maj]","Jesus is good","Jesus is good", "C maj        ");
+    	assertEqualsFragment(Locale.ENGLISH, "he", "C sus2","[C sus2]he","he[C sus2]","[C sus2]","he", "he    ", "C sus2");
     }
     
     /**/
 
-    private void assertEqualsFragment(Locale locale,String text,String chord,FragmentFormatOptions options,String chordLine,String textLine){
+    private void assertEqualsFragment(Locale locale,String inputText,String inputChord,String chordAtLeft,String chordAtRight,String chordOnly,String textOnly,
+    		String outputLine,String outputChord){
     	StringBuilder cl=new StringBuilder(),tl = new StringBuilder();
-    	fragmentBusiness.format(locale, new Fragment(text, chordBusiness.parse(locale, chord)), options, cl, tl);
-    	assertEquals(chordLine, cl.toString());
-    	assertEquals(textLine, tl.toString());
+    	Fragment fragment = new Fragment(inputText, chordBusiness.parse(locale, inputChord));
+    	FragmentFormatOptions options = new FragmentFormatOptions();
+    	
+    	options.setChordAtLeft(Boolean.TRUE);
+    	assertEquals(chordAtLeft, fragmentBusiness.format(locale, fragment, options));
+    	options.setChordAtLeft(Boolean.FALSE);
+    	assertEquals(chordAtRight, fragmentBusiness.format(locale, fragment, options));
+    	
+    	options.setShowChord(Boolean.FALSE);options.setShowText(Boolean.TRUE);
+    	assertEquals(textOnly, fragmentBusiness.format(locale, fragment, options));
+    	options.setShowChord(Boolean.TRUE);options.setShowText(Boolean.FALSE);
+    	assertEquals(chordOnly, fragmentBusiness.format(locale, fragment, options));
+    	options.setShowChord(Boolean.FALSE);options.setShowText(Boolean.FALSE);
+    	assertEquals("", fragmentBusiness.format(locale, fragment, options));
+    	
+    	fragmentBusiness.format(locale, fragment ,options, cl, tl);
+    	assertEquals(outputChord, cl.toString());
+    	assertEquals(outputLine, tl.toString());
     	assertEquals(tl.length(), cl.length());
     }
     

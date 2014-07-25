@@ -33,24 +33,43 @@ public class FragmentBusinessImpl extends AbstractMusicBusinessImpl<Fragment, Fr
 
 	@Override
 	public String format(Locale locale, Fragment fragment,FragmentFormatOptions options) {
+		StringBuilder line = new StringBuilder();
+		String text = StringUtils.defaultString(Boolean.TRUE.equals(options.getShowText())?fragment.getText():null);
+		options.getChordFormatOptions().setShowMarker(Boolean.TRUE);
+		String chord = StringUtils.defaultString(Boolean.TRUE.equals(options.getShowChord())?
+				chordBusiness.format(locale, fragment.getChord(), options.getChordFormatOptions()):null);
+		
+		if(Boolean.TRUE.equals(options.getChordAtLeft()))
+			line.append(chord+text);
+		else
+			line.append(text+chord);
+		return line.toString();
+		/*
 		switch(options.getLayout()){
 		case CHORD_LEFT_TEXT:
-			
+			options.getChordFormatOptions().setShowMarker(Boolean.TRUE);
+			if(fragment.getChord()!=null)
+				line.append(chordBusiness.format(locale, fragment.getChord(), options.getChordFormatOptions()));
+			if(StringUtils.isNotEmpty(fragment.getText()))
+				line.append(fragment.getText());
 			break;
 		case CHORD_RIGHT_LINE:
 			
 			break;
 		case TEXT_ONLY:
-			
+			if(StringUtils.isNotEmpty(fragment.getText()))
+				line.append(fragment.getText());
 			break;
 		case CHORD_ONLY:
-			
+			if(fragment.getChord()!=null)
+				line.append(chordBusiness.format(locale,fragment.getChord(),options.getChordFormatOptions()));
 			break;
 		case CHORD_TOP_LINE:
 			
 			break;
 		}
 		return null;
+		*/
 	}
 
 	@Override
@@ -61,10 +80,13 @@ public class FragmentBusinessImpl extends AbstractMusicBusinessImpl<Fragment, Fr
 		boolean html = ContentType.HTML.equals(options.getContentType());
 		if(fragment.getChord()!=null){
 			spaceChordLine(chordLine,textLine," ");
+			options.getChordFormatOptions().setShowMarker(Boolean.FALSE);
 			chord = chordBusiness.format(locale, fragment.getChord(), options.getChordFormatOptions());//contract
 			cl = chord.length();
+			/*
 			chord = html?String.format(options.getChordHtmlTag(),
-					chordBusiness.format(locale, fragment.getChord(), options.getChordFormatOptions())/*expand*/,chord):chord;
+					chordBusiness.format(locale, fragment.getChord(), options.getChordFormatOptions())expand,chord):chord;
+			*/
 		}
 		if(html)
 			text =  String.format(options.getTextHtmlTag(),text);

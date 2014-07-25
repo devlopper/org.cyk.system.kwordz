@@ -19,6 +19,7 @@ import org.cyk.system.kwordz.model.music.NoteFormatOptions;
 import org.cyk.system.kwordz.model.music.ScaleStructure;
 import org.cyk.system.kwordz.model.music.Structure;
 import org.cyk.system.root.business.api.TypedBusiness;
+import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.impl.AbstractBusinessLayer;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.utility.common.annotation.Deployment;
@@ -40,6 +41,7 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
 	@Inject private ChordStructureBusiness chordStructureBusiness;
 	@Inject private ScaleStructureBusiness scaleStructureBusiness;
 	@Inject private ParserHelper parserHelper;
+	@Inject private LanguageBusiness languageBusiness;
 	
 	@Override
 	protected void initialisation() {
@@ -49,6 +51,7 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
 		configFormatOptions(defaultChordFormatOptions);
 		configFormatOptions(defaultFragmentFormatOptions);
 		parserHelper.prepare(chordStructureBusiness);
+		languageBusiness.registerResourceBundle("org.cyk.system.kwordz.business.impl.resources.exception", getClass().getClassLoader());
 	}
 	
     @Override

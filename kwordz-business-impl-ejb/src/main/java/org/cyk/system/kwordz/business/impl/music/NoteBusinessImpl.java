@@ -186,7 +186,7 @@ public class NoteBusinessImpl extends AbstractTypedBusinessService<Note, NoteDao
 		Note note = new Note();
 		note.setName(EnumHelper.getInstance().getValueOf(NoteName.class, locale, matcher.group(1),Boolean.FALSE));
 		exceptionUtils().exception(note.getName()==null,"kwordz.exception.parsing.note.name.unknown",new Object[]{text});
-		text = StringUtils.substringAfter(text, matcher.group(1));
+		text = parserHelper.stringAfter(text, matcher.group(1));
 		if(StringUtils.isNotBlank(text)){
 			exceptionUtils().exception(matcher.group(2)==null,"kwordz.exception.parsing.note.alteration.unknown",new Object[]{text});
 			note.setAlteration(EnumHelper.getInstance().getValueOf(NoteAlteration.class, locale, matcher.group(2)));

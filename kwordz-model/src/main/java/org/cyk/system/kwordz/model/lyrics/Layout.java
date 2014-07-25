@@ -2,6 +2,7 @@ package org.cyk.system.kwordz.model.lyrics;
 
 import org.cyk.system.root.model.EnumHelper;
 
+@Deprecated
 public enum Layout {
 	CHORD_TOP_LINE,
 	CHORD_LEFT_TEXT,

@@ -1,6 +1,7 @@
 package org.cyk.system.kwordz.business.impl;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -26,8 +27,21 @@ public class ParserHelper extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 6518187499895981817L;
 
+	/**
+	 * Note name case in insensitive. Alteration case is sensitive. Zero or many alteration are allowed<br/>
+	 * Examples : C , c , Cm, cm , Bb , bb , Bbb , B#b
+	 */
+	public static final String NOTE_PATTERN_FORMAT = "((?i)%1$s)%2$s(%3$s)*";
+	/**
+	 * Can have a structure symbol. Can contain bass note. Bass note must be at left
+	 * Examples : C , F/C , C sus2 , F/C sus2
+	 */
+	public static final String CHORD_PATTERN_FORMAT = "("+NOTE_PATTERN_FORMAT+"%4$s)?"+NOTE_PATTERN_FORMAT+"(%5$s)?";
+	
 	private static final String[] LEFT_HAND_AND_RIGHT_HAND_SEPERATORS = {"/"};
 	private static final String[] NOTENAME_AND_NOTEALTERATION_SEPERATORS = {" "};
+	
+	private static final String[] PATTERN_NOTENAME_AND_NOTEALTERATION_SEPERATORS = {"\\s*"};
 	
 	private static ParserHelper INSTANCE;
 	
@@ -55,7 +69,7 @@ public class ParserHelper extends AbstractBean implements Serializable {
     			for(String symbol : structure.getSymbols())
     				addString(symbols,symbol);
     		localeConfig.setChordPattern(patternChord(names, alterations, symbols));
-    		debug(localeConfig);
+    		//debug(localeConfig);
     	}
     }
     
@@ -68,24 +82,12 @@ public class ParserHelper extends AbstractBean implements Serializable {
     }
     
     private Pattern patternNote(Set<String> names,Set<String> alterations){
-    	return Pattern.compile(notePatternAsString(names, alterations)
-    			//,Pattern.CASE_INSENSITIVE
-    			);
+    	return Pattern.compile(String.format(NOTE_PATTERN_FORMAT,or(names),or(PATTERN_NOTENAME_AND_NOTEALTERATION_SEPERATORS),or(alterations)));
     }
     
     private Pattern patternChord(Set<String> names,Set<String> alterations,Set<String> symbols){
-    	return Pattern.compile(
-    			//"("+StringUtils.join(names,"|")+"\\s*[\\\\]){0,1}\\s*"
-    			"("+notePatternAsString(names, alterations)+")?\\s*["+StringUtils.join(LEFT_HAND_AND_RIGHT_HAND_SEPERATORS,"|")+"]?\\s*"
-    			+ notePatternAsString(names, alterations)
-    			+ "\\s*("+StringUtils.join(symbols,"|")+")?"
-    			//,Pattern.CASE_INSENSITIVE
-    			);
-    }
-    
-    private String notePatternAsString(Set<String> names,Set<String> alterations){
-    	return "((?i)"+StringUtils.join(names,"|")+")"
-    			+ "("+StringUtils.join(alterations,"|")+")*";
+    	return Pattern.compile(String.format(CHORD_PATTERN_FORMAT,or(names),or(PATTERN_NOTENAME_AND_NOTEALTERATION_SEPERATORS),or(alterations),
+    			or(LEFT_HAND_AND_RIGHT_HAND_SEPERATORS),or(symbols)));
     }
     
     public Matcher matcher(Locale locale,PatternMatcherType type,String text){
@@ -110,6 +112,15 @@ public class ParserHelper extends AbstractBean implements Serializable {
     
     public String stringAfter(String text,String seperator){
     	return StringUtils.substringAfter(text, seperator).trim();
+    }
+    
+    /* pattern builder shortcuts */
+    
+    private String or(Collection<String> collection){
+    	return or(collection.toArray(new String[]{}));
+    }
+    private String or(String[] array){
+    	return StringUtils.join(array,"|");
     }
     
     public String getNoteString(Matcher matcher,Integer nameGroupIndex){

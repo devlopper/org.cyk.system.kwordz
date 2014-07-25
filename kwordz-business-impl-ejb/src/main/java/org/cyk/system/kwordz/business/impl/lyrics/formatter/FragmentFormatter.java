@@ -11,51 +11,10 @@ public class FragmentFormatter extends AbstractFormatterLayout<Fragment> impleme
 	private String spanTextHtmlTag="<span class=\"lyricClass\">%s</span>";
 		
 	@Override
-	public void chordAtLeftOfLyrics(Fragment fragment, StringBuilder line) {
-		if(fragment.getText()==null)
-			line.append(AbstractParser.CHORD_START+chordFormatter.format(fragment.getChord())+AbstractParser.CHORD_END);
-		else
-			if(fragment.getChord()==null)
-				line.append(fragment.getText());
-			else
-				line.append(AbstractParser.CHORD_START+chordFormatter.format(fragment.getChord()) +AbstractParser.CHORD_END+fragment.getText());
-	}
-	
-	@Override
 	public void chordAtRightOfLine(Fragment fragment,StringBuilder line) {
 		
 	}
-	
-	@Override
-	public void chordAtTopOfLine(Fragment fragment, StringBuilder chordLine,StringBuilder textLine, boolean merged) {
-		String chord="";
-		if(!merged){
-			spaceChordLine(chordLine, null,"   ");
-			chord = chordFormatter.contract(fragment.getChord());
-			chordLine.append( html?String.format(spanChordHtmlTag,chordFormatter.expand(fragment.getChord()),chord):chord );
-			return;
-		}
 		
-		String text = fragment.getText()==null?"":fragment.getText();
-
-		int cl=0,tl = text.length();
-		if(fragment.getChord()!=null){
-			spaceChordLine(chordLine,textLine," ");
-			chord = chordFormatter.contract(fragment.getChord());
-			cl = chord.length();
-			chord = html?String.format(spanChordHtmlTag,chordFormatter.expand(fragment.getChord()),chord):chord;
-		}
-		if(html)
-			text =  String.format(spanTextHtmlTag,text);
-		if(tl>cl)
-			chord += StringUtils.repeat(" ",tl-cl);
-		else
-			text += StringUtils.repeat(" ",cl-tl);
-
-		chordLine.append(chord);
-		textLine.append(text);
-	}
-	
 	@Override
 	public void chordOnly(Fragment fragment, StringBuilder line) {
 		if(fragment.getChord()!=null){

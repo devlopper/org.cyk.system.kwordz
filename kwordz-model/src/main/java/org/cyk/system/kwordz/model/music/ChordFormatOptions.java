@@ -12,11 +12,19 @@ public class ChordFormatOptions extends AbstractFormatOptions implements Seriali
 
 	private static final long serialVersionUID = 5281169944501545966L;
 
+	public enum ChordLayout{EXPAND,CONTRACT}
+	
 	private NoteFormatOptions noteFormatOptions = new NoteFormatOptions();
 	
-	private String separatorLeftAndRightHand,separatorNoteAndStructure;
+	private String separatorLeftAndRightHand="/",separatorNoteAndStructure=" ",separatorNoteAndNote=" ";
 	private Boolean showNoteName = Boolean.TRUE;
-	private Boolean expand=Boolean.FALSE;
+	private ChordLayout layout=ChordLayout.CONTRACT;
 	private Boolean applyFormat=Boolean.FALSE;
+	
+	private Boolean showMarker;
+	private String markerStart = "[";
+	private String markerEnd = "]";
+	private String markerStartReplacement = "{";
+	private String markerEndReplacement = "}";
 	
 }

@@ -13,11 +13,15 @@ public class FragmentFormatOptions extends AbstractFormatOptions implements Seri
 
 	private static final long serialVersionUID = 5281169944501545966L;
 
+	public static final String PADDING = " ";
+	
 	private ChordFormatOptions chordFormatOptions = new ChordFormatOptions();
 	//private Layout layout=Layout.CHORD_LEFT_TEXT;
 	private Boolean chordAtLeft = Boolean.TRUE;
 	private Boolean showChord=Boolean.TRUE;
 	private Boolean showText=Boolean.TRUE;
+	
+	private String padding;
 	
 	private String chordHtmlTag="<span class=\"chordClass\" title=\"%s\">%s</span>";
 	private String textHtmlTag="<span class=\"lyricClass\">%s</span>";	

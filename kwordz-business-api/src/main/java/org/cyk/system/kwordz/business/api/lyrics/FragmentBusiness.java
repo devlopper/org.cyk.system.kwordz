@@ -8,6 +8,6 @@ import org.cyk.system.kwordz.model.lyrics.FragmentFormatOptions;
 
 public interface FragmentBusiness extends AbstractMusicBusiness<Fragment,FragmentFormatOptions> {
     
-	void format(Locale locale, Fragment fragment,FragmentFormatOptions options,StringBuilder chordLine,StringBuilder textLine);
+	void format(Locale locale, Fragment fragment,FragmentFormatOptions options,StringBuilder chords,StringBuilder texts);
 	
 }

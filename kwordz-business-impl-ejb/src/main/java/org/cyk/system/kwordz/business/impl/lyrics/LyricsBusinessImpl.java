@@ -6,11 +6,9 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import org.cyk.system.kwordz.business.api.lyrics.LyricsBusiness;
-import org.cyk.system.kwordz.business.api.music.ChordBusiness;
+import org.cyk.system.kwordz.business.api.lyrics.PartBusiness;
 import org.cyk.system.kwordz.business.impl.AbstractMusicBusinessImpl;
 import org.cyk.system.kwordz.business.impl.KwordzBusinessLayer;
-import org.cyk.system.kwordz.model.lyrics.Fragment;
-import org.cyk.system.kwordz.model.lyrics.Line;
 import org.cyk.system.kwordz.model.lyrics.Lyrics;
 import org.cyk.system.kwordz.model.lyrics.LyricsFormatOptions;
 import org.cyk.system.kwordz.model.lyrics.Part;
@@ -20,7 +18,7 @@ public class LyricsBusinessImpl extends AbstractMusicBusinessImpl<Lyrics, Lyrics
 
 	private static final long serialVersionUID = -3799482462496328200L;
 	
-	@Inject private ChordBusiness chordBusiness;
+	@Inject private PartBusiness partBusiness;
 	
 	@Inject
 	public LyricsBusinessImpl(LyricsDao dao) { 
@@ -30,17 +28,14 @@ public class LyricsBusinessImpl extends AbstractMusicBusinessImpl<Lyrics, Lyrics
 	@Override
 	public void transpose(Lyrics lyrics, Integer distance) {
 		for(Part part : lyrics.getParts())
-			for(Line line : part.getLines())
-				for(Fragment fragment : line.getFragments())
-					if(fragment.getChord()!=null)
-						chordBusiness.transpose(fragment.getChord(), distance);
+			partBusiness.transpose(part, distance);
 	}
 
 	@Override
 	public String format(Locale locale, Lyrics lyrics,LyricsFormatOptions options) {
 		StringBuilder stringBuilder = new StringBuilder();
-		//for(Part part : lyrics.getParts())
-		//	stringBuilder.append(componentFormatter.format(part));
+		for(Part part : lyrics.getParts())
+			stringBuilder.append(partBusiness.format(locale,part)+"\r\n");
 		return stringBuilder.toString();
 	}
 

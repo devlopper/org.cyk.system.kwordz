@@ -12,7 +12,9 @@ import org.cyk.system.kwordz.business.api.music.AbstractStructureBusiness;
 import org.cyk.system.kwordz.business.api.music.ChordStructureBusiness;
 import org.cyk.system.kwordz.business.api.music.ScaleStructureBusiness;
 import org.cyk.system.kwordz.model.lyrics.FragmentFormatOptions;
+import org.cyk.system.kwordz.model.lyrics.LineFormatOptions;
 import org.cyk.system.kwordz.model.lyrics.LyricsFormatOptions;
+import org.cyk.system.kwordz.model.lyrics.PartFormatOptions;
 import org.cyk.system.kwordz.model.music.ChordFormatOptions;
 import org.cyk.system.kwordz.model.music.ChordStructure;
 import org.cyk.system.kwordz.model.music.NoteFormatOptions;
@@ -36,6 +38,8 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
 	@Getter private final ChordFormatOptions defaultChordFormatOptions = new ChordFormatOptions();
 	@Getter private final NoteFormatOptions defaultNoteFormatOptions = new NoteFormatOptions();
 	@Getter private final FragmentFormatOptions defaultFragmentFormatOptions = new FragmentFormatOptions();
+	@Getter private final LineFormatOptions defaultLineFormatOptions = new LineFormatOptions();
+	@Getter private final PartFormatOptions defaultPartFormatOptions = new PartFormatOptions();
 	@Getter private final LyricsFormatOptions defaultLyricsFormatOptions = new LyricsFormatOptions();
 	
 	@Inject private ChordStructureBusiness chordStructureBusiness;
@@ -50,6 +54,9 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
 		configFormatOptions(defaultNoteFormatOptions);
 		configFormatOptions(defaultChordFormatOptions);
 		configFormatOptions(defaultFragmentFormatOptions);
+		configFormatOptions(defaultLineFormatOptions);
+		configFormatOptions(defaultPartFormatOptions);
+		configFormatOptions(defaultLyricsFormatOptions);
 		parserHelper.prepare(chordStructureBusiness);
 		languageBusiness.registerResourceBundle("org.cyk.system.kwordz.business.impl.resources.exception", getClass().getClassLoader());
 	}
@@ -141,6 +148,18 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
     
     private void configFormatOptions(FragmentFormatOptions fragmentFormatOptions){
     	configFormatOptions(fragmentFormatOptions.getChordFormatOptions());
+    }
+    
+    private void configFormatOptions(LineFormatOptions lineFormatOptions){
+    	configFormatOptions(lineFormatOptions.getFragmentFormatOptions());
+    }
+    
+    private void configFormatOptions(PartFormatOptions partFormatOptions){
+    	configFormatOptions(partFormatOptions.getLineFormatOptions());
+    }
+    
+    private void configFormatOptions(LyricsFormatOptions lyricsFormatOptions){
+    	configFormatOptions(lyricsFormatOptions.getPartFormatOptions());
     }
     
     public static KwordzBusinessLayer getInstance() {

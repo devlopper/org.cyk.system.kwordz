@@ -13,10 +13,8 @@ import org.cyk.system.kwordz.model.lyrics.FragmentFormatOptions;
 import org.cyk.system.kwordz.model.lyrics.Line;
 import org.cyk.system.kwordz.model.lyrics.LineFormatOptions;
 import org.cyk.system.kwordz.model.lyrics.LineFormatOptions.ChordLocation;
-import org.cyk.system.kwordz.model.lyrics.LyricsFormatOptions;
 import org.cyk.system.kwordz.model.lyrics.Part;
 import org.cyk.system.kwordz.model.lyrics.PartFormatOptions;
-import org.cyk.system.kwordz.model.music.ChordFormatOptions;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
@@ -25,22 +23,25 @@ public class LyricsFormattingIT extends AbstractBusinessIT {
 
     private static final long serialVersionUID = -6691092648665798471L;
 
-    @Inject private ChordBusiness chordBusiness;
-    @Inject private FragmentBusiness fragmentBusiness;
-    @Inject private LineBusiness lineBusiness;
-    @Inject private PartBusiness partBusiness;
+    private static final String 
+    LINE_FRAGMENTS[][] = {
+    	{"Jesus","[C maj]","save","[G maj]"}
+    },
+    /* Chords at left - Chords inside - Chords at right - Chords at top - Chords only - Text only */
+    LINES[][] = {
+    	{"[C maj][G maj]Jesus save","[C maj]Jesus [G maj]save","Jesus save[C maj][G maj]","C maj G maj\r\nJesus save ","[C maj][G maj]","Jesus save"}
+    };
     
     @Deployment
     public static Archive<?> createDeployment() {
         return createRootDeployment();
     }
     
-    private String chordsAtLeft="[C maj][G maj]Jesus save",
-    		chordsInside="[C maj]Jesus [G maj]save",
-    		chordsAtRight="Jesus save[C maj][G maj]",
-    		chordsAtTop="C maj G maj\r\nJesus save ",
-    		chordsOnly="[C maj][G maj]",
-    		textOnly="Jesus save";
+    @Inject private ChordBusiness chordBusiness;
+    @Inject private FragmentBusiness fragmentBusiness;
+    @Inject private LineBusiness lineBusiness;
+    @Inject private PartBusiness partBusiness;
+    //@Inject private LyricsBusiness lyricsBusiness;
     
     @Override
     protected void populate() {
@@ -78,24 +79,13 @@ public class LyricsFormattingIT extends AbstractBusinessIT {
     
     @Test
    	public void formatLine(){
-    	Line line = new Line();
-    	Locale locale = Locale.ENGLISH;
-    	line.getFragments().add(new Fragment("Jesus", chordBusiness.parse(locale, "C")));
-    	line.getFragments().add(new Fragment("save", chordBusiness.parse(locale, "G")));
-    	assertEqualsLine(locale, line, chordsAtLeft, chordsInside, chordsAtRight, chordsAtTop, chordsOnly, textOnly);
+    	assertEqualsLine(Locale.ENGLISH, 0);
     }
     
     @Test
    	public void formatPart(){
     	Locale locale = Locale.ENGLISH;
-    	Part part = new Part();
-    	Line line = new Line();
-    	line.getFragments().add(new Fragment("Jesus", chordBusiness.parse(locale, "C")));
-    	line.getFragments().add(new Fragment("save", chordBusiness.parse(locale, "G")));
-    	
-    	part.getLines().add(line);
-    	
-    	assertEqualsPart(locale, part, chordsAtLeft, chordsInside, chordsAtRight, chordsAtTop, chordsOnly, textOnly);
+    	assertEqualsPart(locale, createPart(locale), 0);
     }
     
     @Test
@@ -131,59 +121,106 @@ public class LyricsFormattingIT extends AbstractBusinessIT {
     	assertEquals(tl.length(), cl.length());
     }
     
-    private void assertEqualsLine(Locale locale,Line line,String chordAtLeft,String inside,String chordAtRight,String chordAtTop,String chordOnly,String textOnly){
+    private void assertEqualsLine(Locale locale,Integer lineIndex){
+    	Line line = createLine(locale, lineIndex);
     	LineFormatOptions options = kwordzBusinessLayer.getDefaultLineFormatOptions();
     	
     	options.setChordLocation(ChordLocation.LEFT);
-    	assertEquals(chordAtLeft, lineBusiness.format(locale, line,options));
+    	assertEquals(LINES[lineIndex][0], lineBusiness.format(locale, line,options));
     	
     	options.setChordLocation(ChordLocation.FOLLOW_FRAGMENT);
-    	assertEquals(inside, lineBusiness.format(locale, line,options));
+    	assertEquals(LINES[lineIndex][1], lineBusiness.format(locale, line,options));
     	
     	options.setChordLocation(ChordLocation.RIGHT);
-    	assertEquals(chordAtRight, lineBusiness.format(locale, line,options));
+    	assertEquals(LINES[lineIndex][2], lineBusiness.format(locale, line,options));
     	
     	options.setChordLocation(ChordLocation.TOP);
     	options.getFragmentFormatOptions().setShowChord(Boolean.TRUE);options.getFragmentFormatOptions().setShowText(Boolean.TRUE);
-    	assertEquals(chordAtTop, lineBusiness.format(locale, line,options));
+    	assertEquals(LINES[lineIndex][3], lineBusiness.format(locale, line,options));
     	
     	options.setChordLocation(ChordLocation.LEFT);
     	options.getFragmentFormatOptions().setShowChord(Boolean.TRUE);options.getFragmentFormatOptions().setShowText(Boolean.FALSE);
-    	assertEquals(chordOnly, lineBusiness.format(locale, line,options));
+    	assertEquals(LINES[lineIndex][4], lineBusiness.format(locale, line,options));
     	
     	options.getFragmentFormatOptions().setShowChord(Boolean.FALSE);options.getFragmentFormatOptions().setShowText(Boolean.TRUE);
-    	assertEquals(textOnly, lineBusiness.format(locale, line,options));
+    	assertEquals(LINES[lineIndex][5], lineBusiness.format(locale, line,options));
     	
     }
     
-    private void assertEqualsPart(Locale locale,Part part,String chordAtLeft,String inside,String chordAtRight,String chordAtTop,String chordOnly,String textOnly){
+    private void assertEqualsPart(Locale locale,Part part,Integer lineIndex){
     	PartFormatOptions options = kwordzBusinessLayer.getDefaultPartFormatOptions();
     	LineFormatOptions lineFormatOptions = options.getLineFormatOptions();
     	
     	lineFormatOptions.setChordLocation(ChordLocation.LEFT);
-    	assertEquals(chordAtLeft, partBusiness.format(locale, part,options));
+    	assertEquals(LINES[lineIndex][0], partBusiness.format(locale, part,options));
     	
     	lineFormatOptions.setChordLocation(ChordLocation.FOLLOW_FRAGMENT);
-    	assertEquals(inside, partBusiness.format(locale, part,options));
+    	assertEquals(LINES[lineIndex][1], partBusiness.format(locale, part,options));
     	
     	lineFormatOptions.setChordLocation(ChordLocation.RIGHT);
-    	assertEquals(chordAtRight, partBusiness.format(locale, part,options));
+    	assertEquals(LINES[lineIndex][2], partBusiness.format(locale, part,options));
     	
     	lineFormatOptions.setChordLocation(ChordLocation.TOP);
     	lineFormatOptions.getFragmentFormatOptions().setShowChord(Boolean.TRUE);lineFormatOptions.getFragmentFormatOptions().setShowText(Boolean.TRUE);
-    	assertEquals(chordAtTop, partBusiness.format(locale, part,options));
+    	assertEquals(LINES[lineIndex][3], partBusiness.format(locale, part,options));
     	
     	lineFormatOptions.setChordLocation(ChordLocation.LEFT);
     	lineFormatOptions.getFragmentFormatOptions().setShowChord(Boolean.TRUE);lineFormatOptions.getFragmentFormatOptions().setShowText(Boolean.FALSE);
-    	assertEquals(chordOnly, partBusiness.format(locale, part,options));
+    	assertEquals(LINES[lineIndex][4], partBusiness.format(locale, part,options));
     	
     	lineFormatOptions.getFragmentFormatOptions().setShowChord(Boolean.FALSE);lineFormatOptions.getFragmentFormatOptions().setShowText(Boolean.TRUE);
-    	assertEquals(textOnly, partBusiness.format(locale, part,options));
+    	assertEquals(LINES[lineIndex][5], partBusiness.format(locale, part,options));
     }
     
-    private void assertEqualsLyrics(Locale locale,Part part,String chordAtLeft,String inside,String chordAtRight,String chordAtTop,String chordOnly,String textOnly){
+    /*
+    private void assertEqualsLyrics(Locale locale,Lyrics lyrics){
     	LyricsFormatOptions options = kwordzBusinessLayer.getDefaultLyricsFormatOptions();
+    	LineFormatOptions lineFormatOptions = options.getPartFormatOptions().getLineFormatOptions();
     	
+    	lineFormatOptions.setChordLocation(ChordLocation.LEFT);
+    	assertEquals(LINES[lineIndex][0], lyricsBusiness.format(locale, lyrics,options));
+    	
+    	lineFormatOptions.setChordLocation(ChordLocation.FOLLOW_FRAGMENT);
+    	assertEquals(LINES[lineIndex][1], lyricsBusiness.format(locale, lyrics,options));
+    	
+    	lineFormatOptions.setChordLocation(ChordLocation.RIGHT);
+    	assertEquals(LINES[lineIndex][2], lyricsBusiness.format(locale, lyrics,options));
+    	
+    	lineFormatOptions.setChordLocation(ChordLocation.TOP);
+    	lineFormatOptions.getFragmentFormatOptions().setShowChord(Boolean.TRUE);lineFormatOptions.getFragmentFormatOptions().setShowText(Boolean.TRUE);
+    	assertEquals(LINES[lineIndex][3], lyricsBusiness.format(locale, lyrics,options));
+    	
+    	lineFormatOptions.setChordLocation(ChordLocation.LEFT);
+    	lineFormatOptions.getFragmentFormatOptions().setShowChord(Boolean.TRUE);lineFormatOptions.getFragmentFormatOptions().setShowText(Boolean.FALSE);
+    	assertEquals(LINES[lineIndex][4], lyricsBusiness.format(locale, lyrics,options));
+    	
+    	lineFormatOptions.getFragmentFormatOptions().setShowChord(Boolean.FALSE);lineFormatOptions.getFragmentFormatOptions().setShowText(Boolean.TRUE);
+    	assertEquals(LINES[lineIndex][5], lyricsBusiness.format(locale, lyrics,options));
     }
+    */
+    
+    /**/
+    
+    private Line createLine(Locale locale,Integer lineIndex){
+    	Line line = new Line();
+    	for(int i=0;i<LINE_FRAGMENTS[lineIndex].length;i=i+2)
+    		line.getFragments().add(new Fragment(LINE_FRAGMENTS[lineIndex][i], chordBusiness.parse(locale, LINE_FRAGMENTS[lineIndex][i+1])));
+    	return line;
+    }
+    
+    private Part createPart(Locale locale){
+    	Part part = new Part();
+    	for(int i=0;i<LINES.length;i++)
+    		part.getLines().add(createLine(locale, i));
+    	return part;
+    }
+    /*
+    private Lyrics createLyrics(Locale locale){
+    	Lyrics lyrics = new Lyrics();
+    	lyrics.getParts().add(createPart(locale));
+    	return lyrics;
+    }*/
+    
+    
     
 }

@@ -167,8 +167,7 @@ public class MusicBusinessServicesUT extends AbstractUnitTest {
 	
 	@Test
 	public void chordParsing(){
-		String patternNoteFormat = "(%s%s%s)?";
-		String patternFormat = "(%s%s)?";
+		
 		Pattern p = Pattern.compile("((((?i)A|B|C|D|E|F|G)(#|b)*)?\\s*[/]?\\s*)((?i)A|B|C|D|E|F|G)(#|b)*\\s*(maj|dim|dim7)?");
 		Matcher m = p.matcher("C # dim");
 		m.find();

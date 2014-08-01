@@ -19,12 +19,14 @@ public class ChordFormatOptions extends AbstractFormatOptions implements Seriali
 	private String separatorLeftAndRightHand="/",separatorNoteAndStructure=" ",separatorNoteAndNote=" ";
 	private Boolean showNoteName = Boolean.TRUE;
 	private ChordLayout layout=ChordLayout.CONTRACT;
-	private Boolean applyFormat=Boolean.FALSE;
 	
 	private Boolean showMarker;
 	private String markerStart = "[";
 	private String markerEnd = "]";
 	private String markerStartReplacement = "{";
 	private String markerEndReplacement = "}";
+	
+	/**/
+	
 	
 }

@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import lombok.Getter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.kwordz.business.api.music.ChordStructureBusiness;
 import org.cyk.system.kwordz.model.music.ChordStructure;
@@ -27,17 +29,6 @@ public class ParserHelper extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 6518187499895981817L;
 
-	/**
-	 * Note name case in insensitive. Alteration case is sensitive. Zero or many alteration are allowed<br/>
-	 * Examples : C , c , Cm, cm , Bb , bb , Bbb , B#b
-	 */
-	public static final String NOTE_PATTERN_FORMAT = "((?i)%1$s)%2$s(%3$s)*";
-	/**
-	 * Can have a structure symbol. Can contain bass note. Bass note must be at left
-	 * Examples : C , F/C , C sus2 , F/C sus2
-	 */
-	public static final String CHORD_PATTERN_FORMAT = "("+NOTE_PATTERN_FORMAT+"%4$s)?"+NOTE_PATTERN_FORMAT+"(%5$s)?";
-	
 	private static final String[] LEFT_HAND_AND_RIGHT_HAND_SEPERATORS = {"/"};
 	private static final String[] NOTENAME_AND_NOTEALTERATION_SEPERATORS = {" "};
 	
@@ -82,15 +73,15 @@ public class ParserHelper extends AbstractBean implements Serializable {
     }
     
     private Pattern patternNote(Set<String> names,Set<String> alterations){
-    	return Pattern.compile(String.format(NOTE_PATTERN_FORMAT,or(names),or(PATTERN_NOTENAME_AND_NOTEALTERATION_SEPERATORS),or(alterations)));
+    	return Pattern.compile(String.format(PatternType.NOTE.value,or(names),or(PATTERN_NOTENAME_AND_NOTEALTERATION_SEPERATORS),or(alterations)));
     }
     
     private Pattern patternChord(Set<String> names,Set<String> alterations,Set<String> symbols){
-    	return Pattern.compile(String.format(CHORD_PATTERN_FORMAT,or(names),or(PATTERN_NOTENAME_AND_NOTEALTERATION_SEPERATORS),or(alterations),
+    	return Pattern.compile(String.format(PatternType.CHORD.value,or(names),or(PATTERN_NOTENAME_AND_NOTEALTERATION_SEPERATORS),or(alterations),
     			or(LEFT_HAND_AND_RIGHT_HAND_SEPERATORS),or(symbols)));
     }
     
-    public Matcher matcher(Locale locale,PatternMatcherType type,String text){
+    public Matcher matcher(Locale locale,PatternType type,String text){
     	LocaleConfig localeConfig = LocaleConfig.valueOfLocale(locale);
 		ExceptionUtils.getInstance().exception(localeConfig==null,"kwordz.exception.parsing.localenotsupported",new Object[]{locale});
 		
@@ -138,5 +129,36 @@ public class ParserHelper extends AbstractBean implements Serializable {
     public static ParserHelper getInstance() {
 		return INSTANCE;
 	}
+    
+    /**/
+    
+    @Getter
+    public enum PatternType {
+		/**
+		 * Note name case in insensitive. Alteration case is sensitive. Zero or many alteration are allowed<br/>
+		 * Examples : C , c , Cm, cm , Bb , bb , Bbb , B#b
+		 */
+		NOTE("((?i)%1$s)%2$s(%3$s)*")
+    	/**
+		 * Can have a structure symbol. Can contain bass note. Bass note must be at left
+		 * Examples : C , F/C , C sus2 , F/C sus2
+		 */
+    	,CHORD("("+NOTE.getValue()+"%4$s)?"+NOTE.getValue()+"(%5$s)?"
+    			//+ "(\\d){0,2}"
+    			+ "")
+    	
+    	//,FRAGMENT("("+CHORD.getValue()+")?[\\s]*(\\w+.*)")
+    	//,FRAGMENT("("+CHORD.getValue()+"){0,1}")
+    	;
+    	
+    	private String value;
+
+		private PatternType(String value) {
+			this.value = value;
+		}
+    	
+    	
+    }
+
 	
 }

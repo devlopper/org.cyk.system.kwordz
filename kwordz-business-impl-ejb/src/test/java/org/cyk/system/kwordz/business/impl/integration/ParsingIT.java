@@ -18,8 +18,6 @@ import javax.inject.Inject;
 import org.cyk.system.kwordz.business.api.music.ChordBusiness;
 import org.cyk.system.kwordz.business.api.music.ChordStructureBusiness;
 import org.cyk.system.kwordz.business.api.music.NoteBusiness;
-import org.cyk.system.kwordz.business.api.music.ScaleStructureBusiness;
-import org.cyk.system.kwordz.business.impl.ParserHelper;
 import org.cyk.system.kwordz.model.music.Chord;
 import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.kwordz.model.music.NoteAlteration;
@@ -35,9 +33,7 @@ public class ParsingIT extends AbstractBusinessIT {
 
     @Inject private NoteBusiness noteBusiness;
     @Inject private ChordStructureBusiness chordStructureBusiness;
-    @Inject private ScaleStructureBusiness scaleStructureBusiness;
     @Inject private ChordBusiness chordBusiness;
-    @Inject private ParserHelper parserHelper;
     
     @Deployment
     public static Archive<?> createDeployment() {
@@ -46,9 +42,7 @@ public class ParsingIT extends AbstractBusinessIT {
     
     @Override
     protected void populate() {
-    	kwordzBusinessLayer.createChordStructures(chordStructureBusiness);
-    	kwordzBusinessLayer.createScaleStructures(scaleStructureBusiness);
-    	parserHelper.prepare(chordStructureBusiness);
+    	kwordzBusinessLayer.createInitialData();
     }
     
     @Override
@@ -96,27 +90,27 @@ public class ParsingIT extends AbstractBusinessIT {
     
     @Test(expected=BusinessException.class)
 	public void parsingNoteUnsupportedLocale(){
-    	assertEqualsNoteString(new Note(C,FLAT),noteBusiness.parse(Locale.CHINA, "Cbk"));
+    	assertEqualsNote(new Note(C,FLAT),noteBusiness.parse(Locale.CHINA, "Cbk"));
     }
     
     @Test(expected=BusinessException.class)
 	public void parsingNoteNotFound(){
-    	assertEqualsNoteString(new Note(C,FLAT),noteBusiness.parse(Locale.ENGLISH, ""));
+    	assertEqualsNote(new Note(C,FLAT),noteBusiness.parse(Locale.ENGLISH, ""));
     }
     
     @Test(expected=BusinessException.class)
 	public void parsingNoteNameUnknown(){
-    	assertEqualsNoteString(new Note(C,FLAT),noteBusiness.parse(Locale.ENGLISH, "Z"));
+    	assertEqualsNote(new Note(C,FLAT),noteBusiness.parse(Locale.ENGLISH, "Z"));
     }
     
     @Test(expected=BusinessException.class)
 	public void parsingNoteAlterationUnknown(){
-    	assertEqualsNoteString(new Note(C,FLAT),noteBusiness.parse(Locale.ENGLISH, "Cl"));
+    	assertEqualsNote(new Note(C,FLAT),noteBusiness.parse(Locale.ENGLISH, "Cl"));
     }
     
     @Test(expected=BusinessException.class)
 	public void parsingNoteUnsupportedCaseEnglishFlat(){
-    	assertEqualsNoteString(new Note(B,FLAT),noteBusiness.parse(Locale.ENGLISH, "bB"));
+    	assertEqualsNote(new Note(B,FLAT),noteBusiness.parse(Locale.ENGLISH, "bB"));
     }
     
     /* Chord */
@@ -140,13 +134,13 @@ public class ParsingIT extends AbstractBusinessIT {
     	assertParsingChord("maj", E, NONE, Locale.ENGLISH, "Emaj");
     	assertParsingChord("maj", E, FLAT, Locale.ENGLISH, "Eb");
     	
-    	assertParsingChord("maj", F, NONE, Locale.ENGLISH, "G/F");
-    	assertParsingChord("maj", F, SHARP, Locale.ENGLISH, "Bb/F#m");
+    	assertParsingChord("maj", F, NONE,G,NONE, Locale.ENGLISH, "G/F");
+    	assertParsingChord("min", F, SHARP,B,FLAT, Locale.ENGLISH, "Bb/F#m");
     	
     	assertParsingChord("maj", G, NONE, Locale.ENGLISH, "G/G");
-    	assertParsingChord("maj", G, NONE, Locale.ENGLISH, "G/G#");
-    	assertParsingChord("maj", G, NONE, Locale.ENGLISH, "G#/G");
-    	assertParsingChord("maj", G, NONE, Locale.ENGLISH, "G#/G#");
+    	assertParsingChord("maj", G, SHARP,G,NONE, Locale.ENGLISH, "G/G#");
+    	assertParsingChord("maj", G, NONE,G,SHARP, Locale.ENGLISH, "G#/G");
+    	assertParsingChord("maj", G, SHARP, Locale.ENGLISH, "G#/G#");
     	assertParsingChord("maj", A, NONE, Locale.ENGLISH, "A");
     	assertParsingChord("maj", B, NONE, Locale.ENGLISH, "B");
     	
@@ -154,7 +148,7 @@ public class ParsingIT extends AbstractBusinessIT {
     	
     	assertParsingChord("maj", C, NONE, Locale.FRENCH, "do");
     	assertParsingChord("maj", C, SHARP, Locale.FRENCH, "Do#");
-    	assertParsingChord("min", C, NONE, Locale.FRENCH, "dOm");
+    	assertParsingChord("min7", C, NONE, Locale.FRENCH, "dOm7");
     	assertParsingChord("maj7", C, NONE, Locale.FRENCH, "domaj7");
     }
     
@@ -185,14 +179,20 @@ public class ParsingIT extends AbstractBusinessIT {
     
     /**/
    
-    protected void assertParsingNote(NoteName name,NoteAlteration alteration,Locale locale,String text){
-    	assertEqualsNoteString(new Note(name,alteration),noteBusiness.parse(locale, text));
+    private void assertParsingNote(NoteName name,NoteAlteration alteration,Locale locale,String text){
+    	assertEqualsNote(new Note(name,alteration),noteBusiness.parse(locale, text));
     }
     
-    protected void assertParsingChord(String structureCode,NoteName name,NoteAlteration alteration,Locale locale,String text){
+    private void assertParsingChord(String structureCode,NoteName rootName,NoteAlteration rootAlteration,NoteName bassName,NoteAlteration bassAlteration,Locale locale,String text){
     	Chord chord = new Chord();
-    	chordBusiness.generateNotes(chord, chordStructureBusiness.find(structureCode), new Note(name,alteration));
-    	assertEquals(chord,chordBusiness.parse(locale, text));
+    	chordBusiness.generateNotes(chord, chordStructureBusiness.find(structureCode), new Note(rootName,rootAlteration));
+    	if(bassName!=null)
+    		chord.setBass(new Note(bassName, bassAlteration));
+    	assertEqualsChord(chord,chordBusiness.parse(locale, text));
+    }
+    
+    private void assertParsingChord(String structureCode,NoteName rootName,NoteAlteration rootAlteration,Locale locale,String text){
+    	assertParsingChord(structureCode, rootName, rootAlteration,null,null, locale, text);
     }
     
 }

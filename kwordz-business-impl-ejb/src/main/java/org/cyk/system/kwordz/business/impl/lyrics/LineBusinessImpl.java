@@ -11,12 +11,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.kwordz.business.api.lyrics.FragmentBusiness;
 import org.cyk.system.kwordz.business.api.lyrics.LineBusiness;
 import org.cyk.system.kwordz.business.impl.AbstractMusicBusinessImpl;
+import org.cyk.system.kwordz.business.impl.KwordzBusinessLayer;
 import org.cyk.system.kwordz.model.lyrics.Fragment;
-import org.cyk.system.kwordz.model.lyrics.FragmentFormatOptions;
 import org.cyk.system.kwordz.model.lyrics.Line;
 import org.cyk.system.kwordz.model.lyrics.LineFormatOptions;
 import org.cyk.system.kwordz.model.lyrics.LineFormatOptions.ChordLocation;
+import org.cyk.system.kwordz.model.music.ChordFormatOptions;
 import org.cyk.system.kwordz.persistence.api.lyrics.LineDao;
+import org.cyk.system.root.model.ContentType;
 
 public class LineBusinessImpl extends AbstractMusicBusinessImpl<Line, LineDao,LineFormatOptions> implements LineBusiness,Serializable {
 
@@ -34,40 +36,67 @@ public class LineBusinessImpl extends AbstractMusicBusinessImpl<Line, LineDao,Li
 		for(Fragment fragment : line.getFragments())
 			fragmentBusiness.transpose(fragment, distance);
 	}
+	
+	@Override
+	protected LineFormatOptions defaultFormatOptions() {
+		return KwordzBusinessLayer.getInstance().getDefaultLineFormatOptions();
+	}
 
 	@Override
-	public String format(Locale locale, Line line, LineFormatOptions options) {
+	public String format(Locale locale, Line line,ContentType contentType, LineFormatOptions options) {
+		if(line==null)
+			return null;
 		StringBuilder builder = new StringBuilder();
 		StringBuilder chords;
 		switch(options.getChordLocation()){
 		case FOLLOW_FRAGMENT:
 			Collection<String> collection = new ArrayList<>();
 			for(Fragment fragment : line.getFragments())
-				collection.add(fragmentBusiness.format(locale, fragment, options.getFragmentFormatOptions()));
-			builder.append(StringUtils.join(collection.iterator()," "));
+				collection.add(fragmentBusiness.format(locale, fragment,contentType, options.getFragmentFormatOptions()));
+			builder.append(StringUtils.join(collection.iterator(),contentType.getSpaceMarker()));
 			break;
 		case TOP:case LEFT:case RIGHT:
 			chords = new StringBuilder();
-			options.getFragmentFormatOptions().setPadding(ChordLocation.TOP.equals(options.getChordLocation())?FragmentFormatOptions.PADDING:null);
+			
+			options.getFragmentFormatOptions().setPadding(ChordLocation.TOP.equals(options.getChordLocation())?contentType.getSpaceMarker():null);
 			options.getFragmentFormatOptions().getChordFormatOptions().setShowMarker(!ChordLocation.TOP.equals(options.getChordLocation()));
 			for(Fragment fragment : line.getFragments())
-				fragmentBusiness.format(locale, fragment, options.getFragmentFormatOptions(), chords, builder);
+				fragmentBusiness.format(locale, fragment, contentType,options.getFragmentFormatOptions(), chords, builder);
 			if(ChordLocation.LEFT.equals(options.getChordLocation()))
 				builder = join(chords,builder, options.getFragmentFormatOptions().getShowChord(), options.getFragmentFormatOptions().getShowText());
 			else if(ChordLocation.RIGHT.equals(options.getChordLocation()))
 				builder = join(builder,chords, options.getFragmentFormatOptions().getShowText(), options.getFragmentFormatOptions().getShowChord());
 				//builder.append(chords);
 			else if(ChordLocation.TOP.equals(options.getChordLocation()))
-				builder.insert(0,chords+"\r\n");
+				if(Boolean.TRUE.equals(options.getShowEmptyLineChord()) || !StringUtils.isBlank(chords))
+					builder.insert(0,chords+contentType.getNewLineMarker());
 			break;
 		}
-		return builder.toString();
+		return StringUtils.stripEnd(builder.toString(),null);
 	}
 	
 	@Override
 	public Line parse(Locale locale, String text) {
-		// TODO Auto-generated method stub
-		return null;
+		Line line = new Line();
+		ChordFormatOptions chordFormatOptions = KwordzBusinessLayer.getInstance().getDefaultChordFormatOptions();
+		Integer markerChordStartIndex =  StringUtils.indexOf(text, chordFormatOptions.getMarkerStart());
+		if(markerChordStartIndex>0){
+			line.getFragments().add(fragmentBusiness.parse(locale, StringUtils.substring(text, 0, markerChordStartIndex)));
+			text = StringUtils.substring(text, markerChordStartIndex);
+		}
+		
+		String fragmentString;
+		while(StringUtils.isNotEmpty(text)){
+			Integer fragmentEndIndex = StringUtils.indexOf(text, chordFormatOptions.getMarkerStart());
+			if(fragmentEndIndex>=0)
+				fragmentEndIndex = StringUtils.indexOf(text, chordFormatOptions.getMarkerStart(),fragmentEndIndex+1);
+			if(fragmentEndIndex==-1)
+				fragmentEndIndex = text.length();
+			fragmentString = StringUtils.substring(text, 0,fragmentEndIndex);
+			line.getFragments().add(fragmentBusiness.parse(locale, fragmentString));
+			text = StringUtils.substring(text, fragmentString.length());
+		}
+		return line;
 	}
 	
 	/**/

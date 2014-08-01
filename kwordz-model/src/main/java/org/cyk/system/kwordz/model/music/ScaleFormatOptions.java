@@ -11,7 +11,5 @@ import org.cyk.system.kwordz.model.AbstractFormatOptions;
 public class ScaleFormatOptions extends AbstractFormatOptions implements Serializable {
 
 	private static final long serialVersionUID = 5281169944501545966L;
-
-	
 	
 }

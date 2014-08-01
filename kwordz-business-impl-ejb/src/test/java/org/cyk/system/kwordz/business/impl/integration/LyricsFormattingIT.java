@@ -15,6 +15,7 @@ import org.cyk.system.kwordz.model.lyrics.LineFormatOptions;
 import org.cyk.system.kwordz.model.lyrics.LineFormatOptions.ChordLocation;
 import org.cyk.system.kwordz.model.lyrics.Part;
 import org.cyk.system.kwordz.model.lyrics.PartFormatOptions;
+import org.cyk.system.root.model.ContentType;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
@@ -75,6 +76,8 @@ public class LyricsFormattingIT extends AbstractBusinessIT {
     	
     	assertEqualsFragment(Locale.FRENCH, "Jesus is good", "do","[do maj]Jesus is good","Jesus is good[do maj]","[do maj]","Jesus is good","Jesus is good", "do maj       ");
     	assertEqualsFragment(Locale.FRENCH, "he", "do sus2","[do sus2]he","he[do sus2]","[do sus2]","he", "he     ", "do sus2");
+    	
+    	//assertEqualsFragment(Locale.FRENCH, "he", "","he","he","","he", "he", "");
     }
     
     @Test
@@ -115,7 +118,7 @@ public class LyricsFormattingIT extends AbstractBusinessIT {
     	
     	options.setPadding(FragmentFormatOptions.PADDING);
     	options.getChordFormatOptions().setShowMarker(Boolean.FALSE);
-    	fragmentBusiness.format(locale, fragment ,options, cl, tl);
+    	fragmentBusiness.format(locale, fragment ,ContentType.TEXT,options, cl, tl);
     	assertEquals(outputChord, cl.toString());
     	assertEquals(outputLine, tl.toString());
     	assertEquals(tl.length(), cl.length());

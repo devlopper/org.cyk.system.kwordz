@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import org.cyk.system.kwordz.business.impl.KwordzBusinessLayer;
+import org.cyk.system.kwordz.model.music.Chord;
 import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.impl.BusinessIntegrationTestHelper;
@@ -76,10 +77,30 @@ public abstract class AbstractBusinessIT extends AbstractIntegrationTestJpaBased
             System.out.println(validator.getMessagesAsString());
         
     }
-    
+    /*
     protected void assertEqualsNoteString(Note expected,Note actual){
 		assertEquals(expected.toString(),actual.toString());
+	}*/
+    
+    protected void assertEqualsNote(Note expected,Note actual){
+		assertEquals("Note equals",Boolean.TRUE,
+			expected==null?actual==null:
+			(
+				( expected.getName()==null?actual.getName()==null:expected.getName().equals(actual.getName()) ) &&
+				( expected.getAlteration()==null?actual.getAlteration()==null:expected.getAlteration().equals(actual.getAlteration()) )
+			)
+		);
 	}
+    
+    protected void assertEqualsChord(Chord expected,Chord actual){
+    	if(expected!=null && actual!=null){
+    		assertEquals("Structure", expected.getStructure().getCode(), actual.getStructure().getCode());
+    		assertEquals("Lenght", expected.getNotes().size(), actual.getNotes().size());
+    		for(int i=0;i<expected.getNotes().size();i++)
+    			assertEqualsNote(expected.getNotes().get(i), actual.getNotes().get(i));
+    		assertEqualsNote(expected.getBass(), actual.getBass());
+    	}
+    }
     
     public static Archive<?> createRootDeployment() {
         return  

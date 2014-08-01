@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.6" icons="false" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" language="java" name="org.cyk.system.kwordz.model.song.Album" project="kwordz-model" 
+    file="/kwordz-model/src/main/java/org/cyk/system/kwordz/model/song/Album.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="43" width="150" x="41" y="120"/>    
+    <display autosize="false" stereotype="false" package="false" initial-value="false" signature="false" 
+      accessors="true" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="org.cyk.system.kwordz.model.song.Song" project="kwordz-model" 
+    file="/kwordz-model/src/main/java/org/cyk/system/kwordz/model/song/Song.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="43" width="143" x="41" y="41"/>    
+    <display autosize="false" stereotype="false" package="false" initial-value="false" signature="false" 
+      accessors="true" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="org.cyk.system.kwordz.model.song.Singer" project="kwordz-model" 
+    file="/kwordz-model/src/main/java/org/cyk/system/kwordz/model/song/Singer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="43" width="151" x="41" y="203"/>    
+    <display autosize="false" stereotype="false" package="false" initial-value="false" signature="false" 
+      accessors="true" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="org.cyk.system.kwordz.model.lyrics.Lyrics" project="kwordz-model" 
+    file="/kwordz-model/src/main/java/org/cyk/system/kwordz/model/lyrics/Lyrics.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="34" width="113" x="359" y="96"/>    
+    <display autosize="false" stereotype="false" package="false" initial-value="false" signature="false" 
+      accessors="true" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="org.cyk.system.kwordz.model.music.Note" project="kwordz-model" 
+    file="/kwordz-model/src/main/java/org/cyk/system/kwordz/model/music/Note.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="34" width="104" x="394" y="51"/>    
+    <display autosize="false" stereotype="false" package="false" initial-value="false" signature="false" 
+      accessors="true" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="org.cyk.system.root.model.file.File" project="kwordz-model" 
+    file="H:/Repositories/artifacts/maven/org/cyk/system/root/root-model/0.0.1/root-model-0.0.1.jar" binary="true" 
+    corner="BOTTOM_RIGHT">    
+    <position height="34" width="97" x="372" y="145"/>    
+    <display autosize="false" stereotype="false" package="false" initial-value="false" signature="false" 
+      accessors="true" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <association id="7">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="8" name="media"/>      
+      <multiplicity id="9" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="false" multiplicity="true"/>  
+  </association>  
+  <association id="10">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="11" name="tone"/>      
+      <multiplicity id="12" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="false" multiplicity="true"/>  
+  </association>  
+  <association id="13">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="14" name="album"/>      
+      <multiplicity id="15" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="false" multiplicity="true"/>  
+  </association>  
+  <association id="16">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="17" name="singer"/>      
+      <multiplicity id="18" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="false" multiplicity="true"/>  
+  </association>  
+  <association id="19">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="20" name="lyrics"/>      
+      <multiplicity id="21" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="false" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="false" package="false" initial-value="false" signature="false" 
+    accessors="true" visibility="false">    
+    <attributes public="false" package="false" protected="false" private="false" static="false"/>    
+    <operations public="false" package="false" protected="false" private="false" static="false"/>  
+  </classifier-display>  
+  <association-display labels="false" multiplicity="true"/>
+</class-diagram>

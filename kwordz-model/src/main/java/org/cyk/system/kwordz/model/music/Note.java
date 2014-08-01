@@ -3,6 +3,7 @@ package org.cyk.system.kwordz.model.music;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,10 @@ public class Note extends AbstractIdentifiable implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
+	@Enumerated
 	private NoteName name;
+	
+	@Enumerated
 	private NoteAlteration alteration;
 	
 	public Note(NoteName name, NoteAlteration alteration) {

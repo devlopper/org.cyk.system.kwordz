@@ -87,7 +87,7 @@ public class MusicIT extends AbstractBusinessIT {
     	
     	//scales
     	structure = scaleStructureBusiness.find("maj");
-    	debug(structure);
+    	
     	assertEqualsSequence(structure, new Note(C,NONE),Arrays.asList(new Note(C),new Note(D),new Note(E),new Note(F),new Note(G),new Note(A),new Note(B)));
     	assertEqualsSequence(structure, new Note(C,SHARP),
     			Arrays.asList(new Note(C,SHARP),new Note(D,SHARP),new Note(F),new Note(F,SHARP),new Note(G,SHARP),new Note(A,SHARP),new Note(C)));

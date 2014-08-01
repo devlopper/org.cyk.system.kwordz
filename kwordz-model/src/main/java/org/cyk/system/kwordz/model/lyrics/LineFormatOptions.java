@@ -18,4 +18,6 @@ public class LineFormatOptions extends AbstractFormatOptions implements Serializ
 	
 	private ChordLocation chordLocation = ChordLocation.FOLLOW_FRAGMENT;
 	
+	private Boolean showEmptyLineChord=Boolean.FALSE;
+	
 }

@@ -16,7 +16,7 @@ import lombok.Setter;
 import org.cyk.system.root.model.AbstractEnumeration;
 
 @Getter @Setter @Entity @NoArgsConstructor
-public class SongBook extends AbstractEnumeration implements Serializable{
+public class SongCollection extends AbstractEnumeration implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	

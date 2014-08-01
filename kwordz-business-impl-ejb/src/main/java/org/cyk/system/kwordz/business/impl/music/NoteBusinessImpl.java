@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.kwordz.business.api.music.NoteBusiness;
 import org.cyk.system.kwordz.business.impl.KwordzBusinessLayer;
 import org.cyk.system.kwordz.business.impl.ParserHelper;
-import org.cyk.system.kwordz.business.impl.PatternMatcherType;
+import org.cyk.system.kwordz.business.impl.ParserHelper.PatternType;
 import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.kwordz.model.music.NoteAlteration;
 import org.cyk.system.kwordz.model.music.NoteFormatOptions;
@@ -181,7 +181,7 @@ public class NoteBusinessImpl extends AbstractTypedBusinessService<Note, NoteDao
 	
 	@Override
 	public Note parse(Locale locale, String text) {
-		Matcher matcher = parserHelper.matcher(locale, PatternMatcherType.NOTE, text);
+		Matcher matcher = parserHelper.matcher(locale, PatternType.NOTE, text);
 		exceptionUtils().exception(matcher.group(1)==null,"kwordz.exception.parsing.note.name.unknown",new Object[]{text});
 		Note note = new Note();
 		note.setName(EnumHelper.getInstance().getValueOf(NoteName.class, locale, matcher.group(1),Boolean.FALSE));

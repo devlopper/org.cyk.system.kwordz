@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+	<!--
+	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/javax.faces.resource/css/common.css.jsf?ln=org.cyk.ui.web.primefaces.kwordz" />
+	-->
+    <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
+        <ui:param name="pageController" value="#{indexController}" />
+        <ui:define name="body">
+        	A&nbsp;&nbsp;&nbsp;BC
+            <p:tabView>
+            	<p:tab title="Lyrics">
+            		<p:panelGrid columns="2">
+            			<h:panelGroup>
+            				<h:outputText value="Input" /><br/>
+            				<h:panelGroup>
+            					<p:selectOneMenu value="#{kwordzTestingBoard.locale}" converter="#{objectConverter}">
+            						<f:selectItems value="#{kwordzTestingBoard.locales}" />
+            					</p:selectOneMenu>
+            				</h:panelGroup>
+            				<br/>
+            				<p:inputTextarea value="#{kwordzTestingBoard.inputLyrics}"/><br/>
+            				<p:commandButton value="OK" action="#{kwordzTestingBoard.parseInputLyrics}" update="outputlyrics" />
+            			</h:panelGroup>
+            			<h:panelGroup id="outputlyrics">
+            				<h:outputText value="Output" /><br/>
+            				<pre>
+            					<h:outputText id="outputlyrics1" value="#{kwordzTestingBoard.outputLyrics}" escape="false"/>
+            				</pre>
+            				
+            				<p:separator/>
+            				<pre><h:outputText id="outputlyrics2" value="#{kwordzTestingBoard.outputLyrics}"/></pre>
+            			</h:panelGroup>
+            		</p:panelGrid>
+            	</p:tab>
+            </p:tabView>
+        </ui:define>
+    </ui:decorate>
+ 
+</html>

@@ -11,13 +11,15 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.kwordz.business.api.music.ChordBusiness;
 import org.cyk.system.kwordz.business.api.music.ChordStructureBusiness;
+import org.cyk.system.kwordz.business.impl.KwordzBusinessLayer;
 import org.cyk.system.kwordz.business.impl.ParserHelper;
-import org.cyk.system.kwordz.business.impl.PatternMatcherType;
+import org.cyk.system.kwordz.business.impl.ParserHelper.PatternType;
 import org.cyk.system.kwordz.model.music.Chord;
 import org.cyk.system.kwordz.model.music.ChordFormatOptions;
 import org.cyk.system.kwordz.model.music.ChordStructure;
 import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.kwordz.persistence.api.music.ChordDao;
+import org.cyk.system.root.model.ContentType;
 
 public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordStructure,Chord, ChordDao,ChordStructureBusiness,ChordFormatOptions> implements ChordBusiness,Serializable {
 
@@ -55,8 +57,15 @@ public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordS
 		return ok;
 	}
 	
+	@Override
+	protected ChordFormatOptions defaultFormatOptions() {
+		return KwordzBusinessLayer.getInstance().getDefaultChordFormatOptions();
+	}
+	
 	@Override 
-	public String format(Locale locale, Chord chord, ChordFormatOptions options) {
+	public String format(Locale locale, Chord chord, ContentType contentType,ChordFormatOptions options) {
+		if(chord==null)
+			return null;
 		StringBuilder builder = new StringBuilder();
 		if(Boolean.TRUE.equals(options.getShowMarker()))
 			builder.append(options.getMarkerStart());
@@ -77,6 +86,9 @@ public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordS
 		
 		if(Boolean.TRUE.equals(options.getShowMarker()))
 			builder.append(options.getMarkerEnd());
+		
+		
+		
 		return builder.toString();
 	}
 	
@@ -84,7 +96,7 @@ public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordS
 	public Chord parse(Locale locale, String text) {
 		/*Letter[#b]ChordType - left hand = bass note = single note only*/
 		//System.out.println("ChordBusinessImpl.parse() : "+text);
-		Matcher matcher = parserHelper.matcher(locale, PatternMatcherType.CHORD, text);
+		Matcher matcher = parserHelper.matcher(locale, PatternType.CHORD, text);
 		
 		Chord chord = new Chord();
 		if(StringUtils.isNotEmpty(matcher.group(1))){
@@ -96,14 +108,21 @@ public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordS
 		if(chord.getBass()!=null && noteBusiness.equals(base, chord.getBass(), Boolean.FALSE))
 			chord.setBass(null);
 		text = parserHelper.stringAfter(text, noteString);
+		
 		if(StringUtils.isBlank(text)){
-			text = "maj";
+			text = "maj";//TODO constant somewhere or map empty string or blank string to this : a chord can have many symbols. how o handle this???
 		}else{
 			exceptionUtils().exception(StringUtils.isEmpty(matcher.group(6)),"kwordz.exception.parsing.chord.structure.unknown",new Object[]{text});
-			text = matcher.group(6);
+			//text = matcher.group(6);
+			
+			//exceptionUtils().exception(StringUtils.isEmpty(matcher.group(6)),"kwordz.exception.parsing.chord.structure.unknown",new Object[]{text});
 		}
 		//System.out.println(text);
-		chord.setStructure(structureBusiness.findBySymbol(text));
+		try {
+			chord.setStructure(structureBusiness.findBySymbol(text));
+		} catch (Exception e) {
+			exceptionUtils().exception(Boolean.TRUE,"kwordz.exception.parsing.chord.structure.unknown",new Object[]{text});
+		}
 		generateNotes(chord, chord.getStructure(), base);
 		return chord;
 	}

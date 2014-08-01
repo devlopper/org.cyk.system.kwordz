@@ -18,7 +18,6 @@ import javax.inject.Inject;
 import org.cyk.system.kwordz.business.api.music.ChordBusiness;
 import org.cyk.system.kwordz.business.api.music.ChordStructureBusiness;
 import org.cyk.system.kwordz.business.api.music.NoteBusiness;
-import org.cyk.system.kwordz.business.api.music.ScaleStructureBusiness;
 import org.cyk.system.kwordz.model.music.Chord;
 import org.cyk.system.kwordz.model.music.ChordFormatOptions;
 import org.cyk.system.kwordz.model.music.Note;
@@ -35,7 +34,6 @@ public class FormattingIT extends AbstractBusinessIT {
 
     @Inject private NoteBusiness noteBusiness;
     @Inject private ChordStructureBusiness chordStructureBusiness;
-    @Inject private ScaleStructureBusiness scaleStructureBusiness;
     @Inject private ChordBusiness chordBusiness;
     
     @Deployment
@@ -45,8 +43,7 @@ public class FormattingIT extends AbstractBusinessIT {
     
     @Override
     protected void populate() {
-    	kwordzBusinessLayer.createChordStructures(chordStructureBusiness);
-    	kwordzBusinessLayer.createScaleStructures(scaleStructureBusiness);
+    	kwordzBusinessLayer.createInitialData();
     }
     
     @Override

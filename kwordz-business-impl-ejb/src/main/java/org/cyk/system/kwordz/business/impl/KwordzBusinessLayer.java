@@ -47,10 +47,12 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
 	@Inject private ParserHelper parserHelper;
 	@Inject private LanguageBusiness languageBusiness;
 	
+	
 	@Override
 	protected void initialisation() {
 		INSTANCE = this;
 		super.initialisation();
+		
 		configFormatOptions(defaultNoteFormatOptions);
 		configFormatOptions(defaultChordFormatOptions);
 		configFormatOptions(defaultFragmentFormatOptions);
@@ -59,6 +61,8 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
 		configFormatOptions(defaultLyricsFormatOptions);
 		parserHelper.prepare(chordStructureBusiness);
 		languageBusiness.registerResourceBundle("org.cyk.system.kwordz.business.impl.resources.exception", getClass().getClassLoader());
+		
+		
 	}
 	
     @Override
@@ -86,6 +90,7 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
     	createChordStructure(structureBusiness,"maj13", 4,3,4,3,3,4);
     	createChordStructure(structureBusiness,"min","m", 3,4);
     	createChordStructure(structureBusiness,"min6","m6", 3,4,2);
+    	createChordStructure(structureBusiness,"min7","m7", 3,4,3);
     	createChordStructure(structureBusiness,"min9","m9", 3,4,3,4);
     	createChordStructure(structureBusiness,"min11","m11", 3,4,3,4,3);
     	createChordStructure(structureBusiness,"min13","m13", 3,4,3,4,3,4);

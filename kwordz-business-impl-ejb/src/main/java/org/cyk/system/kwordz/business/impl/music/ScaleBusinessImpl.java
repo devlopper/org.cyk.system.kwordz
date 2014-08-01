@@ -11,6 +11,7 @@ import org.cyk.system.kwordz.model.music.Scale;
 import org.cyk.system.kwordz.model.music.ScaleFormatOptions;
 import org.cyk.system.kwordz.model.music.ScaleStructure;
 import org.cyk.system.kwordz.persistence.api.music.ScaleDao;
+import org.cyk.system.root.model.ContentType;
 
 public class ScaleBusinessImpl extends AbstractNoteCollectionBusinessImpl<ScaleStructure,Scale, ScaleDao,ScaleStructureBusiness,ScaleFormatOptions> implements ScaleBusiness,Serializable {
 
@@ -20,9 +21,15 @@ public class ScaleBusinessImpl extends AbstractNoteCollectionBusinessImpl<ScaleS
 	public ScaleBusinessImpl(ScaleDao dao,ScaleStructureBusiness structureBusiness) { 
 		super(dao,structureBusiness);   
 	}
+	
+	@Override
+	protected ScaleFormatOptions defaultFormatOptions() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
-	public String format(Locale locale, Scale object, ScaleFormatOptions options) {
+	public String format(Locale locale, Scale object,ContentType contentType ,ScaleFormatOptions options) {
 		// TODO Auto-generated method stub
 		return null;
 	}

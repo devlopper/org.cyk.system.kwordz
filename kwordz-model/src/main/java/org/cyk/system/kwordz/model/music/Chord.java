@@ -2,17 +2,22 @@ package org.cyk.system.kwordz.model.music;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @Entity @NoArgsConstructor
 public class Chord extends AbstractNoteCollection<ChordStructure> implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	private Note bass;
-	private int inversionOrder;
+	@OneToOne(cascade=CascadeType.ALL) private Note bass;
+	
+	private Byte inversionOrder;
 	
 	public Chord(ChordStructure structure,Note bass) {
 		super(structure);

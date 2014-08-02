@@ -1,7 +1,10 @@
 package org.cyk.system.kwordz.business.impl;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import org.cyk.system.kwordz.business.api.AbstractMusicBusiness;
 import org.cyk.system.kwordz.model.AbstractFormatOptions;
@@ -35,4 +38,8 @@ public abstract class AbstractMusicBusinessImpl<TYPE extends AbstractIdentifiabl
 	
 	protected abstract OPTIONS defaultFormatOptions();
 
+	@Override
+	public Set<Locale> findParsableLocales() {
+		return new LinkedHashSet<>(Arrays.asList(Locale.ENGLISH,Locale.FRENCH));
+	}
 }

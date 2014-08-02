@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+      
+	<table class="cyk-kwordz-layout-north-table" cellpadding="0" cellspacing="0"><tr>
+		<td class="cyk-kwordz-layout-north-table-td-logo">LOGO</td>
+		<td class="cyk-kwordz-layout-north-table-td-searchinput">
+			<table class="cyk-kwordz-layout-north-table-td-searchinput-table" border="0" cellpadding="0" cellspacing="0"><tr>
+				<td class="cyk-kwordz-layout-north-table-td-searchinput-table-td-input">
+					<p:inputText value="#{userSessionController.searchInput}" >
+				
+					</p:inputText>
+				</td>
+				<td class="cyk-kwordz-layout-north-table-td-searchinput-table-td-button"><cyk:command value="#{userSessionController.searchCommand}" /></td>
+			</tr> </table>
+		</td>
+		<td class="cyk-kwordz-layout-north-table-td-others">OTHER ACTIONS</td>
+	</tr></table>
+	
+</html>

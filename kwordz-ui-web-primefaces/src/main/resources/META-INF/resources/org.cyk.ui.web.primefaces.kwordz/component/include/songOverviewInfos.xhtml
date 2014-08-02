@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+      
+      <table class="cyk-kwordz-song-overview-table-tr-infos-table">
+			<tr><td class="cyk-kwordz-song-overview-table-tr-infos-table-td-songName">
+				<h:link outcome="songView" value="#{songName}">
+					<f:param name="#{webManager.requestParameterIdentifiable}" value="#{songOverview.song.identifier}" />
+				</h:link>
+			</td> </tr>
+			<tr><td class="cyk-kwordz-song-overview-table-tr-infos-table-td-singerName">
+				<p:graphicImage library="org.cyk.ui.web.primefaces.kwordz" name="images/icons/32/person.png" 
+					alt="#{uiManager.text('word.singer')} : #{songOverview.song.album.singer.name}" title="#{uiManager.text('word.singer')} : #{songOverview.song.album.singer.name}"/>
+				<h:link outcome="singerView" value="#{singerName}">
+					<f:param name="#{webManager.requestParameterIdentifiable}" value="#{songOverview.song.album.singer.identifier}" />
+				</h:link>
+			</td></tr>
+			<tr><td class="cyk-kwordz-song-overview-table-tr-infos-table-td-albumName">
+				<p:graphicImage library="org.cyk.ui.web.primefaces.kwordz" name="images/icons/32/disc.png" 
+					alt="#{uiManager.text('word.album')} : #{songOverview.song.album.name}" title="#{uiManager.text('word.album')} : #{songOverview.song.album.name}"/>
+				<h:link outcome="albumView" value="#{albumName}">
+					<f:param name="#{webManager.requestParameterIdentifiable}" value="#{songOverview.song.album.identifier}" />
+				</h:link>
+			</td></tr>
+		</table>
+      
+	
+</html>

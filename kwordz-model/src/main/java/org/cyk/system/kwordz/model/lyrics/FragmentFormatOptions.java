@@ -23,7 +23,7 @@ public class FragmentFormatOptions extends AbstractFormatOptions implements Seri
 	public static final String TEXT_HTML_TAG_CLASS = "cyk-kwordz-lyrics";
 	
 	private ChordFormatOptions chordFormatOptions = new ChordFormatOptions();
-	//private Layout layout=Layout.CHORD_LEFT_TEXT;
+
 	private Boolean chordAtLeft = Boolean.TRUE;
 	private Boolean showChord=Boolean.TRUE;
 	private Boolean showText=Boolean.TRUE;

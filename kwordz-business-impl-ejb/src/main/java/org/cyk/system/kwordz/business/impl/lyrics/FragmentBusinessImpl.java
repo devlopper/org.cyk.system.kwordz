@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import lombok.NoArgsConstructor;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.kwordz.business.api.lyrics.FragmentBusiness;
 import org.cyk.system.kwordz.business.api.music.ChordBusiness;
@@ -63,7 +64,17 @@ public class FragmentBusinessImpl extends AbstractMusicBusinessImpl<Fragment, Fr
 	@Override
 	public void format(Locale locale, Fragment fragment,ContentType contentType,FragmentFormatOptions options, StringBuilder chords,StringBuilder texts) {
 		FragmentPartBuilder chordBuilder=new FragmentPartBuilder();
-		FragmentPartBuilder textBuilder = new FragmentPartBuilder(StringUtils.defaultString(fragment.getText()));
+		FragmentPartBuilder textBuilder;
+		String textString = StringUtils.defaultString(fragment.getText());
+		//Clean text string
+		switch(contentType){
+		case HTML: 
+			textString = StringEscapeUtils.escapeHtml4(textString);
+			break;
+		default:
+			break;
+		}
+		textBuilder = new FragmentPartBuilder(textString);
 		
 		if(StringUtils.isNotEmpty(textBuilder.value))
 			addSpaceSeperator(texts,contentType.getSpaceMarker());
@@ -98,48 +109,17 @@ public class FragmentBusinessImpl extends AbstractMusicBusinessImpl<Fragment, Fr
 	private void style(Locale locale, Fragment fragment,ContentType contentType,FragmentFormatOptions options, FragmentPartBuilder chords,FragmentPartBuilder texts){
 		switch (contentType) {
 		case TEXT:
-			
+			// Nothing to do
 			break;
 		case HTML:
-			/*
-			//System.out.print(chords+"| Lenght : "+chords.length());
-			int i;
-			if(StringUtils.endsWith(chords, contentType.getSpaceMarker())){
-				int k = contentType.getSpaceMarker().length();
-				i=chords.length()-k;
-				while(i>k && chords.substring(i, i+k).equals(contentType.getSpaceMarker())){
-					//System.out.println("FragmentBusinessImpl.style() "+i+" : "+chords.substring(i, i+k));
-					//if(chords.substring(i, i+k).equals(contentType.getSpaceMarker()))
-						i-=k;
-					//else{
-						//System.out.println("FALSE "+i+" : "+chords.substring(i, i+k));
-						//break;
-					//}
-				}
-				//i=i+1-k;
-			}else
-				i = chords.length();
-			*/
-			
+			//Chord
+			options.getChordTag().getAttributes().put("title", chords.value);
 			chords.value = htmlBusiness.format(options.getChordTag(),chords.value);
-			
-			//chords.insert(i,"</span>");
-			//System.out.print(i+" : "+chords);
-			//chords.insert(0, "<span style=\"background:red;\">");
-			//System.out.println(i+" --- "+chords);
+			//Text
+			texts.value = htmlBusiness.format(options.getTextTag(),texts.value);
 			break;
 		}
 	}
-	
-	/*
-	private void spaceChordLine(StringBuilder chordLine,StringBuilder textLine,String spaces){
-		if(chordLine.length()>0 && chordLine.charAt(chordLine.length()-1)!=' '){
-			chordLine.append(spaces);
-			if(textLine!=null)
-				textLine.append(spaces);
-		}
-	}
-	*/
 	
 	@Override
 	public Fragment parse(Locale locale, String text) {

@@ -1,6 +1,7 @@
 package org.cyk.system.kwordz.business.api;
 
 import java.util.Locale;
+import java.util.Set;
 
 import org.cyk.system.kwordz.model.AbstractFormatOptions;
 import org.cyk.system.root.business.api.TypedBusiness;
@@ -21,4 +22,5 @@ public interface AbstractMusicBusiness<TYPE extends AbstractIdentifiable,OPTIONS
 	
 	TYPE parse(Locale locale,String text);
 	
+	Set<Locale> findParsableLocales();
 }

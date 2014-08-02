@@ -1,6 +1,7 @@
 package org.cyk.system.kwordz.business.impl;
 
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -8,18 +9,25 @@ import javax.inject.Singleton;
 
 import lombok.Getter;
 
+import org.cyk.system.kwordz.business.api.lyrics.LyricsBusiness;
 import org.cyk.system.kwordz.business.api.music.AbstractStructureBusiness;
 import org.cyk.system.kwordz.business.api.music.ChordStructureBusiness;
 import org.cyk.system.kwordz.business.api.music.ScaleStructureBusiness;
+import org.cyk.system.kwordz.business.api.song.SingerBusiness;
 import org.cyk.system.kwordz.model.lyrics.FragmentFormatOptions;
 import org.cyk.system.kwordz.model.lyrics.LineFormatOptions;
 import org.cyk.system.kwordz.model.lyrics.LyricsFormatOptions;
 import org.cyk.system.kwordz.model.lyrics.PartFormatOptions;
 import org.cyk.system.kwordz.model.music.ChordFormatOptions;
 import org.cyk.system.kwordz.model.music.ChordStructure;
+import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.kwordz.model.music.NoteFormatOptions;
+import org.cyk.system.kwordz.model.music.NoteName;
 import org.cyk.system.kwordz.model.music.ScaleStructure;
 import org.cyk.system.kwordz.model.music.Structure;
+import org.cyk.system.kwordz.model.song.Album;
+import org.cyk.system.kwordz.model.song.Singer;
+import org.cyk.system.kwordz.model.song.Song;
 import org.cyk.system.root.business.api.TypedBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.impl.AbstractBusinessLayer;
@@ -46,7 +54,8 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
 	@Inject private ScaleStructureBusiness scaleStructureBusiness;
 	@Inject private ParserHelper parserHelper;
 	@Inject private LanguageBusiness languageBusiness;
-	
+	@Inject private LyricsBusiness lyricsBusiness;
+	@Inject private SingerBusiness singerBusiness;
 	
 	@Override
 	protected void initialisation() {
@@ -70,6 +79,8 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
         createChordStructures(chordStructureBusiness);
         createScaleStructures(scaleStructureBusiness);
         parserHelper.prepare(chordStructureBusiness);
+        
+        fakeData();
     }
     
     public void createChordStructures(ChordStructureBusiness structureBusiness){
@@ -102,10 +113,10 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
     	createScaleStructure(structureBusiness,"maj", 2,2,1,2,2,2);
     }
     
-    //@SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void registerTypedBusinessBean(Map<Class<AbstractIdentifiable>, TypedBusiness<AbstractIdentifiable>> beansMap) {
-        //beansMap.put((Class)Event.class, (TypedBusiness)eventBusiness);
+        beansMap.put((Class)Singer.class, (TypedBusiness)singerBusiness);
     }
     
 
@@ -170,5 +181,37 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
     public static KwordzBusinessLayer getInstance() {
 		return INSTANCE;
 	}
-
+    
+    /**/
+    
+    private void fakeData(){
+    	
+    	Singer singer1,singer2,singer3;
+    	singer1 = create(new Singer("Chanteur one"));
+    	singer2 = create(new Singer("Chanteur two"));
+    	singer3 = create(new Singer("Chanteur three"));
+    	
+    	Album s1Album1,s1Album2,s1Album3,s2Album1,s3Album1,s3Album2;
+    	s1Album1 = create(new Album(singer1,"Album 1")); 
+    	s1Album2 = create(new Album(singer1,"Album 2")); 
+    	s1Album3 = create(new Album(singer1,"Album 3")); 
+    	
+    	s2Album1 = create(new Album(singer2,"Album 1"));
+    	
+    	s3Album1 = create(new Album(singer3,"Album 1")); 
+    	s3Album2 = create(new Album(singer3,"Album 2")); 
+    	
+    	create(new Song(s1Album1,"Chant 1",new Note(NoteName.C),null,lyricsBusiness.parse(Locale.ENGLISH, "Jesus")));
+    	
+    	create(new Song(s1Album2,"Chant 2",new Note(NoteName.D),null,lyricsBusiness.parse(Locale.ENGLISH, "Jesus")));
+    	
+    	create(new Song(s1Album3,"Chant 3",new Note(NoteName.E),null,lyricsBusiness.parse(Locale.ENGLISH, "Jesus")));
+    	
+    	create(new Song(s2Album1,"Chant 1",new Note(NoteName.G),null,lyricsBusiness.parse(Locale.ENGLISH, "Jesus")));
+    	
+    	create(new Song(s3Album1,"Chant 1",new Note(NoteName.A),null,lyricsBusiness.parse(Locale.ENGLISH, "Jesus")));
+    	
+    	create(new Song(s3Album2,"Chant 2",new Note(NoteName.B),null,lyricsBusiness.parse(Locale.ENGLISH, "Jesus")));
+    }
+    
 }

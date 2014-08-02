@@ -1,3 +1,83 @@
 .cyk-kwordz-chord{
 	background: red;
 }
+
+.cyk-kwordz-lyrics{
+	background: yellow;
+}
+
+/**/
+
+.cyk-kwordz-song-overview-dataGrid{
+	
+}
+
+.cyk-kwordz-song-overview-dataGrid .ui-datagrid-content{
+	border: none;
+}
+
+.cyk-kwordz-song-overview-table{
+	
+}
+
+.cyk-kwordz-song-overview-table-tr-thumbmail{
+	
+}
+
+.cyk-kwordz-song-overview-table-tr-infos{
+	
+}
+
+/**/
+
+.cyk-kwordz-page-song-edit-panelGrid{
+	
+}
+
+.cyk-kwordz-page-song-edit-panelGrid-leftCol{
+	vertical-align: top;
+}
+
+.cyk-kwordz-page-song-edit-panelGrid-rightCol{
+	vertical-align: top;
+}
+
+.cyk-kwordz-page-song-view-panelGrid{
+	width: 100%;
+}
+
+.cyk-kwordz-page-song-view-panelGrid-leftCol{
+	vertical-align: top;
+	width: 70%;
+	background: red;
+}
+
+.cyk-kwordz-page-song-view-panelGrid-rightCol{
+	vertical-align: top;
+}
+
+/* Layout */
+.cyk-kwordz-layout-north-table{
+	width: 100%;
+}
+.cyk-kwordz-layout-north-table-td-logo{
+	background: red;
+	width: 200px;
+}
+.cyk-kwordz-layout-north-table-td-searchinput{
+	background: blue;
+	width: 60%;
+}
+.cyk-kwordz-layout-north-table-td-searchinput-table{
+	width: 100%;
+}
+.cyk-kwordz-layout-north-table-td-searchinput-table-td-input{
+	width: 100%;
+}
+.cyk-kwordz-layout-north-table-td-searchinput-table-td-input input{
+	width: 100%;
+}
+
+.cyk-kwordz-layout-north-table-td-others{
+	background: yellow;
+}

@@ -17,35 +17,36 @@ import org.cyk.system.kwordz.business.api.lyrics.LyricsBusiness;
 import org.cyk.system.kwordz.model.lyrics.LineFormatOptions.ChordLocation;
 import org.cyk.system.kwordz.model.lyrics.Lyrics;
 import org.cyk.system.kwordz.model.lyrics.LyricsFormatOptions;
+import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.model.ContentType;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
 
 @Named @ViewScoped @Getter @Setter
-public class KwordzTestingBoard extends AbstractPrimefacesPage implements Serializable {
+public class LyricsParserPage extends AbstractPrimefacesPage implements Serializable {
 
 	private static final long serialVersionUID = 479730074989365192L;
 	
 	@Inject private LyricsBusiness lyricsBusiness;
+	@Inject private LanguageBusiness languageBusiness;
 	
 	private List<SelectItem> locales = new ArrayList<>();
 	private Locale locale = Locale.ENGLISH;
 	
-	private String inputLyrics,outputLyrics;
+	private String lyricsToParse,lyricsParsed;
 	private Lyrics lyrics;
 	private LyricsFormatOptions lyricsFormatOptions = new LyricsFormatOptions();
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		locales.add(new SelectItem(Locale.ENGLISH, "English"));
-		locales.add(new SelectItem(Locale.FRENCH, "French"));
-		locales.add(new SelectItem(Locale.GERMANY, "German"));
+		for(Locale locale : lyricsBusiness.findParsableLocales())
+			locales.add(new SelectItem(locale, locale.toString()));
 		lyricsFormatOptions.getPartFormatOptions().getLineFormatOptions().setChordLocation(ChordLocation.TOP);
 	}
 	
-	public void parseInputLyrics(){
-		lyrics = lyricsBusiness.parse(locale, inputLyrics);
-		outputLyrics = lyricsBusiness.format(locale, lyrics,ContentType.HTML,lyricsFormatOptions);
+	public void parse(){
+		lyrics = lyricsBusiness.parse(locale, lyricsToParse);
+		lyricsParsed = lyricsBusiness.format(locale, lyrics,ContentType.HTML,lyricsFormatOptions);
 	}
 
 }

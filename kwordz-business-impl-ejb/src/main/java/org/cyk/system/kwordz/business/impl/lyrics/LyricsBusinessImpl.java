@@ -52,6 +52,9 @@ public class LyricsBusinessImpl extends AbstractMusicBusinessImpl<Lyrics, Lyrics
 
 	@Override
 	public Lyrics parse(Locale locale, String text) {
+		text = StringUtils.strip(text);
+		if(text==null || text.isEmpty())
+			exceptionUtils().exception("null");//TODO move it to root .null(ValueName)
 		Lyrics lyrics = new Lyrics();
 		lyrics.getParts().add(partBusiness.parse(locale, text));
 		return lyrics;

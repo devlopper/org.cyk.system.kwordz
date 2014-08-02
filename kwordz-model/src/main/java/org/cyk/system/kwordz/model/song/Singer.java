@@ -15,4 +15,7 @@ public class Singer extends Party implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
+	public Singer(String name){
+		this.name = name;
+	}
 }

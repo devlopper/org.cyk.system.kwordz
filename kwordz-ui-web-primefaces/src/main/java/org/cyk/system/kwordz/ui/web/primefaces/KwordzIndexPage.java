@@ -26,8 +26,11 @@ public class KwordzIndexPage extends AbstractPrimefacesPage implements Serializa
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		songInfosLists.add(new SongInfosList("L1", songBusiness.find().all(),Boolean.TRUE) );
-		songInfosLists.add(new SongInfosList("L2", songBusiness.find().all(),Boolean.TRUE) );
+		songInfosLists.add(new SongInfosList(songBusiness.find().all()) );
 	}
 	
+	@Override
+	public Boolean getShowContextualMenu() {
+		return Boolean.TRUE;
+	}
 }

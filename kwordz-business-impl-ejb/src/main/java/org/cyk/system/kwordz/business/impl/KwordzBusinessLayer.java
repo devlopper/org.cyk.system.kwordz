@@ -31,6 +31,7 @@ import org.cyk.system.kwordz.model.song.Song;
 import org.cyk.system.root.business.api.TypedBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.impl.AbstractBusinessLayer;
+import org.cyk.system.root.business.impl.BusinessManagerImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
@@ -61,7 +62,7 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
 	protected void initialisation() {
 		INSTANCE = this;
 		super.initialisation();
-		
+		BusinessManagerImpl.SYSTEM_NAME = "KwordZ";
 		configFormatOptions(defaultNoteFormatOptions);
 		configFormatOptions(defaultChordFormatOptions);
 		configFormatOptions(defaultFragmentFormatOptions);

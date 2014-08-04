@@ -9,23 +9,32 @@
 
 /**/
 
-.cyk-kwordz-song-overview-dataGrid{
+/**/
+.cyk-kwordz-infos-dataGrid{
 	
 }
 
-.cyk-kwordz-song-overview-dataGrid .ui-datagrid-content{
+.cyk-kwordz-infos-dataGrid .ui-datagrid-content{
 	border: none;
 }
-
-.cyk-kwordz-song-overview-table{
+/**/
+.cyk-kwordz-song-infos-dataGrid{
 	
 }
 
-.cyk-kwordz-song-overview-table-tr-thumbmail{
+.cyk-kwordz-song-infos-dataGrid .ui-datagrid-content{
 	
 }
 
-.cyk-kwordz-song-overview-table-tr-infos{
+.cyk-kwordz-song-infos-table{
+	
+}
+
+.cyk-kwordz-song-infos-table-tr-thumbmail{
+	
+}
+
+.cyk-kwordz-song-infos-table-tr-infos{
 	
 }
 
@@ -64,9 +73,13 @@
 	width: 200px;
 	text-align: center;
 }
-.cyk-kwordz-layout-north-table-td-logo-textOnly{
+a.cyk-kwordz-layout-north-table-td-logo-textOnly{
 	font-weight: bold;
 	font-size: 24px;
+	text-decoration: none;
+	color: red;
+	padding: 0px;
+	margin: 0px;
 	
 }
 .cyk-kwordz-layout-north-table-td-searchinput{

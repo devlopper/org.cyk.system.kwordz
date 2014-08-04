@@ -17,6 +17,12 @@ public class SongInfosList extends AbstractInfosList<Song, SongInfos> implements
 		super(list);
 		columns = Boolean.TRUE.equals(infosAtBottom)?5:1;
 		this.name = name;
+		for(SongInfos songInfos : this.list)
+			songInfos.setInfosAtBottom(infosAtBottom);
+	}
+	
+	public SongInfosList(Collection<Song> list) {
+		this(null,list,Boolean.TRUE);
 	}
 
 	

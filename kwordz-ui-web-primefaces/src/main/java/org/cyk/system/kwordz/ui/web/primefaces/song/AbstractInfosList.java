@@ -19,6 +19,7 @@ public abstract class AbstractInfosList<ENTITY,INFOS extends AbstractInfos<ENTIT
 	protected List<INFOS> list = new ArrayList<>();
 	protected Class<ENTITY> infosClass;
 	
+	
 	@SuppressWarnings("unchecked")
 	public AbstractInfosList(Collection<ENTITY> list) {
 		super();

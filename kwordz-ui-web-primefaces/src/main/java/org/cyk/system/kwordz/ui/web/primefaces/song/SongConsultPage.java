@@ -45,7 +45,7 @@ public class SongConsultPage extends AbstractPrimefacesPage implements Serializa
 	@Getter private List<SelectItem> parsableLocalesItems = new ArrayList<>();
 	@Getter private List<SelectItem> tonesItems = new ArrayList<>();
 	
-	@Getter private String embeddedMediaUrl;
+	@Getter private String embeddedMediaUrl="http://www.youtube.com/v/iggqYzIZV8A";
 	
 	@Getter private Command applyCommand;
 	

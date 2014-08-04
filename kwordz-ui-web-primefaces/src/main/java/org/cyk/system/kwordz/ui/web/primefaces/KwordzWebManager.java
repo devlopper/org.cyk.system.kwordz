@@ -27,6 +27,7 @@ public class KwordzWebManager extends AbstractBean implements Serializable {
 		super.initialisation();
 		webManager.setDecoratedTemplateInclude("/org.cyk.ui.web.primefaces.kwordz/include/template.xhtml");
 		primefacesDefaultDesktopLayoutManager.setNorthInclude("/org.cyk.ui.web.primefaces.kwordz/include/layout/default/north.xhtml");
+		primefacesDefaultDesktopLayoutManager.setWestInclude("/org.cyk.ui.web.primefaces.kwordz/include/layout/default/west.xhtml");
 	}
 	
 	/**/

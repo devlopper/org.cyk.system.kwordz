@@ -14,8 +14,10 @@
 
 	<cc:implementation>
 		
-		<h:outputText value=" #{cc.value.name}" /><br/>
-		<p:dataGrid styleClass="cyk-kwordz-song-infos-dataGrid" var="songInfos" value="#{cc.value.list}" columns="#{cc.value.columns}">
+		<ui:fragment rendered="#{not empty cc.value.name}">
+			<h:outputText value=" #{cc.value.name}" /><br/>
+		</ui:fragment>
+		<p:dataGrid styleClass="cyk-kwordz-infos-dataGrid cyk-kwordz-song-infos-dataGrid" var="songInfos" value="#{cc.value.list}" columns="#{cc.value.columns}">
 			<kwordz:songInfos value="#{songInfos}" />
 		</p:dataGrid>
 			

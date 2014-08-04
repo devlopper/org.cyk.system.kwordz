@@ -6,7 +6,7 @@ import org.cyk.system.kwordz.model.music.ChordStructure;
 
 public interface ChordBusiness extends AbstractNoteCollectionBusiness<ChordStructure,Chord,ChordFormatOptions> {
     
-	Boolean bassEqualsToRoot(Chord chord);
+	void generateNotes(Chord chord);
 	
 	Boolean equals(Chord chord1,Chord chord2,Boolean strict);
 }

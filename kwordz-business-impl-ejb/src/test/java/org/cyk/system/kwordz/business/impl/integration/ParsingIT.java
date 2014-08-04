@@ -185,7 +185,9 @@ public class ParsingIT extends AbstractBusinessIT {
     
     private void assertParsingChord(String structureCode,NoteName rootName,NoteAlteration rootAlteration,NoteName bassName,NoteAlteration bassAlteration,Locale locale,String text){
     	Chord chord = new Chord();
-    	chordBusiness.generateNotes(chord, chordStructureBusiness.find(structureCode), new Note(rootName,rootAlteration));
+    	chord.setStructure(chordStructureBusiness.find(structureCode));
+    	chord.setRoot(new Note(rootName,rootAlteration));
+    	chordBusiness.generateNotes(chord);
     	if(bassName!=null)
     		chord.setBass(new Note(bassName, bassAlteration));
     	assertEqualsChord(chord,chordBusiness.parse(locale, text));

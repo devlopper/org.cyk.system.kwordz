@@ -9,6 +9,7 @@ import javax.inject.Named;
 import org.cyk.ui.api.UIManager;
 import org.cyk.ui.api.command.DefaultCommand;
 import org.cyk.ui.api.command.DefaultCommandable;
+import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.web.primefaces.Command;
 import org.cyk.ui.web.primefaces.PrimefacesMessageManager;
 import org.cyk.utility.common.AbstractMethod;
@@ -28,11 +29,13 @@ public class UserSessionController extends AbstractBean implements Serializable 
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		DefaultCommandable primefacesEditCommandable = new DefaultCommandable();
-		primefacesEditCommandable.setLabel(UIManager.getInstance().text("search"));
-		primefacesEditCommandable.setCommand(new DefaultCommand());
-		primefacesEditCommandable.getCommand().setMessageManager(messageManager);
-		primefacesEditCommandable.getCommand().setExecuteMethod(new AbstractMethod<Object, Object>() {
+		DefaultCommandable commandable = new DefaultCommandable();
+		commandable.setLabel(UIManager.getInstance().text("command.search"));
+		commandable.setCommand(new DefaultCommand());
+		commandable.getCommand().setMessageManager(messageManager);
+		commandable.setShowLabel(Boolean.FALSE);
+		commandable.setIconType(IconType.ACTION_SEARCH);
+		commandable.getCommand().setExecuteMethod(new AbstractMethod<Object, Object>() {
 			private static final long serialVersionUID = 3913474940359268490L;
 			@Override
 			protected Object __execute__(Object parameter) {
@@ -40,6 +43,6 @@ public class UserSessionController extends AbstractBean implements Serializable 
 				return null;
 			}
 		});
-		searchCommand =  new Command(primefacesEditCommandable);
+		searchCommand =  new Command(commandable);
 	}
 }

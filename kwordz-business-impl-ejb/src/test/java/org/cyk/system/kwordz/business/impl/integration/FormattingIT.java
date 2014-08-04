@@ -114,7 +114,9 @@ public class FormattingIT extends AbstractBusinessIT {
     
     private void assertEqualsChord(String expected,Locale locale,String structureCode,NoteName noteName,NoteAlteration noteAlteration,ChordFormatOptions options){
     	Chord chord = new Chord();
-    	chordBusiness.generateNotes(chord, chordStructureBusiness.find(structureCode), new Note(noteName,noteAlteration));
+    	chord.setStructure(chordStructureBusiness.find(structureCode));
+    	chord.setRoot(new Note(noteName,noteAlteration));
+    	chordBusiness.generateNotes(chord);
     	assertEquals(expected.toLowerCase(),chordBusiness.format(locale, chord,options).toLowerCase());
     }
     private void assertEqualsChord(String expected,Locale locale,String structureCode,NoteName noteName,NoteAlteration noteAlteration){

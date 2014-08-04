@@ -29,24 +29,11 @@ public abstract class AbstractNoteCollectionBusinessImpl<STRUCTURE extends Struc
 	}
 	
 	@Override
-	public void generateNotes(COLLECTION aCollection,STRUCTURE aStructure,Note base) {
-		aCollection.setStructure(aStructure);
-		aCollection.setNotes(structureBusiness.generateSequence(aStructure, base));
-	}
-	
-	@Override
 	public void transpose(COLLECTION aCollection, Integer distance) {
 		if(aCollection.getNotes()==null)
 			return;
 		for(Note note : aCollection.getNotes())
 			noteBusiness.transpose(note, distance);
-	}
-	
-	@Override
-	public Note findRoot(COLLECTION aCollection) {
-		if(aCollection.getNotes()==null || aCollection.getNotes().isEmpty())
-			return null;
-		return aCollection.getNotes().get(0);
 	}
 	
 }

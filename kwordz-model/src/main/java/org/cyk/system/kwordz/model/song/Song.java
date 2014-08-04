@@ -16,8 +16,10 @@ import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.information.InformationCollection;
+import org.cyk.utility.common.annotation.ModelBean;
+import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
 
-@Getter @Setter @Entity @NoArgsConstructor
+@Getter @Setter @Entity @NoArgsConstructor @ModelBean(crudStrategy=CrudStrategy.BUSINESS,uiIconName="music-note")
 public class Song extends AbstractIdentifiable implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -43,7 +45,10 @@ public class Song extends AbstractIdentifiable implements Serializable{
 		this.lyrics = lyrics;
 	}
 	
-	
+	@Override
+	public String getUiString() {
+		return name;
+	}
 	
 	/*
 	public String getThumbnailURI(){

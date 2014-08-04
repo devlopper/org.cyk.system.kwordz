@@ -33,17 +33,16 @@ public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordS
 	}
 	
 	@Override
-	public Boolean bassEqualsToRoot(Chord chord) {
-		Note root = findRoot(chord);
-		if(root==null)
-			return Boolean.FALSE;
-		return noteBusiness.equals(root, chord.getBass(),Boolean.FALSE);
+	public void transpose(Chord aChord, Integer distance) {
+		super.transpose(aChord, distance);
+		noteBusiness.transpose(aChord.getRoot(), distance);
+		if(aChord.getBass()!=null)
+			noteBusiness.transpose(aChord.getBass(), distance);
 	}
 	
 	@Override
-	public void transpose(Chord aChord, Integer distance) {
-		super.transpose(aChord, distance);
-		noteBusiness.transpose(aChord.getBass(), distance);
+	public void generateNotes(Chord chord) {
+		chord.setNotes(structureBusiness.generateSequence(chord.getStructure(), chord.getRoot()));
 	}
 	
 	@Override
@@ -80,7 +79,7 @@ public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordS
 			builder.append(StringUtils.join(notes.iterator(),options.getSeparatorNoteAndNote())+structureSymbol);
 			break;
 		case CONTRACT:
-			builder.append(noteBusiness.format(locale, findRoot(chord))+structureSymbol);
+			builder.append(noteBusiness.format(locale, chord.getRoot())+structureSymbol);
 			break;
 		}
 		
@@ -91,6 +90,8 @@ public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordS
 		
 		return builder.toString();
 	}
+	
+	//noteBusiness.equals(root, chord.getBass(),Boolean.FALSE)
 	
 	@Override
 	public Chord parse(Locale locale, String text) {
@@ -104,8 +105,8 @@ public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordS
 			chord.setBass(noteBusiness.parse(locale, parserHelper.getNoteString(matcher, 2)));
 		}
 		String noteString = parserHelper.getNoteString(matcher, 4);
-		Note base = noteBusiness.parse(locale, noteString);
-		if(chord.getBass()!=null && noteBusiness.equals(base, chord.getBass(), Boolean.FALSE))
+		chord.setRoot(noteBusiness.parse(locale, noteString));
+		if(chord.getBass()!=null && noteBusiness.equals(chord.getRoot(), chord.getBass(), Boolean.FALSE))
 			chord.setBass(null);
 		text = parserHelper.stringAfter(text, noteString);
 		
@@ -123,7 +124,7 @@ public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordS
 		} catch (Exception e) {
 			exceptionUtils().exception(Boolean.TRUE,"kwordz.exception.parsing.chord.structure.unknown",new Object[]{text});
 		}
-		generateNotes(chord, chord.getStructure(), base);
+		generateNotes(chord);
 		return chord;
 	}
 	

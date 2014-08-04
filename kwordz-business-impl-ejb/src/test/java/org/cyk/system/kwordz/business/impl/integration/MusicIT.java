@@ -100,7 +100,9 @@ public class MusicIT extends AbstractBusinessIT {
     public void transposeNoteCollection(){
     	Chord chord = new Chord();
     	chord.setBass(new Note(C, NONE));
-    	chordBusiness.generateNotes(chord, chordStructureBusiness.find("maj"), chord.getBass());
+    	chord.setStructure(chordStructureBusiness.find("maj"));
+    	chord.setRoot(chord.getBass());
+    	chordBusiness.generateNotes(chord);
     	chordBusiness.transpose(chord, 2);
     	assertEqualsSequence(chord.getNotes(),Arrays.asList(new Note(D),new Note(F,SHARP),new Note(A)));
     }

@@ -8,15 +8,15 @@
 	xmlns:pe="http://primefaces.org/ui/extensions"
 	xmlns:kwordz="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.kwordz/component">
 
-	<cc:interface componentType="org.cyk.ui.primefaces.kwordz.SongOverviewList">
+	<cc:interface componentType="org.cyk.ui.primefaces.kwordz.SongInfosList">
 		<cc:attribute name="value" required="true" />
 	</cc:interface>
 
 	<cc:implementation>
 		
 		<h:outputText value=" #{cc.value.name}" /><br/>
-		<p:dataGrid styleClass="cyk-kwordz-song-overview-dataGrid" var="songOverview" value="#{cc.value.list}" columns="#{cc.value.columns}">
-			<kwordz:songOverview value="#{songOverview}" />
+		<p:dataGrid styleClass="cyk-kwordz-song-infos-dataGrid" var="songInfos" value="#{cc.value.list}" columns="#{cc.value.columns}">
+			<kwordz:songInfos value="#{songInfos}" />
 		</p:dataGrid>
 			
 	</cc:implementation>

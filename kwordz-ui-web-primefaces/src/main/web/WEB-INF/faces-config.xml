@@ -8,18 +8,18 @@
     <navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
-			<from-outcome>singerView</from-outcome>
-			<to-view-id>/public/singer/view.jsf</to-view-id>
+			<from-outcome>singerConsultView</from-outcome>
+			<to-view-id>/public/singer/consult.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>albumView</from-outcome>
-			<to-view-id>/public/album/view.jsf</to-view-id>
+			<from-outcome>albumConsultView</from-outcome>
+			<to-view-id>/public/album/consult.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>songView</from-outcome>
-			<to-view-id>/public/song/view.jsf</to-view-id>
+			<from-outcome>songConsultView</from-outcome>
+			<to-view-id>/public/song/consult.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
 		

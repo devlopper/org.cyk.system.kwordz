@@ -5,5 +5,8 @@ import org.cyk.system.root.business.api.TypedBusiness;
 
 public interface AlbumBusiness extends TypedBusiness<Album> {
     
+	void loadSongs(Album album);
+	
+	void findHierarchy(Album album);
 	
 } 

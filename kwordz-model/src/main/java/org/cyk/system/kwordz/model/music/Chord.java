@@ -17,6 +17,8 @@ public class Chord extends AbstractNoteCollection<ChordStructure> implements Ser
 
 	@OneToOne(cascade=CascadeType.ALL) private Note bass;
 	
+	@OneToOne(cascade=CascadeType.ALL) private Note root;
+	
 	private Byte inversionOrder;
 	
 	public Chord(ChordStructure structure,Note bass) {

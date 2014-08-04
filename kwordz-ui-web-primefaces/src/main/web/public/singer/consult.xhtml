@@ -9,20 +9,15 @@
       xmlns:kwordz="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.kwordz/component">
 
     <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
-        <ui:param name="pageController" value="#{songViewPage}" />
+        <ui:param name="pageController" value="#{singerConsultPage}" />
+        <ui:define name="westContent">
+       		<h1>Search Singer</h1>
+        </ui:define>
+        
         <ui:define name="body">
-       		<p:panelGrid columns="2" styleClass="cyk-kwordz-page-song-view-panelGrid" 
-       			columnClasses="cyk-kwordz-page-song-view-panelGrid-leftCol,cyk-kwordz-page-song-view-panelGrid-rightCol">
-       			
-       			<h:panelGroup>
-       				#{songViewPage.song}
-       			</h:panelGroup>
-       			
-       			<h:panelGroup>
-       				<kwordz:songOverviews value="#{songViewPage.relatedSongList}" />
-       				
-       			</h:panelGroup>
-       		</p:panelGrid>
+       		
+       		<kwordz:albumInfosList value="#{singerConsultPage.albumInfosList}" />
+       		
         </ui:define>
     </ui:decorate>
  

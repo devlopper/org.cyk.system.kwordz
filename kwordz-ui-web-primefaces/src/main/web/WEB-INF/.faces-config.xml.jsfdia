@@ -2,18 +2,22 @@
 <PROCESS model-entity="JSFProcess">
  <PROCESS-ITEM NAME="rules:*" PATH="*" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules:*:0" NAME="item" PATH="*" model-entity="JSFProcessItem">
-   <PROCESS-ITEM-OUTPUT ID="singerView::#public#singer#view.jsf"
-    NAME="output" PATH="/public/singer/view.jsf"
-    TARGET="rules:#public#singer#view.jsf" TITLE="singerView" model-entity="JSFProcessItemOutput"/>
-   <PROCESS-ITEM-OUTPUT ID="albumView::#public#album#view.jsf"
-    NAME="output1" PATH="/public/album/view.jsf"
-    TARGET="rules:#public#album#view.jsf" TITLE="albumView" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="singerConsultView::#public#singer#consult.jsf" NAME="output"
+    PATH="/public/singer/consult.jsf"
+    TARGET="rules:#public#singer#consult.jsf" TITLE="singerConsultView" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="albumConsultView::#public#album#consult.jsf"
+    NAME="output1" PATH="/public/album/consult.jsf"
+    TARGET="rules:#public#album#consult.jsf" TITLE="albumConsultView" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="songConsultView::#public#song#consult.jsf"
+    NAME="output2" PATH="/public/song/consult.jsf"
+    TARGET="rules:#public#song#consult.jsf" TITLE="songConsultView" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
- <PROCESS-ITEM NAME="rules:#public#song#view.jsf"
-  PATH="/public/song/view.jsf" SHAPE="240,33,0,0" model-entity="JSFProcessGroup"/>
- <PROCESS-ITEM NAME="rules:#public#album#view.jsf"
-  PATH="/public/album/view.jsf" SHAPE="256,289,0,0" model-entity="JSFProcessGroup"/>
- <PROCESS-ITEM NAME="rules:#public#singer#view.jsf"
-  PATH="/public/singer/view.jsf" SHAPE="256,177,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#public#singer#consult.jsf"
+  PATH="/public/singer/consult.jsf" SHAPE="272,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#public#album#consult.jsf"
+  PATH="/public/album/consult.jsf" SHAPE="272,209,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#public#song#consult.jsf"
+  PATH="/public/song/consult.jsf" SHAPE="272,321,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>

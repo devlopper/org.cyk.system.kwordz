@@ -70,7 +70,7 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
 		configFormatOptions(defaultLyricsFormatOptions);
 		parserHelper.prepare(chordStructureBusiness);
 		languageBusiness.registerResourceBundle("org.cyk.system.kwordz.business.impl.resources.exception", getClass().getClassLoader());
-		
+		languageBusiness.registerResourceBundle("org.cyk.system.kwordz.business.impl.resources.ui", getClass().getClassLoader());
 		
 	}
 	
@@ -201,9 +201,9 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
     	s3Album1 = create(new Album(singer3,"Album 1")); 
     	s3Album2 = create(new Album(singer3,"Album 2")); 
     	
-    	create(new Song(s1Album1,"Chant 1",new Note(NoteName.C),null,lyricsBusiness.parse(Locale.ENGLISH, "Jesus")));
+    	create(new Song(s1Album1,"Chant 1",new Note(NoteName.C),null,lyricsBusiness.parse(Locale.ENGLISH, "[C]Je[G]sus [Am]You [Dm7]Are")));
     	
-    	create(new Song(s1Album2,"Chant 2",new Note(NoteName.D),null,lyricsBusiness.parse(Locale.ENGLISH, "Jesus")));
+    	create(new Song(s1Album2,"Chant 2",new Note(NoteName.G),null,lyricsBusiness.parse(Locale.ENGLISH, "[C]Je[G]sus [Am]You [Dm7]Are")));
     	
     	create(new Song(s1Album3,"Chant 3",new Note(NoteName.E),null,lyricsBusiness.parse(Locale.ENGLISH, "Jesus")));
     	

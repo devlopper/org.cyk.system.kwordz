@@ -11,7 +11,7 @@ import javax.inject.Named;
 import lombok.Getter;
 
 import org.cyk.system.kwordz.business.api.song.SongBusiness;
-import org.cyk.system.kwordz.ui.web.primefaces.song.SongOverviewList;
+import org.cyk.system.kwordz.ui.web.primefaces.song.SongInfosList;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
 
 @Named @RequestScoped
@@ -21,13 +21,13 @@ public class KwordzIndexPage extends AbstractPrimefacesPage implements Serializa
 
 	@Inject private SongBusiness songBusiness;
 	
-	@Getter private List<SongOverviewList> songOverviewLists = new ArrayList<>();
+	@Getter private List<SongInfosList> songInfosLists = new ArrayList<>();
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		songOverviewLists.add(new SongOverviewList("L1", songBusiness.find().all(),5,Boolean.TRUE) );
-		songOverviewLists.add(new SongOverviewList("L2", songBusiness.find().all(),5,Boolean.TRUE) );
+		songInfosLists.add(new SongInfosList("L1", songBusiness.find().all(),Boolean.TRUE) );
+		songInfosLists.add(new SongInfosList("L2", songBusiness.find().all(),Boolean.TRUE) );
 	}
 	
 }

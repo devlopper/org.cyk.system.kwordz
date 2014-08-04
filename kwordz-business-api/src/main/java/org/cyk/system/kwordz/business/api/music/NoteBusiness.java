@@ -28,4 +28,6 @@ public interface NoteBusiness extends TypedBusiness<Note> {
 	String format(Locale locale,Note note);
 	
 	Note parse(Locale locale,String text);
+	
+	Collection<Note> findTones();
 }

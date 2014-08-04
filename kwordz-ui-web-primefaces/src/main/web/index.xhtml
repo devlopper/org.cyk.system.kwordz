@@ -13,17 +13,8 @@
         <ui:param name="pageController" value="#{kwordzIndexPage}" />
         <ui:define name="body">
         	
-       		<ui:repeat var="songList" value="#{kwordzIndexPage.songOverviewLists}">
-       			<!--
-       			#{songList.name}<br/>
-       			<p:dataGrid styleClass="cyk-kwordz-song-overview-dataGrid" var="songOverview" value="#{songList.list}" columns="5">
-       				
-       				<kwordz:songOverview value="#{songOverview}" />
-       				
-       			</p:dataGrid>
-       			-->
-       			
-       			<kwordz:songOverviews value="#{songList}" />
+       		<ui:repeat var="songList" value="#{kwordzIndexPage.songInfosLists}">
+       			<kwordz:songInfosList value="#{songList}" />
        			<p:separator/>
        		</ui:repeat>
             	

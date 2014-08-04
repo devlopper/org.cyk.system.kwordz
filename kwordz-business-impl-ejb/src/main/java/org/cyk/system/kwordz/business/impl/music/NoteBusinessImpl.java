@@ -1,6 +1,7 @@
 package org.cyk.system.kwordz.business.impl.music;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -159,6 +160,19 @@ public class NoteBusinessImpl extends AbstractTypedBusinessService<Note, NoteDao
 			return index.toString()+preferredAlteration.toString();
 		}else
 			return index.toString();
+	}
+	
+	@Override
+	public Collection<Note> findTones() {
+		Collection<Note> collection = new ArrayList<>();
+		Note base = new Note(NoteName.C);
+		collection.add(base);
+		for(int i=0;i<11;i++){
+			base = new Note(base);
+			transpose(base, 1);
+			collection.add(base);
+		}
+		return collection;
 	}
 	
 	@Override

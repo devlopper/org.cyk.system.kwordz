@@ -35,7 +35,7 @@
        				<p:separator/>
        				<p:panelGrid columns="2">
        					<p:outputLabel for="lyricsNoteLocale" value="#{uiManager.text('lyricsNoteLocale')}" />
-       					<p:selectOneMenu id="lyricsNoteLocale" value="#{songEditPage.parser.locale}" converter="#{objectConverter}">
+       					<p:selectOneMenu id="lyricsNoteLocale" value="" converter="#{objectConverter}">
        						<f:selectItems value="#{parsableLyricsLocales}" />
        					</p:selectOneMenu>
        				</p:panelGrid>

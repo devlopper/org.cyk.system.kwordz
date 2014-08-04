@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component"
+      xmlns:kwordz="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.kwordz/component">
+
+    <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
+        <ui:param name="pageController" value="#{songConsultPage}" />
+        
+        <ui:define name="westContent">
+        	
+			<cyk:identifiableLink value="#{songConsultPage.song.album.singer}" iconSize="16"/>
+			<cyk:identifiableLink value="#{songConsultPage.song.album}" iconSize="16"/>
+			<cyk:identifiableLink value="#{songConsultPage.song}" iconSize="16"/>
+			
+			<iframe src="#{songConsultPage.embeddedMediaUrl}" frameborder="0"/>
+			
+        </ui:define> 
+        
+        <ui:define name="body">
+       		<p:panelGrid columns="2" styleClass="cyk-kwordz-page-song-view-panelGrid" 
+       			columnClasses="cyk-kwordz-page-song-view-panelGrid-leftCol,cyk-kwordz-page-song-view-panelGrid-rightCol">
+       			
+       			<h:panelGroup>
+       				<p:panelGrid columns="5">
+       					<p:outputLabel for="system" value="#{uiManager.text('kwordz.ui.notename.locale')}" />
+       					<p:selectOneMenu id="system" value="#{songConsultPage.builder.noteLocale}" converter="#{objectConverter}" >
+       						<f:selectItems value="#{songConsultPage.parsableLocalesItems}" />
+       					</p:selectOneMenu> 
+       					
+       					<p:outputLabel for="tone" value="#{uiManager.text('kwordz.ui.tone')}" />
+       					<p:selectOneMenu id="tone" value="#{songConsultPage.builder.selectedTone}" converter="#{objectConverter}" >
+       						<f:selectItems value="#{songConsultPage.tonesItems}" />
+       					</p:selectOneMenu>
+       					
+       					<cyk:command value="#{songConsultPage.applyCommand}" />
+       					
+       				</p:panelGrid>
+       				
+       				<p:separator/>
+       				
+       				<pre><h:outputText id="parsedlyrics" value="#{songConsultPage.builder.lyricsParsed}" escape="false"/></pre>
+       			</h:panelGroup>
+       			
+       			<h:panelGroup>
+       				<kwordz:songInfosList value="#{songConsultPage.relatedSongList}" />
+       			</h:panelGroup>
+       		</p:panelGrid>
+        </ui:define>
+    </ui:decorate>
+ 
+</html>

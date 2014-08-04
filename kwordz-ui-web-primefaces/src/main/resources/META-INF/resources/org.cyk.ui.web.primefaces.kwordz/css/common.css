@@ -1,9 +1,10 @@
 .cyk-kwordz-chord{
-	background: red;
+	font-style: italic;
+	
 }
 
 .cyk-kwordz-lyrics{
-	background: yellow;
+	font-weight: bold;
 }
 
 /**/
@@ -49,7 +50,6 @@
 .cyk-kwordz-page-song-view-panelGrid-leftCol{
 	vertical-align: top;
 	width: 70%;
-	background: red;
 }
 
 .cyk-kwordz-page-song-view-panelGrid-rightCol{
@@ -61,11 +61,16 @@
 	width: 100%;
 }
 .cyk-kwordz-layout-north-table-td-logo{
-	background: red;
 	width: 200px;
+	text-align: center;
+}
+.cyk-kwordz-layout-north-table-td-logo-textOnly{
+	font-weight: bold;
+	font-size: 24px;
+	
 }
 .cyk-kwordz-layout-north-table-td-searchinput{
-	background: blue;
+	
 	width: 60%;
 }
 .cyk-kwordz-layout-north-table-td-searchinput-table{
@@ -76,8 +81,12 @@
 }
 .cyk-kwordz-layout-north-table-td-searchinput-table-td-input input{
 	width: 100%;
+	height: 27px;
+}
+.cyk-kwordz-layout-north-table-td-searchinput-table-td-button input{
+	
 }
 
 .cyk-kwordz-layout-north-table-td-others{
-	background: yellow;
+	
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component"
+	xmlns:kwordz="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.kwordz/component">
+
+	<cc:interface componentType="org.cyk.ui.primefaces.kwordz.SingerInfos">
+		<cc:attribute name="value" required="true" />
+	</cc:interface>
+
+	<cc:implementation>
+		<p:panelGrid columns="2">
+			<kwordz:iconSinger/>
+			
+			<p:graphicImage library="org.cyk.ui.web.primefaces" name="images/icons/32/person.png" 
+				alt="#{uiManager.text('word.singer')}" title="#{uiManager.text('word.singer')}"/>
+			
+			<h:link outcome="singerView" value="#{cc.value.singer.name}" title="#{cc.value.singer.name}">
+				<f:param name="#{webManager.requestParameterIdentifiable}" value="#{cc.value.singer.identifier}" />
+			</h:link>
+			<!--
+			<p:graphicImage library="org.cyk.ui.web.primefaces.kwordz" name="images/icons/32/disc.png" 
+				alt="#{uiManager.text('word.album')} : #{cc.value.song.album.name}" title="#{uiManager.text('word.album')} : #{cc.value.song.album.name}"/>
+			
+			<h:link outcome="albumView" value="#{albumName}">
+				<f:param name="#{webManager.requestParameterIdentifiable}" value="#{cc.value.song.album.identifier}" />
+			</h:link>
+			-->
+		</p:panelGrid>
+		
+		<cyk:tree value="#{cc.value.albumsTree}" />
+		
+	</cc:implementation>
+
+</ui:composition>

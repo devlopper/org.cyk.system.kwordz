@@ -3,13 +3,11 @@ package org.cyk.system.kwordz.ui.web.primefaces.song;
 import java.io.Serializable;
 
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import lombok.Getter;
 
-import org.cyk.system.kwordz.business.api.lyrics.LyricsBusiness;
-import org.cyk.system.kwordz.ui.web.primefaces.LyricsParser;
+import org.cyk.system.kwordz.ui.web.primefaces.SongBuilder;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.command.DefaultCommand;
 import org.cyk.ui.api.command.DefaultCommandable;
@@ -22,10 +20,10 @@ public class SongEditPage extends AbstractPrimefacesPage implements Serializable
 
 	private static final long serialVersionUID = 479730074989365192L;
 	
-	@Inject private LyricsBusiness lyricsBusiness;
+	//@Inject private LyricsBusiness lyricsBusiness;
 
-	@Inject @Getter private LyricsParser parser;
-	private Crud crud;
+	@Getter private SongBuilder parser;
+	@Getter private Crud crud;
 	@Getter private Command primefacesEditCommand;
 	
 	@Override

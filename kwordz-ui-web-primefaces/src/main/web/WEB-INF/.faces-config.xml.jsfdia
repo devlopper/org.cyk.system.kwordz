@@ -2,14 +2,15 @@
 <PROCESS model-entity="JSFProcess">
  <PROCESS-ITEM NAME="rules:*" PATH="*" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules:*:0" NAME="item" PATH="*" model-entity="JSFProcessItem">
-   <PROCESS-ITEM-OUTPUT ID="home::index.jsf" NAME="output"
-    PATH="index.jsf" TARGET="rules:index.jsf" TITLE="home" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="home::#index.jsf" NAME="output"
+    PATH="/index.jsf" TARGET="rules:#index.jsf" TITLE="home" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="singerConsultView::#public#singer#consult.jsf" NAME="output1"
+    PATH="/public/singer/consult.jsf"
+    TARGET="rules:#public#singer#consult.jsf" TITLE="singerConsultView" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT ID="albumConsultView::#public#album#consult.jsf"
-    NAME="output1" PATH="/public/album/consult.jsf"
+    NAME="output2" PATH="/public/album/consult.jsf"
     TARGET="rules:#public#album#consult.jsf" TITLE="albumConsultView" model-entity="JSFProcessItemOutput"/>
-   <PROCESS-ITEM-OUTPUT ID="songConsultView::#public#song#consult.jsf"
-    NAME="output2" PATH="/public/song/consult.jsf"
-    TARGET="rules:#public#song#consult.jsf" TITLE="songConsultView" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#public#singer#consult.jsf"
@@ -18,6 +19,6 @@
   PATH="/public/album/consult.jsf" SHAPE="272,209,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#public#song#consult.jsf"
   PATH="/public/song/consult.jsf" SHAPE="272,321,0,0" model-entity="JSFProcessGroup"/>
- <PROCESS-ITEM NAME="rules:index.jsf" PATH="index.jsf"
+ <PROCESS-ITEM NAME="rules:#index.jsf" PATH="/index.jsf"
   SHAPE="272,433,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>

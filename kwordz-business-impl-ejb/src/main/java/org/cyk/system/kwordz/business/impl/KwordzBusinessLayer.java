@@ -1,6 +1,7 @@
 package org.cyk.system.kwordz.business.impl;
 
 import java.io.Serializable;
+import java.net.URI;
 import java.util.Locale;
 import java.util.Map;
 
@@ -33,6 +34,7 @@ import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.impl.AbstractBusinessLayer;
 import org.cyk.system.root.business.impl.BusinessManagerImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
+import org.cyk.system.root.model.file.File;
 import org.cyk.utility.common.annotation.Deployment;
 import org.cyk.utility.common.annotation.Deployment.InitialisationType;
 
@@ -43,6 +45,8 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
 	private static final String I18N_PREFIX = "kwordz.";
 	
 	private static KwordzBusinessLayer INSTANCE;
+	
+	@Getter private final String systemName = "KwordZ";
 	
 	@Getter private final ChordFormatOptions defaultChordFormatOptions = new ChordFormatOptions();
 	@Getter private final NoteFormatOptions defaultNoteFormatOptions = new NoteFormatOptions();
@@ -62,7 +66,7 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
 	protected void initialisation() {
 		INSTANCE = this;
 		super.initialisation();
-		BusinessManagerImpl.SYSTEM_NAME = "KwordZ";
+		BusinessManagerImpl.SYSTEM_NAME = systemName;
 		configFormatOptions(defaultNoteFormatOptions);
 		configFormatOptions(defaultChordFormatOptions);
 		configFormatOptions(defaultFragmentFormatOptions);
@@ -202,17 +206,23 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
     	s3Album1 = create(new Album(singer3,"Album 1")); 
     	s3Album2 = create(new Album(singer3,"Album 2")); 
     	
-    	create(new Song(s1Album1,"Chant 1",new Note(NoteName.C),null,lyricsBusiness.parse(Locale.ENGLISH, "[C]Je[G]sus [Am]You [Dm7]Are")));
+    	create(new Song(s1Album1,"Chant 1",new Note(NoteName.C),createYoutubeVideo("nQ8MFn4yikA"),lyricsBusiness.parse(Locale.ENGLISH, "[C]Je[G]sus [Am]You [Dm7]Are")));
     	
-    	create(new Song(s1Album2,"Chant 2",new Note(NoteName.G),null,lyricsBusiness.parse(Locale.ENGLISH, "[C]Je[G]sus [Am]You [Dm7]Are")));
+    	create(new Song(s1Album2,"Chant 2",new Note(NoteName.G),createYoutubeVideo("FBgWEzKCfUQ"),lyricsBusiness.parse(Locale.ENGLISH, "[C]Je[G]sus [Am]You [Dm7]Are")));
     	
-    	create(new Song(s1Album3,"Chant 3",new Note(NoteName.E),null,lyricsBusiness.parse(Locale.ENGLISH, "Jesus")));
+    	create(new Song(s1Album3,"Chant 3",new Note(NoteName.E),createYoutubeVideo("n2iTo0SVktc"),lyricsBusiness.parse(Locale.ENGLISH, "Jesus")));
     	
-    	create(new Song(s2Album1,"Chant 1",new Note(NoteName.G),null,lyricsBusiness.parse(Locale.ENGLISH, "Jesus")));
+    	create(new Song(s2Album1,"Chant 1",new Note(NoteName.G),createYoutubeVideo("hCBgm1orMfo"),lyricsBusiness.parse(Locale.ENGLISH, "Jesus")));
     	
-    	create(new Song(s3Album1,"Chant 1",new Note(NoteName.A),null,lyricsBusiness.parse(Locale.ENGLISH, "Jesus")));
+    	create(new Song(s3Album1,"Chant 1",new Note(NoteName.A),createYoutubeVideo("NQr54a6KaUc"),lyricsBusiness.parse(Locale.ENGLISH, "Jesus")));
     	
     	create(new Song(s3Album2,"Chant 2",new Note(NoteName.B),null,lyricsBusiness.parse(Locale.ENGLISH, "Jesus")));
+    }
+    
+    private File createYoutubeVideo(String videoId){
+    	File file = new File();
+    	file.setUri(URI.create("//img.youtube.com/vi/"+videoId+"/default.jpg"));
+    	return file;
     }
     
 }

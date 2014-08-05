@@ -6,6 +6,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import org.cyk.system.kwordz.business.impl.KwordzBusinessLayer;
+import org.cyk.ui.api.UIManager;
 import org.cyk.ui.web.api.WebManager;
 import org.cyk.ui.web.primefaces.PrimefacesDefaultDesktopLayoutManager;
 import org.cyk.utility.common.annotation.Deployment;
@@ -17,14 +19,15 @@ public class KwordzWebManager extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 3659075703567481942L;
 
+	@Inject private KwordzBusinessLayer kwordzBusinessLayer;
+	@Inject private UIManager uiManager;
 	@Inject private WebManager webManager;
 	@Inject private PrimefacesDefaultDesktopLayoutManager primefacesDefaultDesktopLayoutManager;
-	
-	
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
+		uiManager.setBusinessSystemName(kwordzBusinessLayer.getSystemName());
 		webManager.setDecoratedTemplateInclude("/org.cyk.ui.web.primefaces.kwordz/include/template.xhtml");
 		primefacesDefaultDesktopLayoutManager.setNorthInclude("/org.cyk.ui.web.primefaces.kwordz/include/layout/default/north.xhtml");
 		primefacesDefaultDesktopLayoutManager.setWestInclude("/org.cyk.ui.web.primefaces.kwordz/include/layout/default/west.xhtml");

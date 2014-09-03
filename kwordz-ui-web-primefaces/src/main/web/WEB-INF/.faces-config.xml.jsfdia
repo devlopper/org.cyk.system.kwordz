@@ -5,12 +5,32 @@
    <PROCESS-ITEM-OUTPUT ID="home::#index.jsf" NAME="output"
     PATH="/index.jsf" TARGET="rules:#index.jsf" TITLE="home" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT
-    ID="singerConsultView::#public#singer#consult.jsf" NAME="output1"
+    ID="kwordzManagementView::#private#__management__#kwordz.jsf"
+    NAME="output1" PATH="/private/__management__/kwordz.jsf"
+    TARGET="rules:#private#__management__#kwordz.jsf"
+    TITLE="kwordzManagementView" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="singerConsultView::#public#singer#consult.jsf" NAME="output2"
     PATH="/public/singer/consult.jsf"
     TARGET="rules:#public#singer#consult.jsf" TITLE="singerConsultView" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="singerListView::#public#singer#list.jsf"
+    NAME="output3" PATH="/public/singer/list.jsf"
+    TARGET="rules:#public#singer#list.jsf" TITLE="singerListView" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="singerEditView::#private#singer#edit.jsf"
+    NAME="output4" PATH="/private/singer/edit.jsf"
+    TARGET="rules:#private#singer#edit.jsf" TITLE="singerEditView" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT ID="albumConsultView::#public#album#consult.jsf"
-    NAME="output2" PATH="/public/album/consult.jsf"
+    NAME="output5" PATH="/public/album/consult.jsf"
     TARGET="rules:#public#album#consult.jsf" TITLE="albumConsultView" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="albumListView::#public#album#list.jsf"
+    NAME="output6" PATH="/public/album/list.jsf"
+    TARGET="rules:#public#album#list.jsf" TITLE="albumListView" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="songConsultView::#public#song#consult.jsf"
+    NAME="output7" PATH="/public/song/consult.jsf"
+    TARGET="rules:#public#song#consult.jsf" TITLE="songConsultView" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="songListView::#public#song#list.jsf"
+    NAME="output8" PATH="/public/song/list.jsf"
+    TARGET="rules:#public#song#list.jsf" TITLE="songListView" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#public#singer#consult.jsf"
@@ -21,4 +41,14 @@
   PATH="/public/song/consult.jsf" SHAPE="272,321,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#index.jsf" PATH="/index.jsf"
   SHAPE="272,433,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#public#singer#list.jsf"
+  PATH="/public/singer/list.jsf" SHAPE="288,577,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#public#song#list.jsf"
+  PATH="/public/song/list.jsf" SHAPE="304,865,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#public#album#list.jsf"
+  PATH="/public/album/list.jsf" SHAPE="304,641,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#private#__management__#kwordz.jsf"
+  PATH="/private/__management__/kwordz.jsf" SHAPE="304,673,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#private#singer#edit.jsf"
+  PATH="/private/singer/edit.jsf" SHAPE="304,737,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>

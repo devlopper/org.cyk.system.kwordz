@@ -14,26 +14,17 @@
 	</cc:interface>
 
 	<cc:implementation>
-		<p:panelGrid columns="2">
-			<kwordz:iconSinger/>
-			
-			<p:graphicImage library="org.cyk.ui.web.primefaces" name="images/icons/32/person.png" 
-				alt="#{uiManager.text('word.singer')}" title="#{uiManager.text('word.singer')}"/>
-			
-			<h:link outcome="singerView" value="#{cc.value.singer.name}" title="#{cc.value.singer.name}">
-				<f:param name="#{webManager.requestParameterIdentifiable}" value="#{cc.value.singer.identifier}" />
-			</h:link>
-			<!--
-			<p:graphicImage library="org.cyk.ui.web.primefaces.kwordz" name="images/icons/32/disc.png" 
-				alt="#{uiManager.text('word.album')} : #{cc.value.song.album.name}" title="#{uiManager.text('word.album')} : #{cc.value.song.album.name}"/>
-			
-			<h:link outcome="albumView" value="#{albumName}">
-				<f:param name="#{webManager.requestParameterIdentifiable}" value="#{cc.value.song.album.identifier}" />
-			</h:link>
-			-->
-		</p:panelGrid>
+		<p:panelGrid columns="1">
 		
-		<cyk:tree value="#{cc.value.albumsTree}" />
+			<h:panelGroup>
+				<cyk:identifiableIcon value="#{cc.value.entity}" size="128"/>
+			</h:panelGroup>
+			
+			<h:panelGroup>
+				<cyk:identifiableLink value="#{cc.value.entity}" iconSize="16"/>
+			</h:panelGroup>
+			
+		</p:panelGrid>
 		
 	</cc:implementation>
 

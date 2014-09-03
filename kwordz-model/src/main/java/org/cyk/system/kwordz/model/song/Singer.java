@@ -24,4 +24,9 @@ public class Singer extends Party implements Serializable{
 	public Singer(String name){
 		this.name = name;
 	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
 }

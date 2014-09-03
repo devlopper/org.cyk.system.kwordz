@@ -24,8 +24,7 @@ public class SingerBusinessImpl extends AbstractPartyBusinessImpl<Singer, Singer
 	
 	@Override
 	public void loadAlbums(Singer singer) {
-		// TODO Auto-generated method stub
-		singer.setAlbums(albumBusiness.find().all());
+		singer.setAlbums(albumBusiness.findBySinger(singer));
 	}
 
 	@Override

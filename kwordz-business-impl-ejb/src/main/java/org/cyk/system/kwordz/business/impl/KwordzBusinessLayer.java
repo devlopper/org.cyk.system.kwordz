@@ -221,7 +221,7 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
     
     private File createYoutubeVideo(String videoId){
     	File file = new File();
-    	file.setUri(URI.create("//img.youtube.com/vi/"+videoId+"/default.jpg"));
+    	file.setUri(URI.create("https://www.youtube.com/watch?v="+videoId));
     	return file;
     }
     

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.cyk.system.kwordz.model.lyrics.Lyrics;
+import org.cyk.system.kwordz.model.music.MusicKind;
 import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
@@ -35,6 +36,8 @@ public class Song extends AbstractIdentifiable implements Serializable{
 	@OneToOne(cascade=CascadeType.ALL) private Lyrics lyrics;
 	
 	@OneToOne(cascade=CascadeType.ALL) private InformationCollection informationCollection;
+	
+	@OneToOne(cascade=CascadeType.ALL) private MusicKind musicKind;
 
 	public Song(Album album,String name, Note tone, File media, Lyrics lyrics) {
 		super();
@@ -50,14 +53,4 @@ public class Song extends AbstractIdentifiable implements Serializable{
 		return name;
 	}
 	
-	/*
-	public String getThumbnailURI(){
-		if(media==null)
-			return "";
-		if(media.getThumbnailURI()==null)
-			return super.getThumbnailURI();
-		return media.getThumbnailURI().toString();
-	}
-	*/
-
 }

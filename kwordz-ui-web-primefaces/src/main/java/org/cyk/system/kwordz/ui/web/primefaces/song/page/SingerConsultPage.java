@@ -1,4 +1,4 @@
-package org.cyk.system.kwordz.ui.web.primefaces.song;
+package org.cyk.system.kwordz.ui.web.primefaces.song.page;
 
 import java.io.Serializable;
 
@@ -10,6 +10,7 @@ import lombok.Getter;
 
 import org.cyk.system.kwordz.business.api.song.SingerBusiness;
 import org.cyk.system.kwordz.model.song.Singer;
+import org.cyk.system.kwordz.ui.web.primefaces.song.AlbumInfosList;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
 
 @Named @ViewScoped

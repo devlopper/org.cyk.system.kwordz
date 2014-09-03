@@ -14,16 +14,15 @@
         
         <ui:define name="westContent">
         	
-        	<table border="0">
+        	<table>
         		<tr><td>
         			<cyk:identifiableLink value="#{songConsultPage.song}" iconSize="16" disableLink="true"/>
         			<cyk:identifiableLink value="#{songConsultPage.song.album.singer}" iconSize="16"/>
 					<cyk:identifiableLink value="#{songConsultPage.song.album}" iconSize="16"/>
         		</td></tr>
         		<tr><td>
-        			<p:media value="#{songConsultPage.embeddedMediaUrl}" width="300" height="300" player="flash"/>
-        			<iframe src="#{songConsultPage.embeddedMediaUrl}" />
-        			<cyk:icon name="video" size="128" />
+        			<ui:fragment rendered="#{songConsultPage.builder.embeddedMediaUri!=null}"><iframe src="#{songConsultPage.builder.embeddedMediaUri.toString()}"/></ui:fragment>
+        			<cyk:icon name="video" size="128" rendered="#{songConsultPage.builder.embeddedMediaUri==null}"/>
         		</td></tr>
         	</table>					
         </ui:define> 

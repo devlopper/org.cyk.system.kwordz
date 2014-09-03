@@ -15,18 +15,46 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>kwordzManagementView</from-outcome>
+			<to-view-id>/private/__management__/kwordz.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>singerConsultView</from-outcome>
 			<to-view-id>/public/singer/consult.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>singerListView</from-outcome>
+			<to-view-id>/public/singer/list.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>singerEditView</from-outcome>
+			<to-view-id>/private/singer/edit.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		
 		<navigation-case>
 			<from-outcome>albumConsultView</from-outcome>
 			<to-view-id>/public/album/consult.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>albumListView</from-outcome>
+			<to-view-id>/public/album/list.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>songConsultView</from-outcome>
 			<to-view-id>/public/song/consult.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>songListView</from-outcome>
+			<to-view-id>/public/song/list.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
 		

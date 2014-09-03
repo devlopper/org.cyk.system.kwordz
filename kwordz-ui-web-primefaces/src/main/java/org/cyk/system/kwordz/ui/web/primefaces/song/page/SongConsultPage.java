@@ -1,4 +1,4 @@
-package org.cyk.system.kwordz.ui.web.primefaces.song;
+package org.cyk.system.kwordz.ui.web.primefaces.song.page;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,11 +17,14 @@ import org.cyk.system.kwordz.business.api.music.NoteBusiness;
 import org.cyk.system.kwordz.business.api.song.SongBusiness;
 import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.kwordz.model.song.Song;
-import org.cyk.system.kwordz.ui.web.primefaces.SongBuilder;
+import org.cyk.system.kwordz.ui.web.primefaces.LyricsStringBuilder;
+import org.cyk.system.kwordz.ui.web.primefaces.song.SingerInfos;
+import org.cyk.system.kwordz.ui.web.primefaces.song.SongInfosList;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.ui.api.command.DefaultCommand;
 import org.cyk.ui.api.command.DefaultCommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
+import org.cyk.ui.web.api.annotation.RequestParameter;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
 import org.cyk.ui.web.primefaces.Command;
 import org.cyk.utility.common.AbstractMethod;
@@ -31,28 +34,34 @@ public class SongConsultPage extends AbstractPrimefacesPage implements Serializa
 
 	private static final long serialVersionUID = 479730074989365192L;
 	
+	/*
+	 * Services
+	 */
 	@Inject private LyricsBusiness lyricsBusiness;
 	@Inject private SongBusiness songBusiness;
 	@Inject private LanguageBusiness languageBusiness;
 	@Inject private NoteBusiness noteBusiness;
 	//@Inject private SingerBusiness singerBusiness;
-	@Getter @Inject private SongBuilder builder;
 	
-	@Getter private Song song;
+	/*
+	 * Request parameters
+	 */
+	@Getter @RequestParameter private Song song;
+	
+	/*
+	 * DTOs
+	 */
+	@Getter @Inject private LyricsStringBuilder builder;
 	@Getter private SongInfosList relatedSongList;
 	@Getter private SingerInfos singerInfos;
-	
 	@Getter private List<SelectItem> parsableLocalesItems = new ArrayList<>();
 	@Getter private List<SelectItem> tonesItems = new ArrayList<>();
-	
-	@Getter private String embeddedMediaUrl= "http://www.google.com";//"http://www.youtube.com/v/iggqYzIZV8A";
 	
 	@Getter private Command applyCommand;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		song = identifiableFromRequestParameter(Song.class);
 		
 		for(Locale locale : lyricsBusiness.findParsableLocales()){
 			parsableLocalesItems.add(new SelectItem(locale, languageBusiness.findText(session.getLocale(),locale)));
@@ -69,7 +78,7 @@ public class SongConsultPage extends AbstractPrimefacesPage implements Serializa
 			}
 		}
 		//singerInfos = new SingerInfos(song.getAlbum().getSinger(), singerBusiness);
-		relatedSongList = new SongInfosList("Related", songBusiness.findRelated(song),Boolean.FALSE);
+		relatedSongList = new SongInfosList("Related", songBusiness.findRelated(song),Boolean.FALSE,songBusiness);
 		builder.init(song);
 		DefaultCommandable commandable = new DefaultCommandable();
 		commandable.setLabel(uiManager.text("command.apply"));

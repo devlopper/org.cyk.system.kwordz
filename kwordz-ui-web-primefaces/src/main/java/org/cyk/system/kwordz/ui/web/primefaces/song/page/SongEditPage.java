@@ -1,4 +1,4 @@
-package org.cyk.system.kwordz.ui.web.primefaces.song;
+package org.cyk.system.kwordz.ui.web.primefaces.song.page;
 
 import java.io.Serializable;
 
@@ -7,7 +7,7 @@ import javax.inject.Named;
 
 import lombok.Getter;
 
-import org.cyk.system.kwordz.ui.web.primefaces.SongBuilder;
+import org.cyk.system.kwordz.ui.web.primefaces.LyricsStringBuilder;
 import org.cyk.system.root.business.api.Crud;
 import org.cyk.ui.api.command.DefaultCommand;
 import org.cyk.ui.api.command.DefaultCommandable;
@@ -22,7 +22,7 @@ public class SongEditPage extends AbstractPrimefacesPage implements Serializable
 	
 	//@Inject private LyricsBusiness lyricsBusiness;
 
-	@Getter private SongBuilder parser;
+	@Getter private LyricsStringBuilder parser;
 	@Getter private Crud crud;
 	@Getter private Command primefacesEditCommand;
 	

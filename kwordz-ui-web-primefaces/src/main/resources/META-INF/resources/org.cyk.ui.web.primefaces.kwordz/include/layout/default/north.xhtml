@@ -9,7 +9,23 @@
       
 	<table class="cyk-kwordz-layout-north-table" ><tr>
 		<td class="cyk-kwordz-layout-north-table-td-logo">
-			<h:link value="KwordZ" title="KwordZ" styleClass="cyk-kwordz-layout-north-table-td-logo-textOnly" outcome="home" />
+			<table><tr>
+				<td><h:link value="KwordZ" title="KwordZ" styleClass="cyk-kwordz-layout-north-table-td-logo-textOnly" outcome="home" /></td>
+				<td>
+					<ui:param name="singerBusinessEntityInfos" value="#{kwordzWebManager.singerBusinessEntityInfos}" />
+					<ui:param name="albumBusinessEntityInfos" value="#{kwordzWebManager.albumBusinessEntityInfos}" />
+					<ui:param name="songBusinessEntityInfos" value="#{kwordzWebManager.songBusinessEntityInfos}" />
+					<p:menuButton value="-">
+				        <p:menuitem value="#{singerBusinessEntityInfos.uiLabel}" outcome="#{singerBusinessEntityInfos.uiListViewId}" icon="ui-icon-person"/>
+				        <p:menuitem value="#{albumBusinessEntityInfos.uiLabel}" outcome="#{albumBusinessEntityInfos.uiListViewId}" icon="ui-icon-folder-collapsed"/>
+				        <p:menuitem value="#{songBusinessEntityInfos.uiLabel}" outcome="#{songBusinessEntityInfos.uiListViewId}" icon="ui-icon-document"/>
+				        <!--
+				        <p:separator/>
+				        <p:menuitem value="#{uiManager.text('word.administration')}" outcome="kwordzManagementView" icon="ui-icon-wrench"/>
+				        -->
+				    </p:menuButton>
+				</td>
+			</tr> </table>
 		</td>
 		<td class="cyk-kwordz-layout-north-table-td-searchinput">
 			<table class="cyk-kwordz-layout-north-table-td-searchinput-table"><tr>

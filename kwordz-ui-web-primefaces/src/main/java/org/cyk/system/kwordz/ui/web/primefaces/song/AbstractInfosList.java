@@ -14,11 +14,13 @@ public abstract class AbstractInfosList<ENTITY,INFOS extends AbstractInfos<ENTIT
 
 	private static final long serialVersionUID = -6356004259181731404L;
 	
+	public enum RenderType{TABLE,GRID}
+	
 	protected String name;
 	protected Integer columns;
 	protected List<INFOS> list = new ArrayList<>();
 	protected Class<ENTITY> infosClass;
-	
+	protected RenderType renderType = RenderType.GRID;
 	
 	@SuppressWarnings("unchecked")
 	public AbstractInfosList(Collection<ENTITY> list) {
@@ -35,6 +37,10 @@ public abstract class AbstractInfosList<ENTITY,INFOS extends AbstractInfos<ENTIT
 				infos.setEntity(entity);
 				this.list.add(infos);
 			}
+	}
+	
+	public Boolean getIsRenderedAsGrid(){
+		return RenderType.GRID.equals(renderType);
 	}
 	
 }

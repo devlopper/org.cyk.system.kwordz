@@ -1,4 +1,4 @@
-package org.cyk.system.kwordz.ui.web.primefaces.song;
+package org.cyk.system.kwordz.ui.web.primefaces.song.page;
 
 import java.io.Serializable;
 
@@ -9,7 +9,9 @@ import javax.inject.Named;
 import lombok.Getter;
 
 import org.cyk.system.kwordz.business.api.song.AlbumBusiness;
+import org.cyk.system.kwordz.business.api.song.SongBusiness;
 import org.cyk.system.kwordz.model.song.Album;
+import org.cyk.system.kwordz.ui.web.primefaces.song.SongInfosList;
 import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
 
 @Named @ViewScoped
@@ -18,6 +20,7 @@ public class AlbumConsultPage extends AbstractPrimefacesPage implements Serializ
 	private static final long serialVersionUID = 479730074989365192L;
 	
 	@Inject private AlbumBusiness albumBusiness;
+	@Inject private SongBusiness songBusiness;
 	
 	@Getter private Album album;
 	@Getter private SongInfosList songInfosList;
@@ -27,7 +30,7 @@ public class AlbumConsultPage extends AbstractPrimefacesPage implements Serializ
 		super.initialisation();
 		album = identifiableFromRequestParameter(Album.class);
 		albumBusiness.loadSongs(album); 
-		songInfosList = new SongInfosList(null,album.getSongs(),Boolean.TRUE);
+		songInfosList = new SongInfosList(null,album.getSongs(),Boolean.TRUE,songBusiness);
 		
 	}
 	

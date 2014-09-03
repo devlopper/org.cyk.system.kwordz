@@ -1,6 +1,7 @@
 package org.cyk.system.kwordz.ui.web.primefaces;
 
 import java.io.Serializable;
+import java.net.URI;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -19,30 +20,30 @@ import org.cyk.ui.web.api.WebSession;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @Getter @Setter
-public class SongBuilder extends AbstractBean implements Serializable {
+public class LyricsStringBuilder extends AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = 2470538473226699152L;
 
 	@Inject private WebSession session;
 	@Inject private SongBusiness songBusiness;
 	@Inject private LyricsBusiness lyricsBusiness;
+	
 	private Locale noteLocale;
 	private String lyricsToParse,lyricsParsed;
 	private Song song;
 	private Note selectedTone;
+	private URI embeddedMediaUri;
 	private LyricsFormatOptions lyricsFormatOptions = new LyricsFormatOptions();
-	
-	{
-		lyricsFormatOptions.getPartFormatOptions().getLineFormatOptions().setChordLocation(ChordLocation.TOP);
-	}
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
+		lyricsFormatOptions.getPartFormatOptions().getLineFormatOptions().setChordLocation(ChordLocation.TOP);
 	}
 	
 	public void init(Song song) {
-		this.song = song; //TODO must use copy constructor
+		this.song = song;
+		embeddedMediaUri = songBusiness.findMediaEmbeddedUri(song);
 		build();
 	}
 	

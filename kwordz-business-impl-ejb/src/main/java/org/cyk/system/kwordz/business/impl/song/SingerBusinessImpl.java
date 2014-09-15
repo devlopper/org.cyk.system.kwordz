@@ -1,6 +1,7 @@
 package org.cyk.system.kwordz.business.impl.song;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.inject.Inject;
 
@@ -29,10 +30,14 @@ public class SingerBusinessImpl extends AbstractPartyBusinessImpl<Singer, Singer
 
 	@Override
 	public void findHierarchy(Singer singer) {
-		// TODO Auto-generated method stub
 		loadAlbums(singer);
 		for(Album album : singer.getAlbums())
 			albumBusiness.findHierarchy(album);
-	} 
+	}
+	
+	@Override
+	public Collection<Singer> findSuggestions(String name) {
+		return dao.readWhereNameContains(name);
+	}
 	
 }

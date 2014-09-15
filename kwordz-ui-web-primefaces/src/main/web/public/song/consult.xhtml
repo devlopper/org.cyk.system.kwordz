@@ -21,8 +21,11 @@
 					<cyk:identifiableLink value="#{songConsultPage.song.album}" iconSize="16"/>
         		</td></tr>
         		<tr><td>
+        			<!--
         			<ui:fragment rendered="#{songConsultPage.builder.embeddedMediaUri!=null}"><iframe src="#{songConsultPage.builder.embeddedMediaUri.toString()}"/></ui:fragment>
         			<cyk:icon name="video" size="128" rendered="#{songConsultPage.builder.embeddedMediaUri==null}"/>
+        			-->
+        			<kwordz:media uri="#{songConsultPage.builder.embeddedMediaUri}" />
         		</td></tr>
         	</table>					
         </ui:define> 

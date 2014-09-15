@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:kwordz="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.kwordz/component"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component">
+
+    <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
+        <ui:param name="pageController" value="#{songEditPage}" />
+        
+        <ui:define name="body">
+       		<p:panelGrid columns="2" styleClass="cyk-kwordz-page-song-edit-panelGrid" columnClasses="cyk-kwordz-page-song-edit-panelGrid-leftCol,cyk-kwordz-page-song-edit-panelGrid-rightCol">
+ 				<p:panelGrid columns="2">
+ 					<p:outputLabel for="singer">
+ 						<cyk:icon name="#{kwordzWebManager.singerBusinessEntityInfos.uiIconName}" title="#{kwordzWebManager.singerBusinessEntityInfos.uiLabel}" size="16"/>
+ 					</p:outputLabel>
+ 					<p:autoComplete id="singer" required="true" value="#{songEditPage.singer}" dropdown="false" completeMethod="#{kwordzWebManager.singerSuggestions}"
+ 						converter="#{objectConverter}" var="singer" itemValue="#{singer}" itemLabel="#{singer.uiString}" cache="true" 
+ 						label="#{kwordzWebManager.singerBusinessEntityInfos.uiLabel}">
+ 						<p:ajax event="itemSelect" listener="#{songEditPage.singerSelect}" update="album"/>
+ 					</p:autoComplete>
+ 					
+ 					<p:outputLabel for="album">
+ 						<cyk:icon name="#{kwordzWebManager.albumBusinessEntityInfos.uiIconName}" title="#{kwordzWebManager.albumBusinessEntityInfos.uiLabel}" size="16"/>
+ 					</p:outputLabel>
+ 					<p:selectOneMenu id="album" required="true" value="#{songEditPage.song.album}" converter="#{objectConverter}" 
+ 						label="#{kwordzWebManager.albumBusinessEntityInfos.uiLabel}">
+ 						<f:selectItems value="#{songEditPage.albums}" />
+ 					</p:selectOneMenu>
+ 					
+ 					<p:outputLabel for="name">
+ 						<cyk:icon name="#{kwordzWebManager.songBusinessEntityInfos.uiIconName}" title="#{uiManager.text('title')}" size="16"/>
+ 					</p:outputLabel>
+ 					<p:inputText id="name" required="true" value="#{songEditPage.song.name}" label="#{uiManager.text('title')}"/>
+ 					
+ 					<p:outputLabel for="language">
+ 						<cyk:icon name="planet-earth" title="#{uiManager.text('language')}" size="16"/>
+ 					</p:outputLabel>
+ 					<p:selectOneMenu id="language" required="true" value="#{songEditPage.lyricsLanguage}" converter="#{objectConverter}" label="#{uiManager.text('language')}">
+ 						<f:selectItems value="#{languageItems}" />
+ 					</p:selectOneMenu>
+ 					
+ 					<p:outputLabel for="kind" value="#{uiManager.text('kind')}" />
+ 					<p:selectOneMenu id="kind" required="true" value="#{songEditPage.song.musicKind}" converter="#{objectConverter}">
+ 						<f:selectItems value="#{musicKindItems}" />
+ 					</p:selectOneMenu>
+ 						  				
+	  				<p:outputLabel for="media">
+	  					<cyk:icon name="link" title="#{uiManager.text('media')}" size="16"/>
+	  				</p:outputLabel>
+	 				<p:inputText id="media" value="#{songEditPage.mediaUrl}" converter="#{urlConverter}" valueChangeListener="#{songEditPage.mediaUriSelect}" 
+	 					label="#{uiManager.text('media')}">
+	 					<p:ajax event="blur" update="mediaEmbedded" />
+	 					<p:message for="@parent" />
+	 				</p:inputText>
+		 				
+	 				<h:outputText/>
+	  				<p:outputPanel id="mediaEmbedded" >
+	  					<kwordz:media uri="#{songEditPage.mediaEmbeddedUrl.toURI()}" />
+	  				</p:outputPanel>
+		  			
+ 				</p:panelGrid>
+ 				<h:panelGroup>
+ 					<p:panelGrid columns="4">
+	 					<p:outputLabel for="notation" value="#{uiManager.text('kwordz.ui.note.notation')}" />
+		  				<p:selectOneMenu id="notation" required="true" value="#{songEditPage.builder.noteLocale}" converter="#{objectConverter}" valueChangeListener="#{songEditPage.notationSelect}">
+		  					<f:selectItems value="#{parsableLocalesItems}" />
+		  					<p:ajax event="change" update="tone"/>
+		  				</p:selectOneMenu>
+		  				
+		  				<p:outputLabel for="tone" value="#{uiManager.text('kwordz.ui.tone')}" />
+		  				<p:selectOneMenu id="tone" required="true" value="#{songEditPage.song.tone}" converter="#{objectConverter}">
+		  					<f:selectItems value="#{songEditPage.builder.tonesItems}" />
+		  				</p:selectOneMenu>
+		  				<!--
+		  				<p:outputLabel for="chordLocation" value="#{uiManager.text('kwordz.ui.lyrics.chordLocation')}" />
+		  				<p:selectOneMenu id="chordLocation" required="true" value="#{songEditPage.builder.lyricsToParseChordLocation}" converter="#{objectConverter}" >
+		  					<f:selectItems value="#{songEditPage.builder.chordLocationItems}" />
+		  				</p:selectOneMenu>
+		  				
+		  				<cyk:command value="#{songEditPage.applyLyricsInputOptionsCommand}" />
+		  				-->
+ 					</p:panelGrid>
+	 				<p:panelGrid columns="2" styleClass="cyk-kwordz-lyrics-input-panelGrid" columnClasses="cyk-kwordz-lyrics-input-column,cyk-kwordz-lyrics-preview-column">
+		  				<h:panelGroup>
+		  					<p:outputLabel for="lyrics" value="#{uiManager.text('lyrics')}" /><br/>
+		  					<p:inputTextarea id="lyrics" value="#{songEditPage.builder.lyricsToParse}"  required="true" rows="15" styleClass="cyk-kwordz-lyrics-input-textarea">
+		  						
+		  					</p:inputTextarea>
+		  				</h:panelGroup>
+		  				
+		  				<h:panelGroup>
+		  					<h:outputText value="#{uiManager.text('preview')}" /><br/>
+		  					<pre>
+		    					<h:outputText id="parsedLyrics" value="#{songEditPage.builder.lyricsParsed}" escape="false"/>
+		    				</pre>
+		  				</h:panelGroup>
+		  			</p:panelGrid>	
+ 				</h:panelGroup>
+  			</p:panelGrid>	
+  			
+  			<p:panelGrid columns="2">
+	  			<p:panelGrid columns="1">
+	  				
+	  			</p:panelGrid>
+	  			
+  			</p:panelGrid>
+ 
+        </ui:define>
+        
+        <ui:define name="contentMenuBar">
+ 			<cyk:command value="#{songEditPage.editor.primefacesSubmitCommand}" executeParameter="#{songEditPage.editor.objectModel}" />
+ 			<cyk:command value="#{songEditPage.previewCommand}" />
+ 		</ui:define>
+    </ui:decorate>
+ 
+</html>

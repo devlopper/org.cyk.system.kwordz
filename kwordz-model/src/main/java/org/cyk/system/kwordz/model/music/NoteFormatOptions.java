@@ -12,6 +12,8 @@ public class NoteFormatOptions extends AbstractFormatOptions implements Serializ
 
 	private static final long serialVersionUID = 5281169944501545966L;
 
-	private String seperatorNameAndAlteration;
+	public static String DEFAULT_SEPERATOR_NAME_ALTERATION = "";
+	
+	private String seperatorNameAndAlteration = DEFAULT_SEPERATOR_NAME_ALTERATION;
 	
 }

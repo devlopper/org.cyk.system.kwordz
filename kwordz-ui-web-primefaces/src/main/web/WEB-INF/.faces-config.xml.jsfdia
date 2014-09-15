@@ -9,13 +9,13 @@
     NAME="output1" PATH="/private/__management__/kwordz.jsf"
     TARGET="rules:#private#__management__#kwordz.jsf"
     TITLE="kwordzManagementView" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="libraryView::#public#library.jsf"
+    NAME="output2" PATH="/public/library.jsf"
+    TARGET="rules:#public#library.jsf" TITLE="libraryView" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT
-    ID="singerConsultView::#public#singer#consult.jsf" NAME="output2"
+    ID="singerConsultView::#public#singer#consult.jsf" NAME="output3"
     PATH="/public/singer/consult.jsf"
     TARGET="rules:#public#singer#consult.jsf" TITLE="singerConsultView" model-entity="JSFProcessItemOutput"/>
-   <PROCESS-ITEM-OUTPUT ID="singerListView::#public#singer#list.jsf"
-    NAME="output3" PATH="/public/singer/list.jsf"
-    TARGET="rules:#public#singer#list.jsf" TITLE="singerListView" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT ID="singerEditView::#private#singer#edit.jsf"
     NAME="output4" PATH="/private/singer/edit.jsf"
     TARGET="rules:#private#singer#edit.jsf" TITLE="singerEditView" model-entity="JSFProcessItemOutput"/>
@@ -31,6 +31,9 @@
    <PROCESS-ITEM-OUTPUT ID="songListView::#public#song#list.jsf"
     NAME="output8" PATH="/public/song/list.jsf"
     TARGET="rules:#public#song#list.jsf" TITLE="songListView" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="songEditView::#private#song#edit.jsf"
+    NAME="output9" PATH="/private/song/edit.jsf"
+    TARGET="rules:#private#song#edit.jsf" TITLE="songEditView" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#public#singer#consult.jsf"
@@ -51,4 +54,8 @@
   PATH="/private/__management__/kwordz.jsf" SHAPE="304,673,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#private#singer#edit.jsf"
   PATH="/private/singer/edit.jsf" SHAPE="304,737,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#private#song#edit.jsf"
+  PATH="/private/song/edit.jsf" SHAPE="304,769,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#public#library.jsf"
+  PATH="/public/library.jsf" SHAPE="304,769,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>

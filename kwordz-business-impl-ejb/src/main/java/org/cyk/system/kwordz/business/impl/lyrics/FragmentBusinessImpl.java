@@ -88,13 +88,22 @@ public class FragmentBusinessImpl extends AbstractMusicBusinessImpl<Fragment, Fr
 		pad(locale, fragment, contentType, options, chordBuilder, textBuilder);
 		style(locale, fragment, contentType, options, chordBuilder, textBuilder);
 		
+		if(StringUtils.isNotEmpty(chords) && StringUtils.isNotEmpty(chordBuilder.value) && !StringUtils.endsWith(chords, contentType.getSpaceMarker()) && !StringUtils.startsWith(chordBuilder.value, contentType.getSpaceMarker())){
+			chords.append(contentType.getSpaceMarker());
+			texts.append(contentType.getSpaceMarker());
+		}
+		//if(chordBuilder.part().length()!=textBuilder.part().length())
+			//System.out.println("FragmentBusinessImpl.format() : \r\n"+chordBuilder.value+"\r\n"+textBuilder.value);
 		chords.append(chordBuilder.part());
 		texts.append(textBuilder.part());
 	}
 	
+	//TODO should not be called - to be removed so : space must be kept while parsing
 	private void addSpaceSeperator(StringBuilder stringBuilder,String seperator){
+		/*
 		if(StringUtils.isNotEmpty(stringBuilder))
 			stringBuilder.append(seperator);
+		*/
 	}
 	
 	private void pad(Locale locale, Fragment fragment,ContentType contentType,FragmentFormatOptions options, FragmentPartBuilder chords,FragmentPartBuilder texts){
@@ -124,11 +133,24 @@ public class FragmentBusinessImpl extends AbstractMusicBusinessImpl<Fragment, Fr
 	@Override
 	public Fragment parse(Locale locale, String text) {
 		ChordFormatOptions chordFormatOptions = KwordzBusinessLayer.getInstance().getDefaultChordFormatOptions();
-		text = StringUtils.trim(text);
+		text = StringUtils.stripStart(text, " ");
+		String noSpaces = StringUtils.strip(text);
+		text = noSpaces+(StringUtils.endsWith(text,ContentType.TEXT.getSpaceMarker())? ContentType.TEXT.getSpaceMarker():"");
 		String chordString = StringUtils.substringBetween(text, chordFormatOptions.getMarkerStart(), chordFormatOptions.getMarkerEnd());
 		if(StringUtils.isNotEmpty(chordString))
 			text = StringUtils.substringAfter(text, chordFormatOptions.getMarkerEnd());
-		return new Fragment(text, StringUtils.isEmpty(chordString)?null:chordBusiness.parse(locale, chordString));
+		return new Fragment(text, StringUtils.isEmpty(chordString)?null:chordBusiness.parse(locale, chordString)
+				//,StringUtils.endsWithAny(text, ContentType.TEXT.getNewLineMarker())?ContentType.TEXT.getNewLineMarker():" "
+					);
+	}
+	
+	@Override
+	public String parseableForm(String chord, String text) {
+		StringBuilder parseable = new StringBuilder();
+		if(StringUtils.isNotBlank(chord))
+			parseable.append(ChordFormatOptions.DEFAULT_MARKER_START+chord+ChordFormatOptions.DEFAULT_MARKER_END);
+		parseable.append(StringUtils.stripStart(text, " "));
+		return parseable.toString();
 	}
 	
 	/**/

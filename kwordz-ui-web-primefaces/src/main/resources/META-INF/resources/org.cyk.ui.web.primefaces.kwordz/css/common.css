@@ -30,22 +30,30 @@
 	
 }
 
-.cyk-kwordz-song-infos-table-tr-thumbmail{
+.cyk-kwordz-song-infos-table .ui-widget-content{
+	background: transparent;
 	
 }
 
-.cyk-kwordz-song-infos-table-tr-infos{
+
+
+.cyk-kwordz-song-infos-table-thumbmail{
+	
+}
+
+.cyk-kwordz-song-infos-table-infos{
 	
 }
 
 /**/
 
 .cyk-kwordz-page-song-edit-panelGrid{
-	
+	width: 100%;
 }
 
 .cyk-kwordz-page-song-edit-panelGrid-leftCol{
 	vertical-align: top;
+	width: 200px;
 }
 
 .cyk-kwordz-page-song-edit-panelGrid-rightCol{
@@ -63,6 +71,23 @@
 
 .cyk-kwordz-page-song-view-panelGrid-rightCol{
 	vertical-align: top;
+}
+
+.cyk-kwordz-lyrics-input-textarea{
+	width: 100%;
+}
+
+.cyk-kwordz-lyrics-input-column{
+	width: 50%;
+}
+
+.cyk-kwordz-lyrics-preview-column{
+	vertical-align: top;
+}
+
+.cyk-kwordz-lyrics-input-panelGrid{
+	width: 100%;
+	
 }
 
 /* Layout */
@@ -94,7 +119,7 @@ a.cyk-kwordz-layout-north-table-td-logo-textOnly{
 }
 .cyk-kwordz-layout-north-table-td-searchinput-table-td-input input{
 	width: 100%;
-	height: 27px;
+	height: 22px;
 }
 .cyk-kwordz-layout-north-table-td-searchinput-table-td-button input{
 	
@@ -103,3 +128,25 @@ a.cyk-kwordz-layout-north-table-td-logo-textOnly{
 .cyk-kwordz-layout-north-table-td-others{
 	
 }
+
+/**/
+.cyk-kwordz-page-library-searchinput-table{
+	width: 100%;
+	
+}
+.cyk-kwordz-page-library-searchinput-table-td-input{
+	width: 100%;
+}
+.cyk-kwordz-page-library-searchinput-table-td-input input{
+	width: 100%;
+	height: 22px;
+}
+.cyk-kwordz-page-library-searchinput-table-td-button input{
+	
+}
+
+.cyk-kwordz-page-library-song-thumbmail{
+	border: 1px solid #eeeeee;
+	width: 40px;
+}
+

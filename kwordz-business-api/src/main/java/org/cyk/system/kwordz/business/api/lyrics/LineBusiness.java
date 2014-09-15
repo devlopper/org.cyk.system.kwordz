@@ -6,5 +6,6 @@ import org.cyk.system.kwordz.model.lyrics.LineFormatOptions;
 
 public interface LineBusiness extends AbstractMusicBusiness<Line,LineFormatOptions> {
 
+	String parseableForm(String chordsLine,String textsLine);
 	
 }

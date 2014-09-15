@@ -11,4 +11,6 @@ public interface FragmentBusiness extends AbstractMusicBusiness<Fragment,Fragmen
     
 	void format(Locale locale, Fragment fragment,ContentType contentType,FragmentFormatOptions options,StringBuilder chords,StringBuilder texts);
 	
+	String parseableForm(String chord,String text);
+	
 }

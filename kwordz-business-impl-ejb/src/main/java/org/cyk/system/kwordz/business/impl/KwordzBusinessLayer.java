@@ -21,6 +21,7 @@ import org.cyk.system.kwordz.model.lyrics.LyricsFormatOptions;
 import org.cyk.system.kwordz.model.lyrics.PartFormatOptions;
 import org.cyk.system.kwordz.model.music.ChordFormatOptions;
 import org.cyk.system.kwordz.model.music.ChordStructure;
+import org.cyk.system.kwordz.model.music.MusicKind;
 import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.kwordz.model.music.NoteFormatOptions;
 import org.cyk.system.kwordz.model.music.NoteName;
@@ -74,8 +75,11 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
 		configFormatOptions(defaultPartFormatOptions);
 		configFormatOptions(defaultLyricsFormatOptions);
 		parserHelper.prepare(chordStructureBusiness);
-		languageBusiness.registerResourceBundle("org.cyk.system.kwordz.business.impl.resources.exception", getClass().getClassLoader());
-		languageBusiness.registerResourceBundle("org.cyk.system.kwordz.business.impl.resources.ui", getClass().getClassLoader());
+		languageBusiness.registerResourceBundle("org.cyk.system.kwordz.model.resources.entity", getClass().getClassLoader());
+		languageBusiness.registerResourceBundle("org.cyk.system.kwordz.model.music.music", getClass().getClassLoader());
+		
+		languageBusiness.registerResourceBundle("org.cyk.system.kwordz.business.impl.exception", getClass().getClassLoader());
+		languageBusiness.registerResourceBundle("org.cyk.system.kwordz.business.impl.ui", getClass().getClassLoader());
 		
 	}
 	
@@ -84,7 +88,7 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
         createChordStructures(chordStructureBusiness);
         createScaleStructures(scaleStructureBusiness);
         parserHelper.prepare(chordStructureBusiness);
-        
+        createMusicKind();
         fakeData();
     }
     
@@ -116,6 +120,12 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
     
     public void createScaleStructures(ScaleStructureBusiness structureBusiness){
     	createScaleStructure(structureBusiness,"maj", 2,2,1,2,2,2);
+    }
+    
+    public void createMusicKind(){
+    	create(new MusicKind(null, "ROCK", "Rock"));
+    	create(new MusicKind(null, "SOUL", "Soul"));
+    	create(new MusicKind(null, "REGGEA", "Reggea"));
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })

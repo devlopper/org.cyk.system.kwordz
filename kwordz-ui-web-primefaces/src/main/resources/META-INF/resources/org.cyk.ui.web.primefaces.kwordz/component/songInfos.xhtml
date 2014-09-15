@@ -10,20 +10,22 @@
 
 	<cc:interface componentType="org.cyk.ui.primefaces.kwordz.SongInfos">
 		<cc:attribute name="value" required="true" />
+		<cc:attribute name="styleClass" />
 	</cc:interface>
 
 	<cc:implementation>
 		
-		<p:panelGrid columns="#{cc.value.infosAtBottom?1:2}">
+		<p:panelGrid columns="#{cc.value.infosAtBottom?1:2}" styleClass="cyk-kwordz-song-infos-table" columnClasses="cyk-kwordz-song-infos-table-thumbmail,cyk-kwordz-song-infos-table-infos"
+			>
 		
 			<h:panelGroup>
-				<cyk:icon name="video" size="128" url="#{cc.value.thumbnailUri}" />
+				<cyk:icon name="video" size="128" url="#{cc.value.thumbnailUri}" styleClass="#{cc.attrs.styleClass}" title="#{cc.value.entity.name}"/>
 			</h:panelGroup>
 			
 			<h:panelGroup>
-				<cyk:identifiableLink value="#{cc.value.entity}" iconSize="16"/>
-				<cyk:identifiableLink value="#{cc.value.entity.album}" iconSize="16"/>
-				<cyk:identifiableLink value="#{cc.value.entity.album.singer}" iconSize="16"/>
+				<cyk:identifiableLink value="#{cc.value.entity}" iconSize="16" rendered="#{cc.value.showSong}"/>
+				<cyk:identifiableLink value="#{cc.value.entity.album}" iconSize="16" rendered="#{cc.value.showAlbum}"/>
+				<cyk:identifiableLink value="#{cc.value.entity.album.singer}" iconSize="16" rendered="#{cc.value.showSinger}"/>
 			</h:panelGroup>
 			
 		</p:panelGrid>

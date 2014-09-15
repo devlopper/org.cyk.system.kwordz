@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:cyk="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces/component"
+      xmlns:kwordz="http://xmlns.jcp.org/jsf/composite/org.cyk.ui.web.primefaces.kwordz/component">
+
+    <ui:decorate template="#{webPageLayoutManager.decoratedTemplate}">
+        <ui:param name="pageController" value="#{libraryPage}" />
+        <ui:define name="body">
+        	
+        	<style>
+        		.cyk-kwordz-song-infos-table-thumbmail{
+        			width: 35px;
+        			padding: 0px;
+        			text-align: left;
+        		}
+        		.cyk-kwordz-song-infos-table-thumbmail img{
+        			margin: 0px;
+        		}
+        		.cyk-kwordz-song-infos-table-infos{
+					text-align: left;
+
+				}
+        	</style>
+        	
+       		<p:dataTable id="songDataTableId" widgetVar="songDataTable" value="#{libraryPage.dataModel}" var="songInfos" stickyHeader="true"
+       			lazy="true" paginator="true" rows="#{libraryPage.maximumSongResultCount}" paginatorPosition="bottom" sortMode="single"
+       		>
+       			
+       			<f:facet name="header">
+       				<p:toolbar>
+       					<f:facet name="right">
+       						
+       						<p:inputText id="globalFilter" >
+       				
+       						</p:inputText>	
+       						<cyk:command value="#{libraryPage.searchCommand}" />
+       					</f:facet>
+       				</p:toolbar>
+       			</f:facet>
+       			
+       			<p:column headerText="#{kwordzWebManager.songBusinessEntityInfos.uiLabel}" sortBy="#{songInfos.song.name}" >
+       				<kwordz:songInfos value="#{songInfos}" styleClass="cyk-kwordz-page-library-song-thumbmail" />
+       			</p:column>
+       			<p:column headerText="#{kwordzWebManager.albumBusinessEntityInfos.uiLabel}" sortBy="#{songInfos.song.album.name}">
+       				<h:outputText value="#{songInfos.song.album.name}" rendered="false"/>
+       				<cyk:identifiableLink value="#{songInfos.song.album}" showIcon="false"/>
+       			</p:column>
+       			<p:column headerText="#{kwordzWebManager.singerBusinessEntityInfos.uiLabel}" sortBy="#{songInfos.song.album.singer.name}">
+       				<h:outputText value="#{songInfos.song.album.singer.name}" rendered="false"/>
+       				<cyk:identifiableLink value="#{songInfos.song.album.singer}" showIcon="false"/>
+       			</p:column>
+       			
+       			<f:facet name="footer">
+       			
+       			</f:facet>
+       		</p:dataTable>
+            	
+        </ui:define>
+    </ui:decorate>
+ 
+</html>

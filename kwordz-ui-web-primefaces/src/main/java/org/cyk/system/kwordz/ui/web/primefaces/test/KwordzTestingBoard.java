@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.kwordz.business.api.lyrics.LyricsBusiness;
-import org.cyk.system.kwordz.model.lyrics.LineFormatOptions.ChordLocation;
+import org.cyk.system.kwordz.model.lyrics.ChordLocation;
 import org.cyk.system.kwordz.model.lyrics.Lyrics;
 import org.cyk.system.kwordz.model.lyrics.LyricsFormatOptions;
 import org.cyk.system.root.model.ContentType;

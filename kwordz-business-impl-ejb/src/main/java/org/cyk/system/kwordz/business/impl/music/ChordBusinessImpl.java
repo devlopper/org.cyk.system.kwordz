@@ -69,17 +69,20 @@ public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordS
 		if(Boolean.TRUE.equals(options.getShowMarker()))
 			builder.append(options.getMarkerStart());
 		String structureSymbol = chord.getStructure().getSymbols().iterator().next();
+		if(chord.getStructure().getCode().equals(ChordFormatOptions.MAJOR_CHORD_CODE) && !Boolean.TRUE.equals(options.getShowMajorChordSymbol()))
+			structureSymbol = "";
+		
 		if(StringUtils.isNotEmpty(structureSymbol))
 			structureSymbol = options.getSeparatorNoteAndStructure()+structureSymbol;
 		switch(options.getLayout()){
 		case EXPAND:
 			Collection<String> notes = new ArrayList<>();
 			for(Note note : chord.getNotes())
-				notes.add(noteBusiness.format(locale, note));
+				notes.add(noteBusiness.format(locale, note,options.getNoteFormatOptions()));
 			builder.append(StringUtils.join(notes.iterator(),options.getSeparatorNoteAndNote())+structureSymbol);
 			break;
 		case CONTRACT:
-			builder.append(noteBusiness.format(locale, chord.getRoot())+structureSymbol);
+			builder.append(noteBusiness.format(locale, chord.getRoot(),options.getNoteFormatOptions())+structureSymbol);
 			break;
 		}
 		
@@ -111,7 +114,7 @@ public class ChordBusinessImpl extends AbstractNoteCollectionBusinessImpl<ChordS
 		text = parserHelper.stringAfter(text, noteString);
 		
 		if(StringUtils.isBlank(text)){
-			text = "maj";//TODO constant somewhere or map empty string or blank string to this : a chord can have many symbols. how o handle this???
+			text = ChordFormatOptions.DEFAULT_MAJOR_CHORD_SYMBOL;//TODO a chord can have many symbols. how o handle this???
 		}else{
 			exceptionUtils().exception(StringUtils.isEmpty(matcher.group(6)),"kwordz.exception.parsing.chord.structure.unknown",new Object[]{text});
 			//text = matcher.group(6);

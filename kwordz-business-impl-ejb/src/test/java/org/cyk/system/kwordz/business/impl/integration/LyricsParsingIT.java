@@ -9,14 +9,15 @@ import org.cyk.system.kwordz.business.api.lyrics.LineBusiness;
 import org.cyk.system.kwordz.business.api.lyrics.LyricsBusiness;
 import org.cyk.system.kwordz.business.api.lyrics.PartBusiness;
 import org.cyk.system.kwordz.business.api.music.ChordBusiness;
+import org.cyk.system.kwordz.model.lyrics.ChordLocation;
 import org.cyk.system.kwordz.model.lyrics.Fragment;
 import org.cyk.system.kwordz.model.lyrics.Line;
 import org.cyk.system.kwordz.model.lyrics.LineFormatOptions;
-import org.cyk.system.kwordz.model.lyrics.LineFormatOptions.ChordLocation;
 import org.cyk.system.kwordz.model.lyrics.Lyrics;
 import org.cyk.system.kwordz.model.lyrics.LyricsFormatOptions;
 import org.cyk.system.kwordz.model.lyrics.Part;
 import org.cyk.system.kwordz.model.lyrics.PartFormatOptions;
+import org.cyk.system.kwordz.model.music.ChordFormatOptions;
 import org.cyk.system.root.model.ContentType;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.Archive;
@@ -70,13 +71,45 @@ public class LyricsParsingIT extends AbstractBusinessIT {
     }
     
     @Test
+	public void parseableFormFragment(){	
+    	assertParseableFormFragment("Cm7", "You are", "[Cm7]You are");
+    }
+    
+    @Test
    	public void parseLine(){
+    	
     	assertLine(Locale.ENGLISH, "[C sus2]Jesus is [G]Alive", 
     			"C sus2   G maj"+ContentType.TEXT.getNewLineMarker()+
     			"Jesus is Alive");
     	
     	assertLine(Locale.ENGLISH, "Jesus is the lord", 
     			"Jesus is the lord");
+    	
+    	assertLine(Locale.ENGLISH, "[C]thisisal[D]ongword is [G]Alive", 
+    			"C maj   D maj      G maj"+ContentType.TEXT.getNewLineMarker()+
+    			"thisisalongword is Alive");
+    	
+    	assertLine(Locale.ENGLISH, "Je[C sus2]sus is [G]Alive", 
+    			"  C sus2 G maj"+ContentType.TEXT.getNewLineMarker()+
+    			"Jesus is Alive");
+    	
+    	assertLine(Locale.ENGLISH, "[C maj] Jesus is [G]Alive", 
+    			"C maj         G maj"+ContentType.TEXT.getNewLineMarker()+
+    			"     Jesus is Alive");
+    	
+    	assertLine(Locale.ENGLISH, "[C][B][D]Jesus is [G]Alive", 
+    			"C maj B maj D maj    G maj"+ContentType.TEXT.getNewLineMarker()+
+    			"            Jesus is Alive");
+    	/*
+    	assertLine(Locale.ENGLISH, "[C][B][D] Jesus is [G]Alive", 
+    			"C maj B maj D maj         G maj"+ContentType.TEXT.getNewLineMarker()+
+    			"                 Jesus is Alive");
+    	*/
+    }
+    
+    @Test
+	public void parseableFormLine(){	
+    	assertParseableFormLine("Cm  A7", "You are","[Cm]You [A7]are");
     }
     
     @Test
@@ -97,6 +130,25 @@ public class LyricsParsingIT extends AbstractBusinessIT {
     			"He is  ri  sen");
     }
     
+    @Test
+	public void parseableFormLyrics(){	
+    	assertEquals(
+    			"[C]Jesus [G]you [Am]are\r\n"
+    		  + "[Dm]Holy [Em]Holy\r\n"
+    		  + "Je[C]sus [G]you are[Am]\r\n"
+    		  + "[Dm]Holy Ho[Em]ly", 
+    			lyricsBusiness.parseableForm(
+    					"C     G   Am"+ContentType.TEXT.getNewLineMarker()+
+    					"Jesus you are"+ContentType.TEXT.getNewLineMarker()+
+    					"Dm   Em"+ContentType.TEXT.getNewLineMarker()+
+    					"Holy Holy"+ContentType.TEXT.getNewLineMarker()+
+    					"  C   G      Am"+ContentType.TEXT.getNewLineMarker()+
+    					"Jesus you are"+ContentType.TEXT.getNewLineMarker()+
+    					"Dm     Em"+ContentType.TEXT.getNewLineMarker()+
+    					"Holy Holy"
+    					));
+    }
+    
     /**/
 
     private void assertFragment(Locale locale,String fragmentString,String chord,String text){
@@ -105,12 +157,20 @@ public class LyricsParsingIT extends AbstractBusinessIT {
     	assertEquals(text, fragment.getText());
     }
     
+    private void assertParseableFormFragment(String chord,String text,String form){
+    	assertEquals(ChordFormatOptions.DEFAULT_MARKER_START+chord+ChordFormatOptions.DEFAULT_MARKER_END+text, fragmentBusiness.parseableForm(chord, text));
+    }
+    
     private void assertLine(Locale locale,String inputChordAtLeft,String expectedResult){
     	Line line = lineBusiness.parse(locale, inputChordAtLeft);
     	LineFormatOptions lineFormatOptions = new LineFormatOptions();
     	lineFormatOptions.setChordLocation(ChordLocation.TOP);
     	String result = lineBusiness.format(locale, line,lineFormatOptions);
     	assertEquals(expectedResult, result);
+    }
+    
+    private void assertParseableFormLine(String chordsLine,String textsLine,String form){
+    	assertEquals(form, lineBusiness.parseableForm(chordsLine, textsLine));
     }
     
     private void assertPart(Locale locale,String inputChordAtLeft,String expectedResult){

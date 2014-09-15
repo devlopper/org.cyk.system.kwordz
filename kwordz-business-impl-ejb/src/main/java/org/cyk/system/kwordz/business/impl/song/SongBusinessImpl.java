@@ -6,12 +6,14 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cyk.system.kwordz.business.api.lyrics.LyricsBusiness;
 import org.cyk.system.kwordz.business.api.music.NoteBusiness;
 import org.cyk.system.kwordz.business.api.song.SongBusiness;
 import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.kwordz.model.song.Album;
 import org.cyk.system.kwordz.model.song.Song;
+import org.cyk.system.kwordz.model.song.SongSearchCriteria;
 import org.cyk.system.kwordz.persistence.api.song.SongDao;
 import org.cyk.system.root.business.api.file.FileBusiness;
 import org.cyk.system.root.business.api.file.MediaBusiness.ThumnailSize;
@@ -81,6 +83,27 @@ public class SongBusinessImpl extends AbstractTypedBusinessService<Song, SongDao
 	public Collection<Song> findByAlbum(Album album) {
 		return dao.readByAlbum(album);
 	}
+
+	@Override
+	public Collection<Song> findByCriteria(SongSearchCriteria searchCriteria) {
+		applyDataReadConfigToDao(getDataReadConfig());
+		if(criteriaFound(searchCriteria))
+			return dao.readByCriteria(searchCriteria);
+		else
+			return dao.readAll();
+	}
+
+	@Override
+	public Long countByCriteria(SongSearchCriteria searchCriteria) {
+		if(criteriaFound(searchCriteria))
+			return dao.countByCriteria(searchCriteria);
+		else
+			return dao.countAll();
+	}
 	
-	
+	private Boolean criteriaFound(SongSearchCriteria searchCriteria){
+		return StringUtils.isNotBlank(searchCriteria.getSingerNameSearchCriteria().getValue())
+				&& StringUtils.isNotBlank(searchCriteria.getAlbumNameSearchCriteria().getValue())
+				&& StringUtils.isNotBlank(searchCriteria.getSongNameSearchCriteria().getValue());
+	}
 }

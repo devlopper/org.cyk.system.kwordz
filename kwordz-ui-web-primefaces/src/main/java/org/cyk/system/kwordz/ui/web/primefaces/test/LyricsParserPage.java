@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.kwordz.business.api.lyrics.LyricsBusiness;
-import org.cyk.system.kwordz.model.lyrics.LineFormatOptions.ChordLocation;
+import org.cyk.system.kwordz.model.lyrics.ChordLocation;
 import org.cyk.system.kwordz.model.lyrics.Lyrics;
 import org.cyk.system.kwordz.model.lyrics.LyricsFormatOptions;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
@@ -31,6 +31,7 @@ public class LyricsParserPage extends AbstractPrimefacesPage implements Serializ
 	
 	private List<SelectItem> locales = new ArrayList<>();
 	private Locale locale = Locale.ENGLISH;
+	private Boolean chordAtTop = Boolean.TRUE;
 	
 	private String lyricsToParse,lyricsParsed;
 	private Lyrics lyrics;

@@ -21,6 +21,12 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>libraryView</from-outcome>
+			<to-view-id>/public/library.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>singerConsultView</from-outcome>
 			<to-view-id>/public/singer/consult.jsf</to-view-id>
 			<redirect />
@@ -55,6 +61,11 @@
 		<navigation-case>
 			<from-outcome>songListView</from-outcome>
 			<to-view-id>/public/song/list.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>songEditView</from-outcome>
+			<to-view-id>/private/song/edit.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
 		

@@ -5,6 +5,7 @@ import javax.persistence.EntityManager;
 
 import org.cyk.system.kwordz.business.impl.KwordzBusinessLayer;
 import org.cyk.system.kwordz.model.music.Chord;
+import org.cyk.system.kwordz.model.music.ChordFormatOptions;
 import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.root.business.api.GenericBusiness;
 import org.cyk.system.root.business.impl.BusinessIntegrationTestHelper;
@@ -29,6 +30,11 @@ public abstract class AbstractBusinessIT extends AbstractIntegrationTestJpaBased
 	
 	@Inject protected ValidatorMap validatorMap;// = ValidatorMap.getInstance();
     
+	{
+		ChordFormatOptions.DEFAULT_SEPARATOR_NOTE_AND_STRUCTURE = " ";
+		ChordFormatOptions.SHOW_MAJOR_CHORD_SYMBOL = Boolean.TRUE;
+	}
+	
     @Override
     public EntityManager getEntityManager() {
         return g.getEntityManager();

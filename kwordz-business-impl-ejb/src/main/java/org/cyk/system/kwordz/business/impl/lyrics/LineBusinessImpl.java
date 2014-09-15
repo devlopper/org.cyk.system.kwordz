@@ -1,8 +1,6 @@
 package org.cyk.system.kwordz.business.impl.lyrics;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -12,10 +10,10 @@ import org.cyk.system.kwordz.business.api.lyrics.FragmentBusiness;
 import org.cyk.system.kwordz.business.api.lyrics.LineBusiness;
 import org.cyk.system.kwordz.business.impl.AbstractMusicBusinessImpl;
 import org.cyk.system.kwordz.business.impl.KwordzBusinessLayer;
+import org.cyk.system.kwordz.model.lyrics.ChordLocation;
 import org.cyk.system.kwordz.model.lyrics.Fragment;
 import org.cyk.system.kwordz.model.lyrics.Line;
 import org.cyk.system.kwordz.model.lyrics.LineFormatOptions;
-import org.cyk.system.kwordz.model.lyrics.LineFormatOptions.ChordLocation;
 import org.cyk.system.kwordz.model.music.ChordFormatOptions;
 import org.cyk.system.kwordz.persistence.api.lyrics.LineDao;
 import org.cyk.system.root.model.ContentType;
@@ -50,18 +48,19 @@ public class LineBusinessImpl extends AbstractMusicBusinessImpl<Line, LineDao,Li
 		StringBuilder chords;
 		switch(options.getChordLocation()){
 		case FOLLOW_FRAGMENT:
-			Collection<String> collection = new ArrayList<>();
-			for(Fragment fragment : line.getFragments())
-				collection.add(fragmentBusiness.format(locale, fragment,contentType, options.getFragmentFormatOptions()));
-			builder.append(StringUtils.join(collection.iterator(),contentType.getSpaceMarker()));
+			for(int i=0;i<line.getFragments().size();i++)
+				builder.append(fragmentBusiness.format(locale, line.getFragments().get(i),contentType, options.getFragmentFormatOptions()));
+			
+			//builder.append(StringUtils.join(collection.iterator(),contentType.getSpaceMarker()));
 			break;
 		case TOP:case LEFT:case RIGHT:
 			chords = new StringBuilder();
 			
 			options.getFragmentFormatOptions().setPadding(ChordLocation.TOP.equals(options.getChordLocation())?contentType.getSpaceMarker():null);
 			options.getFragmentFormatOptions().getChordFormatOptions().setShowMarker(!ChordLocation.TOP.equals(options.getChordLocation()));
-			for(Fragment fragment : line.getFragments())
-				fragmentBusiness.format(locale, fragment, contentType,options.getFragmentFormatOptions(), chords, builder);
+			for(int i=0;i<line.getFragments().size();i++)
+				fragmentBusiness.format(locale, line.getFragments().get(i), contentType,options.getFragmentFormatOptions(), chords, builder);
+
 			if(ChordLocation.LEFT.equals(options.getChordLocation()))
 				builder = join(chords,builder, options.getFragmentFormatOptions().getShowChord(), options.getFragmentFormatOptions().getShowText());
 			else if(ChordLocation.RIGHT.equals(options.getChordLocation()))
@@ -79,11 +78,23 @@ public class LineBusinessImpl extends AbstractMusicBusinessImpl<Line, LineDao,Li
 	public Line parse(Locale locale, String text) {
 		Line line = new Line();
 		ChordFormatOptions chordFormatOptions = KwordzBusinessLayer.getInstance().getDefaultChordFormatOptions();
-		Integer markerChordStartIndex =  StringUtils.indexOf(text, chordFormatOptions.getMarkerStart());
-		if(markerChordStartIndex>0){
-			line.getFragments().add(fragmentBusiness.parse(locale, StringUtils.substring(text, 0, markerChordStartIndex)));
-			text = StringUtils.substring(text, markerChordStartIndex);
-		}
+		do{
+			Integer markerChordStartIndex =  StringUtils.indexOf(text, chordFormatOptions.getMarkerStart());
+			if(markerChordStartIndex>0){
+				line.getFragments().add(fragmentBusiness.parse(locale, StringUtils.substring(text, 0, markerChordStartIndex)));
+				text = StringUtils.substring(text, markerChordStartIndex);
+			}else if(markerChordStartIndex==0){
+				int k = StringUtils.indexOf(text, chordFormatOptions.getMarkerEnd());
+				if(k<text.length()-1 && text.charAt(++k)==' '){
+					k++;
+					//System.out.println("LineBusinessImpl.parse() : "+StringUtils.substring(text, 0, k));
+					line.getFragments().add(fragmentBusiness.parse(locale, StringUtils.substring(text, 0, k)));
+					text = StringUtils.substring(text, k);
+				}else
+					break;
+			}else
+				break;
+		}while(true);
 		
 		String fragmentString;
 		while(StringUtils.isNotEmpty(text)){
@@ -96,7 +107,40 @@ public class LineBusinessImpl extends AbstractMusicBusinessImpl<Line, LineDao,Li
 			line.getFragments().add(fragmentBusiness.parse(locale, fragmentString));
 			text = StringUtils.substring(text, fragmentString.length());
 		}
+		
+		//for(Fragment f : line.getFragments())
+		//	System.out.println(f.getChord()+" - "+f.getText());
+		
 		return line;
+	}
+	
+	@Override
+	public String parseableForm(String chordsLine, String textsLine) {
+		StringBuilder parseable = new StringBuilder();
+		String[] chords = StringUtils.split(chordsLine, " ");
+		int fromIndex = 0,chordStartIndex=0,nextChordStartIndex;
+		while(chordsLine.charAt(chordStartIndex)==' ')
+			chordStartIndex++;
+		if(chordStartIndex>0){
+			parseable.append(fragmentBusiness.parseableForm(null, StringUtils.substring(textsLine, 0,chordStartIndex)));
+		}
+		for(int i=0;i<chords.length;i++){
+			chordStartIndex = chordsLine.indexOf(chords[i], fromIndex);
+			fromIndex = chordStartIndex+chords[i].length();
+			if(i+1<chords.length)
+				nextChordStartIndex = chordsLine.indexOf(chords[i+1], fromIndex);
+			else
+				nextChordStartIndex = textsLine.length();
+			
+			if(chordStartIndex<textsLine.length() && textsLine.charAt(chordStartIndex)==' '){
+				parseable.append(fragmentBusiness.parseableForm(chords[i], " "));
+				parseable.append(fragmentBusiness.parseableForm(null, StringUtils.substring(textsLine, chordStartIndex+chords[i].length()+1, nextChordStartIndex)));
+			}else
+				parseable.append(fragmentBusiness.parseableForm(chords[i], StringUtils.substring(textsLine, chordStartIndex, nextChordStartIndex)));
+			
+				
+		}
+		return parseable.toString();
 	}
 	
 	/**/

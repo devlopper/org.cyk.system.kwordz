@@ -26,4 +26,6 @@ public class Fragment extends AbstractIdentifiable implements Serializable{
 	@OneToOne(cascade=CascadeType.ALL)
 	private Chord chord;
 	
+	//private String seperator;
+	
 }

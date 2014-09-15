@@ -2,6 +2,7 @@ package org.cyk.system.kwordz.ui.web.primefaces.song;
 
 import java.io.Serializable;
 import java.net.URL;
+import java.util.Locale;
 
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
@@ -14,10 +15,11 @@ import org.cyk.system.kwordz.model.music.Note;
 import org.cyk.system.kwordz.model.song.Album;
 import org.cyk.system.kwordz.model.song.Singer;
 import org.cyk.system.kwordz.model.song.Song;
+import org.cyk.system.root.model.language.Language;
 import org.cyk.ui.api.editor.AbstractFormData;
 import org.cyk.utility.common.annotation.UIField;
 
-@Getter @Setter
+@Getter @Setter @Deprecated
 public class SongFormData extends AbstractFormData<Song> implements Serializable {
 
 	private static final long serialVersionUID = 235306190360023398L;
@@ -42,5 +44,9 @@ public class SongFormData extends AbstractFormData<Song> implements Serializable
 	
 	@UIField(textArea=true) @NotNull
 	private String lyrics;
+	
+	private Language language;
+
+	private Locale locale;
 
 }

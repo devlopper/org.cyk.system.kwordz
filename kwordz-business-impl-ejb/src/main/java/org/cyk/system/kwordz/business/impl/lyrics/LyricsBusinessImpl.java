@@ -2,12 +2,15 @@ package org.cyk.system.kwordz.business.impl.lyrics;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cyk.system.kwordz.business.api.lyrics.LineBusiness;
 import org.cyk.system.kwordz.business.api.lyrics.LyricsBusiness;
 import org.cyk.system.kwordz.business.api.lyrics.PartBusiness;
 import org.cyk.system.kwordz.business.api.music.ChordStructureBusiness;
@@ -29,6 +32,7 @@ public class LyricsBusinessImpl extends AbstractMusicBusinessImpl<Lyrics, Lyrics
 	
 	@Inject private PartBusiness partBusiness;
 	@Inject private ChordStructureBusiness chordStructureBusiness;
+	@Inject private LineBusiness lineBusiness;
 	
 	@Inject
 	public LyricsBusinessImpl(LyricsDao dao) { 
@@ -83,6 +87,52 @@ public class LyricsBusinessImpl extends AbstractMusicBusinessImpl<Lyrics, Lyrics
 					if(fragment.getChord()!=null)
 						collection.add(fragment.getChord());
 		return collection;
+	}
+	
+	@Override
+	public String parseableForm(String text) {
+		StringBuilder parseable = new StringBuilder();
+		List<String> lines = Arrays.asList(StringUtils.split(text, ContentType.TEXT.getNewLineMarker()));
+		List<String> parseableLines = new ArrayList<>();
+		for(int i=0;i<lines.size();){
+			if(i==lines.size()-1){
+				parseableLines.add(lines.get(i++));
+			}else{
+				parseableLines.add(lineBusiness.parseableForm(lines.get(i), lines.get(i+1)));
+				i += 2;
+			}
+			/*
+			String chordLine = StringUtils.stripEnd( lines.get(i), " ");
+			StringBuilder textLineBuilder = new StringBuilder(StringUtils.stripEnd( lines.get(i+1), " "));
+			if(StringUtils.isBlank(chordLine)){
+				parseable.append(textLineBuilder);
+				i=i+2;
+				continue;
+			}
+			//int offset = 0;
+			int length = textLineBuilder.length();
+			int chordStartIndex = 0;
+			do{
+				while(Character.isWhitespace(chordLine.charAt(chordStartIndex)))
+					chordStartIndex++;
+				int chordEndIndex = chordStartIndex;
+				if(chordStartIndex<chordLine.length()-1){
+					chordEndIndex++;
+					while(chordEndIndex<chordLine.length() && !Character.isWhitespace(chordLine.charAt(chordEndIndex)))
+						chordEndIndex++;
+				}
+				String chord = StringUtils.substring(chordLine, chordStartIndex, chordEndIndex);
+				//offset += chord.length();
+				if(chordStartIndex>=length)
+					textLineBuilder.append(chord);
+				else
+					textLineBuilder.insert(chordStartIndex,chord);
+				chordStartIndex = chordEndIndex+1;
+			}while(chordStartIndex>=chordLine.length());
+			*/
+		}
+		parseable.append(StringUtils.join(parseableLines,ContentType.TEXT.getNewLineMarker()));		
+		return parseable.toString();
 	}
 	
 }

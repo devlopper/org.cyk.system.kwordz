@@ -9,4 +9,5 @@ public interface LyricsBusiness extends AbstractMusicBusiness<Lyrics,LyricsForma
    
 	void generateNotes(Lyrics lyrics,Note root);
 	
+	String parseableForm(String text);
 }

@@ -130,23 +130,24 @@ a.cyk-kwordz-layout-north-table-td-logo-textOnly{
 }
 
 /**/
-.cyk-kwordz-page-library-searchinput-table{
+.cyk-kwordz-page-library-datatable-header-table{
 	width: 100%;
 	
 }
-.cyk-kwordz-page-library-searchinput-table-td-input{
-	width: 100%;
+.cyk-kwordz-page-library-datatable-header-table-td-input{
+	
 }
-.cyk-kwordz-page-library-searchinput-table-td-input input{
-	width: 100%;
-	height: 22px;
+.cyk-kwordz-page-library-datatable-header-table-td-input input{
+	
 }
-.cyk-kwordz-page-library-searchinput-table-td-button input{
+.cyk-kwordz-page-library-datatable-header-table-td-button input{
 	
 }
 
 .cyk-kwordz-page-library-song-thumbmail{
 	border: 1px solid #eeeeee;
 	width: 40px;
+	height : 35px;
+	padding: 2px;
 }
 

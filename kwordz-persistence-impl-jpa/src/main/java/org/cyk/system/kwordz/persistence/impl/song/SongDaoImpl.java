@@ -18,11 +18,16 @@ public class SongDaoImpl extends AbstractTypedDao<Song> implements SongDao,Seria
 	private static final String ORDER_BY_FORMAT = "ORDER BY %s";
 	
 	//private static final String READ_BY_NO_CRITERIA_FORMAT = "SELECT song FROM Song song "+ORDER_BY_FORMAT;
-	
+	/*
 	private static final String READ_BY_CRITERIA_FORMAT = "SELECT song FROM Song song WHERE "
     		+ "    (LENGTH(:songName) > 0   AND (LOCATE(LOWER(:songName),LOWER(song.name))                > 0))"
     		+ " OR (LENGTH(:albumName) > 0  AND (LOCATE(LOWER(:albumName),LOWER(song.album.name))         > 0))"
     		+ " OR (LENGTH(:singerName) > 0 AND (LOCATE(LOWER(:singerName),LOWER(song.album.singer.name)) > 0))";
+	*/
+	private static final String READ_BY_CRITERIA_FORMAT = "SELECT song FROM Song song WHERE "
+    		+ "    ( LOCATE(LOWER(:songName),LOWER(song.name))                > 0 )"
+    		+ " OR ( LOCATE(LOWER(:albumName),LOWER(song.album.name))         > 0 )"
+    		+ " OR ( LOCATE(LOWER(:singerName),LOWER(song.album.singer.name)) > 0 )";
 	
 	private static final String READ_BY_CRITERIA_ORDERED_FORMAT = READ_BY_CRITERIA_FORMAT+" "+ORDER_BY_FORMAT;
 	

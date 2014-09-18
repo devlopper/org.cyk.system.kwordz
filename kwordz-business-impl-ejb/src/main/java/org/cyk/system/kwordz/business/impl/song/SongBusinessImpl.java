@@ -87,10 +87,10 @@ public class SongBusinessImpl extends AbstractTypedBusinessService<Song, SongDao
 	@Override
 	public Collection<Song> findByCriteria(SongSearchCriteria searchCriteria) {
 		applyDataReadConfigToDao(getDataReadConfig());
-		if(criteriaFound(searchCriteria))
+		//if(criteriaFound(searchCriteria))
 			return dao.readByCriteria(searchCriteria);
-		else
-			return dao.readAll();
+		//else
+		//	return dao.readAll();
 	}
 
 	@Override

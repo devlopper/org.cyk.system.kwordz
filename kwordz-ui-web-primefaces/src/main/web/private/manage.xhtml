@@ -26,23 +26,12 @@
 					text-align: left;
 
 				}
-				.ui-datatable-header .ui-widget-header {border: none;}
-				
         	</style>
         	
        		<p:dataTable id="songDataTableId" widgetVar="songDataTable" value="#{libraryPage.dataModel}" var="songInfos" stickyHeader="true"
-       			lazy="true" paginator="true" rows="#{libraryPage.maximumSongResultCount}" paginatorPosition="bottom" sortMode="single"
-       		>
-       			
+       			lazy="true" paginator="true" rows="#{libraryPage.maximumSongResultCount}" paginatorPosition="bottom" sortMode="single">
        			<f:facet name="header">
-       				<p:toolbar>
-       					<f:facet name="right">
-       						<p:inputText id="globalFilter" >
        				
-       						</p:inputText>	
-       						<cyk:command value="#{libraryPage.searchCommand}" />
-       					</f:facet>
-       				</p:toolbar>
        			</f:facet>
        			
        			<p:column headerText="#{kwordzWebManager.songBusinessEntityInfos.uiLabel}" sortBy="#{songInfos.song.name}" >

@@ -33,7 +33,6 @@ import org.cyk.system.kwordz.model.song.Song;
 import org.cyk.system.root.business.api.TypedBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
 import org.cyk.system.root.business.impl.AbstractBusinessLayer;
-import org.cyk.system.root.business.impl.BusinessManagerImpl;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.system.root.model.file.File;
 import org.cyk.utility.common.annotation.Deployment;
@@ -46,9 +45,7 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
 	private static final String I18N_PREFIX = "kwordz.";
 	
 	private static KwordzBusinessLayer INSTANCE;
-	
-	@Getter private final String systemName = "KwordZ";
-	
+		
 	@Getter private final ChordFormatOptions defaultChordFormatOptions = new ChordFormatOptions();
 	@Getter private final NoteFormatOptions defaultNoteFormatOptions = new NoteFormatOptions();
 	@Getter private final FragmentFormatOptions defaultFragmentFormatOptions = new FragmentFormatOptions();
@@ -67,7 +64,6 @@ public class KwordzBusinessLayer extends AbstractBusinessLayer implements Serial
 	protected void initialisation() {
 		INSTANCE = this;
 		super.initialisation();
-		BusinessManagerImpl.SYSTEM_NAME = systemName;
 		configFormatOptions(defaultNoteFormatOptions);
 		configFormatOptions(defaultChordFormatOptions);
 		configFormatOptions(defaultFragmentFormatOptions);

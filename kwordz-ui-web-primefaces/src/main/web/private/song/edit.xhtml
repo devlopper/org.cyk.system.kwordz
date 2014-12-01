@@ -113,8 +113,8 @@
         </ui:define>
         
         <ui:define name="contentMenuBar">
- 			<cyk:command value="#{songEditPage.editor.primefacesSubmitCommand}" executeParameter="#{songEditPage.editor.objectModel}" />
- 			<cyk:command value="#{songEditPage.previewCommand}" />
+ 			<cyk:command value="#{songEditPage.form.submitCommandable}" executeParameter="#{songEditPage.song}" />
+ 			<cyk:command value="#{songEditPage.previewCommandable}" />
  		</ui:define>
     </ui:decorate>
  

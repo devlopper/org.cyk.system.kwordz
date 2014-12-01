@@ -15,8 +15,8 @@
         </ui:define>
         
         <ui:define name="body">
-       		<h:link value="#{uiManager.text('kwordz.album.add')}" outcome="#{webNavigationManager.editorCreateUrl(kwordzWebManager.albumBusinessEntityInfos)}" />
-       		<p:separator/>
+       		<h:link value="#{uiManager.text('kwordz.album.add')}" outcome="#{webNavigationManager.createOneUrl(kwordzWebManager.albumBusinessEntityInfos)}" />
+       		<p:separator />
        		<kwordz:albumInfosList value="#{albumListPage.infosList}" />
        		
         </ui:define>

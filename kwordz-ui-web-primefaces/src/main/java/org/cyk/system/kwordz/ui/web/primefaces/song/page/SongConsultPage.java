@@ -21,13 +21,12 @@ import org.cyk.system.kwordz.ui.web.primefaces.LyricsStringBuilder;
 import org.cyk.system.kwordz.ui.web.primefaces.song.SingerInfos;
 import org.cyk.system.kwordz.ui.web.primefaces.song.SongInfosList;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
-import org.cyk.ui.api.command.DefaultCommand;
-import org.cyk.ui.api.command.DefaultCommandable;
+import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.command.CommandAdapter;
+import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.web.api.annotation.RequestParameter;
-import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
-import org.cyk.ui.web.primefaces.Command;
-import org.cyk.utility.common.AbstractMethod;
+import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 
 @Named @ViewScoped
 public class SongConsultPage extends AbstractPrimefacesPage implements Serializable {
@@ -57,7 +56,7 @@ public class SongConsultPage extends AbstractPrimefacesPage implements Serializa
 	@Getter private List<SelectItem> parsableLocalesItems = new ArrayList<>();
 	@Getter private List<SelectItem> tonesItems = new ArrayList<>();
 	
-	@Getter private Command applyCommand;
+	@Getter private UICommandable applyCommandable;
 	
 	@Override
 	protected void initialisation() {
@@ -80,21 +79,15 @@ public class SongConsultPage extends AbstractPrimefacesPage implements Serializa
 		//singerInfos = new SingerInfos(song.getAlbum().getSinger(), singerBusiness);
 		relatedSongList = new SongInfosList("Related", songBusiness.findRelated(song),Boolean.FALSE,songBusiness);
 		builder.init(song);
-		DefaultCommandable commandable = new DefaultCommandable();
-		commandable.setLabel(uiManager.text("command.apply"));
-		commandable.setCommand(new DefaultCommand());
-		commandable.getCommand().setMessageManager(getMessageManager());
-		commandable.setIconType(IconType.ACTION_APPLY);
-		commandable.setShowLabel(Boolean.FALSE);
-		commandable.getCommand().setExecuteMethod(new AbstractMethod<Object, Object>() {
-			private static final long serialVersionUID = 3913474940359268490L;
-			@Override
-			protected Object __execute__(Object parameter) {
-				builder.build();
-				return null;
-			}
+		applyCommandable = UIProvider.getInstance().createCommandable(null, "command.apply", IconType.ACTION_APPLY, null, null);
+		
+		applyCommandable.getCommand().setMessageManager(getMessageManager());
+		applyCommandable.setShowLabel(Boolean.FALSE);
+		applyCommandable.getCommand().getCommandListeners().add(new CommandAdapter(){
+			private static final long serialVersionUID = 1L;
+			public void serve(org.cyk.ui.api.command.UICommand command, Object parameter) {builder.build();};
 		});
-		applyCommand =  new Command(commandable);
+		
 		
 	}
 	

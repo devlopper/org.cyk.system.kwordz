@@ -25,14 +25,17 @@ import org.cyk.system.kwordz.ui.web.primefaces.LyricsStringBuilder;
 import org.cyk.system.root.business.api.file.MediaBusiness;
 import org.cyk.system.root.model.file.File;
 import org.cyk.system.root.model.language.Language;
+import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
-import org.cyk.ui.web.primefaces.Command;
-import org.cyk.ui.web.primefaces.dynamic.AbstractEditorPage;
+import org.cyk.ui.web.primefaces.Commandable;
+import org.cyk.ui.web.primefaces.page.AbstractBusinessEntityFormOnePage;
 import org.cyk.utility.common.AbstractMethod;
 import org.primefaces.event.SelectEvent;
 
 @Named @ViewScoped
-public class SongEditPage extends AbstractEditorPage<Song> implements Serializable {
+public class SongEditPage extends AbstractBusinessEntityFormOnePage<Song> implements Serializable {
 
 	private static final long serialVersionUID = 479730074989365192L;
 
@@ -44,7 +47,7 @@ public class SongEditPage extends AbstractEditorPage<Song> implements Serializab
 	@Getter private List<SelectItem> albums = new ArrayList<>();;	
 	
 	@Getter @Inject private LyricsStringBuilder builder;
-	@Getter private Command previewCommand,applyLyricsInputOptionsCommand/*,loadMediaCommand*/;
+	@Getter private UICommandable previewCommandable,applyLyricsInputOptionsCommandable/*,loadMediaCommand*/;
 	@Getter @Setter private URL mediaUrl;
 	@Getter @Setter private URL mediaEmbeddedUrl;
 	
@@ -54,38 +57,13 @@ public class SongEditPage extends AbstractEditorPage<Song> implements Serializab
 	protected void initialisation() {
 		super.initialisation();
 		
-		submitMethod = editor.getSubmitMethodMain();
-		editor.setSubmitMethodMain(new AbstractMethod<Object, Object>() {
-			private static final long serialVersionUID = 4484402099766301780L;
-			@Override
-			protected Object __execute__(Object parameter) {
-				builder.buildAndApplySongLyrics();
-				submitMethod.execute(parameter);
-				return null;
-			}
-		});
 		builder.init(getSong());
-				
-		previewCommand =  new Command(createCommandable("command.preview", IconType.ACTION_PREVIEW, new AbstractMethod<Object, Object>() {
-			private static final long serialVersionUID = 3913474940359268490L;
-			@Override
-			protected Object __execute__(Object parameter) {
-				builder.buildAndApplySongLyrics();
-				builder.build();
-				return null;
-			}
-		}, null, null));
-		previewCommand.getCommandButton().setUpdate(":form:parsedLyrics");
 		
-		applyLyricsInputOptionsCommand =  new Command(createCommandable("command.apply", IconType.ACTION_APPLY, new AbstractMethod<Object, Object>() {
-			private static final long serialVersionUID = 3913474940359268490L;
-			@Override
-			protected Object __execute__(Object parameter) {
-				builder.applyLyricsToParseChange();
-				return null;
-			}
-		}, null, null));
-		applyLyricsInputOptionsCommand.getCommandButton().setUpdate(":form:lyrics");
+		previewCommandable = UIProvider.getInstance().createCommandable(this, "command.preview", IconType.ACTION_PREVIEW, null, null);
+		((Commandable) previewCommandable).getButton().setUpdate(":form:parsedLyrics");
+		
+		applyLyricsInputOptionsCommandable =  UIProvider.getInstance().createCommandable(this, "command.apply", IconType.ACTION_APPLY, null, null);
+		((Commandable) applyLyricsInputOptionsCommandable).getButton().setUpdate(":form:lyrics");
 		
 	}
 	
@@ -114,6 +92,19 @@ public class SongEditPage extends AbstractEditorPage<Song> implements Serializab
 	}
 	
 	public Song getSong(){
-		return (Song) editor.getObjectModel();
+		return identifiable;
+	}
+
+	@Override
+	public void serve(UICommand command, Object parameter) {
+		if(commandsEqual(form.getSubmitCommandable(), command)){
+			builder.buildAndApplySongLyrics();
+			submitMethod.execute(parameter);
+		}else if(commandsEqual(previewCommandable, command)){
+			builder.buildAndApplySongLyrics();
+			builder.build();
+		}else if(commandsEqual(applyLyricsInputOptionsCommandable, command)){
+			builder.applyLyricsToParseChange();
+		}
 	}
 }

@@ -12,7 +12,7 @@ import lombok.Getter;
 
 import org.cyk.system.kwordz.business.api.song.SongBusiness;
 import org.cyk.system.kwordz.ui.web.primefaces.song.SongInfosList;
-import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
+import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 
 @Named @RequestScoped
 public class KwordzIndexPage extends AbstractPrimefacesPage implements Serializable {
@@ -26,7 +26,7 @@ public class KwordzIndexPage extends AbstractPrimefacesPage implements Serializa
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		songInfosLists.add(new SongInfosList(songBusiness.find(getUser()),songBusiness));
+		songInfosLists.add(new SongInfosList(songBusiness.find(getUserSession().getUserAccount().getUser()),songBusiness));
 	}
 	
 	@Override

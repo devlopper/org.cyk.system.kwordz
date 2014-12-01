@@ -6,7 +6,7 @@ import lombok.Getter;
 
 import org.cyk.system.kwordz.ui.web.primefaces.song.AbstractInfos;
 import org.cyk.system.kwordz.ui.web.primefaces.song.AbstractInfosList;
-import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
+import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 
 public abstract class AbstractListPage<ENTITY,INFOS extends AbstractInfos<ENTITY>,INFOS_LIST extends AbstractInfosList<ENTITY, INFOS>> extends AbstractPrimefacesPage implements Serializable {
 

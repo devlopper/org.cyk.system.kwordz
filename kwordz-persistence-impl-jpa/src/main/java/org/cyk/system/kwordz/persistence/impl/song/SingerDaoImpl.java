@@ -4,10 +4,11 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import org.cyk.system.kwordz.model.song.Singer;
+import org.cyk.system.kwordz.model.song.SingerSearchCriteria;
 import org.cyk.system.kwordz.persistence.api.song.SingerDao;
 import org.cyk.system.root.persistence.impl.party.AbstractPartyDaoImpl;
 
-public class SingerDaoImpl extends AbstractPartyDaoImpl<Singer> implements SingerDao,Serializable {
+public class SingerDaoImpl extends AbstractPartyDaoImpl<Singer,SingerSearchCriteria> implements SingerDao,Serializable {
 
 	private static final long serialVersionUID = 6306356272165070761L;
 	 

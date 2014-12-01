@@ -15,8 +15,6 @@ public class SongDaoImpl extends AbstractTypedDao<Song> implements SongDao,Seria
 
 	private static final long serialVersionUID = 6306356272165070761L;
  
-	private static final String ORDER_BY_FORMAT = "ORDER BY %s";
-	
 	//private static final String READ_BY_NO_CRITERIA_FORMAT = "SELECT song FROM Song song "+ORDER_BY_FORMAT;
 	/*
 	private static final String READ_BY_CRITERIA_FORMAT = "SELECT song FROM Song song WHERE "

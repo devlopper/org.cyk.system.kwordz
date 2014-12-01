@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
+import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 
 @Named @ViewScoped
 public class KwordzManagementPage extends AbstractPrimefacesPage implements Serializable {

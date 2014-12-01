@@ -15,17 +15,28 @@ import lombok.Setter;
 import org.cyk.system.root.model.AbstractIdentifiable;
 import org.cyk.utility.common.annotation.ModelBean;
 import org.cyk.utility.common.annotation.ModelBean.CrudStrategy;
-import org.cyk.utility.common.annotation.UIField;
+import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.InputChoice;
+import org.cyk.utility.common.annotation.user.interfaces.InputOneChoice;
+import org.cyk.utility.common.annotation.user.interfaces.InputOneCombo;
+import org.cyk.utility.common.annotation.user.interfaces.InputText;
 
 @Getter @Setter @Entity @NoArgsConstructor @ModelBean(crudStrategy=CrudStrategy.BUSINESS,uiIconName="music-disc")
 public class Album extends AbstractIdentifiable implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	@UIField @NotNull
-	@ManyToOne private Singer singer;
+	@Input 
+	@InputChoice
+	@InputOneChoice
+	@InputOneCombo
+	@NotNull
+	@ManyToOne 
+	private Singer singer;
 	
-	@UIField @NotNull
+	@Input 
+	@InputText
+	@NotNull
 	private String name;
 
 	@Transient private Collection<Song> songs;

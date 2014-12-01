@@ -14,10 +14,11 @@ import org.cyk.system.kwordz.business.api.song.SongBusiness;
 import org.cyk.system.kwordz.model.song.SongSearchCriteria;
 import org.cyk.system.kwordz.ui.web.primefaces.song.SongInfos;
 import org.cyk.system.kwordz.ui.web.primefaces.song.SongInfosList;
+import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
-import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
-import org.cyk.ui.web.primefaces.Command;
-import org.cyk.utility.common.AbstractMethod;
+import org.cyk.ui.web.primefaces.Commandable;
+import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -31,7 +32,7 @@ public class LibraryPage extends AbstractPrimefacesPage implements Serializable 
 	@Getter private SongInfosList songInfosList;
 	private LazyDataModel<SongInfos> dataModel;
 	private Integer songResultCount=2;
-	@Getter private Command searchCommand;
+	@Getter private UICommandable searchCommandable;
 	
 	@Override
 	protected void initialisation() {
@@ -39,16 +40,11 @@ public class LibraryPage extends AbstractPrimefacesPage implements Serializable 
 		contentTitle = text("library");
 		songBusiness.getDataReadConfig().setMaximumResultCount(2l);
 		
-		searchCommand =  new Command(createCommandable("command.search", IconType.ACTION_SEARCH, new AbstractMethod<Object, Object>() {
-			private static final long serialVersionUID = 3913474940359268490L;
-			@Override
-			protected Object __execute__(Object parameter) {
-				return null;
-			}
-		}, null, null));
-		searchCommand.getCommandable().setShowLabel(Boolean.FALSE);
-		searchCommand.getCommandButton().setType("button");
-		searchCommand.getCommandButton().setOnclick("PF('songDataTable').filter();");
+		searchCommandable =  UIProvider.getInstance().createCommandable(null, "command.search", IconType.ACTION_SEARCH, null, null);
+		
+		((Commandable)searchCommandable).setShowLabel(Boolean.FALSE);
+		((Commandable)searchCommandable).getButton().setType("button");
+		((Commandable)searchCommandable).getButton().setOnclick("PF('songDataTable').filter();");
 	}
 	
 	@Override

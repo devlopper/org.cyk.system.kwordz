@@ -8,15 +8,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.cyk.system.kwordz.model.song.Singer;
-import org.cyk.ui.api.editor.AbstractFormData;
-import org.cyk.utility.common.annotation.UIField;
+import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+import org.cyk.utility.common.annotation.user.interfaces.Input;
+import org.cyk.utility.common.annotation.user.interfaces.InputText;
 
 @Getter @Setter
-public class SingerFormData extends AbstractFormData<Singer> implements Serializable {
+public class SingerFormData extends AbstractFormModel<Singer> implements Serializable {
 
 	private static final long serialVersionUID = 235306190360023398L;
 
-	@UIField
+	@Input
+	@InputText
 	@NotNull
 	private String name;
 

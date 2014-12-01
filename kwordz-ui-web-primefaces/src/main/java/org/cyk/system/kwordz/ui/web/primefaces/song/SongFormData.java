@@ -16,33 +16,34 @@ import org.cyk.system.kwordz.model.song.Album;
 import org.cyk.system.kwordz.model.song.Singer;
 import org.cyk.system.kwordz.model.song.Song;
 import org.cyk.system.root.model.language.Language;
-import org.cyk.ui.api.editor.AbstractFormData;
-import org.cyk.utility.common.annotation.UIField;
+import org.cyk.ui.api.data.collector.form.AbstractFormModel;
+import org.cyk.utility.common.annotation.user.interfaces.Input;
 
-@Getter @Setter @Deprecated
-public class SongFormData extends AbstractFormData<Song> implements Serializable {
+@Getter @Setter
+public class SongFormData extends AbstractFormModel<Song> implements Serializable {
 
 	private static final long serialVersionUID = 235306190360023398L;
 
-	@ManyToOne @UIField @NotNull
+	@Input
+	@ManyToOne @NotNull
 	private Singer singer;
 	
-	@ManyToOne @UIField @NotNull
+	@ManyToOne @NotNull
 	private Album album;
 	
-	@UIField @NotNull
+	@NotNull
 	private String name;
 	
-	@ManyToOne @UIField @NotNull
+	@ManyToOne @NotNull
 	private Note tone;
 	
-	@ManyToOne @UIField @NotNull
+	@ManyToOne @NotNull
 	private MusicKind musicKind;
 	
-	@UIField @NotNull
+	@NotNull
 	private URL mediaUrl;
 	
-	@UIField(textArea=true) @NotNull
+	@NotNull
 	private String lyrics;
 	
 	private Language language;

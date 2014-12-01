@@ -18,7 +18,7 @@ import org.cyk.system.kwordz.model.lyrics.ChordLocation;
 import org.cyk.system.kwordz.model.lyrics.Lyrics;
 import org.cyk.system.kwordz.model.lyrics.LyricsFormatOptions;
 import org.cyk.system.root.model.ContentType;
-import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
+import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 
 @Named @ViewScoped @Getter @Setter
 public class KwordzTestingBoard extends AbstractPrimefacesPage implements Serializable {

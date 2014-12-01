@@ -15,18 +15,17 @@ import lombok.Getter;
 
 import org.cyk.system.kwordz.business.api.lyrics.LyricsBusiness;
 import org.cyk.system.root.business.api.language.LanguageBusiness;
-import org.cyk.ui.api.UIManager;
-import org.cyk.ui.api.command.DefaultCommand;
-import org.cyk.ui.api.command.DefaultCommandable;
+import org.cyk.ui.api.UIProvider;
+import org.cyk.ui.api.command.CommandListener;
+import org.cyk.ui.api.command.UICommand;
+import org.cyk.ui.api.command.UICommandable;
 import org.cyk.ui.api.command.UICommandable.IconType;
 import org.cyk.ui.web.api.WebSession;
-import org.cyk.ui.web.primefaces.Command;
 import org.cyk.ui.web.primefaces.PrimefacesMessageManager;
-import org.cyk.utility.common.AbstractMethod;
 import org.cyk.utility.common.cdi.AbstractBean;
 
 @SessionScoped @Named
-public class UserSessionController extends AbstractBean implements Serializable {
+public class UserSessionController extends AbstractBean implements Serializable,CommandListener {
 
 	private static final long serialVersionUID = -3480243608840186805L;
 
@@ -35,28 +34,17 @@ public class UserSessionController extends AbstractBean implements Serializable 
 	//@Inject private NoteBusiness noteBusiness;
 	
 	@Getter private String searchInput;
-	@Getter private Command searchCommand;
+	@Getter private UICommandable searchCommandable;
 	@Inject transient private PrimefacesMessageManager messageManager;
 	@Inject transient private WebSession session;
 	
 	@Override
 	protected void initialisation() {
 		super.initialisation();
-		DefaultCommandable commandable = new DefaultCommandable();
-		commandable.setLabel(UIManager.getInstance().text("command.search"));
-		commandable.setCommand(new DefaultCommand());
-		commandable.getCommand().setMessageManager(messageManager);
-		commandable.setShowLabel(Boolean.FALSE);
-		commandable.setIconType(IconType.ACTION_SEARCH);
-		commandable.getCommand().setExecuteMethod(new AbstractMethod<Object, Object>() {
-			private static final long serialVersionUID = 3913474940359268490L;
-			@Override
-			protected Object __execute__(Object parameter) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-		});
-		searchCommand =  new Command(commandable);
+		searchCommandable = UIProvider.getInstance().createCommandable(this, "command.search", IconType.ACTION_SEARCH, null, null);
+		searchCommandable.getCommand().setMessageManager(messageManager);
+		searchCommandable.setShowLabel(Boolean.FALSE);
+		searchCommandable.setIconType(IconType.ACTION_SEARCH);
 	}
 	
 	@Produces @Named @SessionScoped
@@ -65,6 +53,51 @@ public class UserSessionController extends AbstractBean implements Serializable 
 		for(Locale locale : lyricsBusiness.findParsableLocales())
 			list.add(new SelectItem(locale, languageBusiness.findText(session.getLocale(),locale)));
 		return list;
+	}
+
+	/**/
+	
+	@Override
+	public Object fail(UICommand arg0, Object arg1, Throwable arg2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String notificationMessageIdAfterServe(UICommand arg0, Object arg1,
+			AfterServeState arg2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean notifyAfterServe(UICommand arg0, AfterServeState arg1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void serve(UICommand arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object succeed(UICommand arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void transfer(UICommand arg0, Object arg1) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Boolean validate(UICommand arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	/*@Produces @Named @SessionScoped

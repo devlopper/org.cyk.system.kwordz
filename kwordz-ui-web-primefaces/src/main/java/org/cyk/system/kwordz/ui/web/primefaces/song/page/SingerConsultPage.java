@@ -11,7 +11,7 @@ import lombok.Getter;
 import org.cyk.system.kwordz.business.api.song.SingerBusiness;
 import org.cyk.system.kwordz.model.song.Singer;
 import org.cyk.system.kwordz.ui.web.primefaces.song.AlbumInfosList;
-import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
+import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 
 @Named @ViewScoped
 public class SingerConsultPage extends AbstractPrimefacesPage implements Serializable {

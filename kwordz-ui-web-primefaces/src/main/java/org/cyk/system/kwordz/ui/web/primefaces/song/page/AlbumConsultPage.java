@@ -12,7 +12,7 @@ import org.cyk.system.kwordz.business.api.song.AlbumBusiness;
 import org.cyk.system.kwordz.business.api.song.SongBusiness;
 import org.cyk.system.kwordz.model.song.Album;
 import org.cyk.system.kwordz.ui.web.primefaces.song.SongInfosList;
-import org.cyk.ui.web.primefaces.AbstractPrimefacesPage;
+import org.cyk.ui.web.primefaces.page.AbstractPrimefacesPage;
 
 @Named @ViewScoped
 public class AlbumConsultPage extends AbstractPrimefacesPage implements Serializable {

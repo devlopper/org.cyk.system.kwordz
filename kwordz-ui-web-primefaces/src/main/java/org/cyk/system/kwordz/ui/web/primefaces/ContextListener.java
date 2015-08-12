@@ -38,8 +38,12 @@ public class ContextListener extends AbstractContextListener implements Serializ
 	
 	@Override
 	public void menu(UserSession userSession, UIMenu menu, Type type) {
-		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public String homeUrl(UserSession userSession) {
+		return webNavigationManager.url("libraryView",new Object[]{},Boolean.FALSE,Boolean.FALSE);
 	}
 
 }
